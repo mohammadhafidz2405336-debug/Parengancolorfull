@@ -29,10 +29,10 @@
             </p>
             
             <div class="flex flex-wrap gap-4">
-                <a href="#" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/40 backdrop-blur-xs px-5 py-2.5 rounded-lg text-sm font-semibold transition">
+                <a href="{{ route('desa.profile') }}" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/40 backdrop-blur-xs px-5 py-2.5 rounded-lg text-sm font-semibold transition">
                     ℹ️ Profile Desa
                 </a>
-                <a href="#" class="inline-flex items-center gap-2 bg-slate-900/80 hover:bg-slate-950 text-white border border-slate-700/50 backdrop-blur-xs px-5 py-2.5 rounded-lg text-sm font-semibold transition shadow-md">
+                <a href="{{ route('desa.pelayanan') }}" class="inline-flex items-center gap-2 bg-slate-900/80 hover:bg-slate-950 text-white border border-slate-700/50 backdrop-blur-xs px-5 py-2.5 rounded-lg text-sm font-semibold transition shadow-md">
                     📋 Layanan Desa
                 </a>
             </div>
@@ -48,7 +48,7 @@
             </div>
 
             <div class="space-y-4 w-full">
-                <a href="#" class="group flex items-center gap-4 bg-white/10 hover:bg-white/15 border border-white/10 p-4 rounded-xl backdrop-blur-xs transition transform hover:-translate-y-0.5">
+                <a href="{{ route('desa.pelayanan') }}" class="group flex items-center gap-4 bg-white/10 hover:bg-white/15 border border-white/10 p-4 rounded-xl backdrop-blur-xs transition transform hover:-translate-y-0.5">
                     <div class="w-12 h-12 bg-blue-900/80 text-white rounded-lg flex items-center justify-center text-xl shadow-inner group-hover:scale-105 transition">🗂️</div>
                     <div>
                         <h3 class="font-bold text-base leading-tight">Layanan Desa</h3>
@@ -62,7 +62,7 @@
                         <p class="text-xs text-gray-300 mt-0.5">Produk Lokal Berkualitas</p>
                     </div>
                 </a>
-                <a href="#" class="group flex items-center gap-4 bg-white/10 hover:bg-white/15 border border-white/10 p-4 rounded-xl backdrop-blur-xs transition transform hover:-translate-y-0.5">
+                <a href="{{ route('desa.berita') }}" class="group flex items-center gap-4 bg-white/10 hover:bg-white/15 border border-white/10 p-4 rounded-xl backdrop-blur-xs transition transform hover:-translate-y-0.5">
                     <div class="w-12 h-12 bg-blue-900/80 text-white rounded-lg flex items-center justify-center text-xl shadow-inner group-hover:scale-105 transition">📰</div>
                     <div>
                         <h3 class="font-bold text-base leading-tight">Berita Desa</h3>
