@@ -27,7 +27,7 @@
             <div class="flex items-center justify-between h-20">
                 
                 <div class="flex items-center gap-3">
-                    <img src="{{ asset('images/logo-desa.png') }}" alt="Logo Parengan" class="w-auto h-auto object-contain filter drop-shadow-md">
+                    <img src="{{ asset('images/logo-desa.png') }}" alt="Logo Parengan" class="w-auto h-12 object-contain filter drop-shadow-md">
                     <div>
                         <span class="block text-sm font-black tracking-wider text-white uppercase leading-tight">PARENGAN</span>
                         <span class="block text-sm font-bold text-amber-400 tracking-widest uppercase italic -mt-0.5 ml-8">COLORFULL</span>
