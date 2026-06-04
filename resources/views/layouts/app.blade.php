@@ -22,7 +22,7 @@
 </head>
 <body class="bg-slate-900 text-slate-100 flex flex-col min-h-screen antialiased">
 
-    <nav id="main-navbar" class="bg-[#1A365D]/90 border-b border-blue-900/50 sticky top-0 z-50 backdrop-blur-md transform transition-transform duration-300">
+    <nav id="main-navbar" x-data="{ open: false }" class="bg-[#1A365D]/90 border-b border-blue-900/50 sticky top-0 z-50 backdrop-blur-md transform transition-transform duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 
@@ -45,7 +45,33 @@
                     <a href="{{ route('desa.contact') }}" class="px-4 py-2 rounded-lg transition {{ request()->routeIs('desa.contact') ? 'bg-slate-800 text-white shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/50' }}">Contact</a>
                 </div>
 
+                <div class="flex items-center md:hidden">
+                    <button @click="open = !open" class="inline-flex items-center justify-center p-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none transition">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path :class="{'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path :class="{'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
             </div>
+        </div>
+
+        <div x-show="open" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-75"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="md:hidden bg-[#1A365D] border-t border-blue-900/50 px-2 pt-2 pb-4 space-y-1 shadow-inner">
+            
+            <a href="{{ route('desa.home') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('desa.home') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800/50' }}">Home</a>
+            <a href="{{ route('desa.profile') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('desa.profile') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800/50' }}">Profile Desa</a>
+            <a href="{{ route('desa.potensi') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('desa.potensi') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800/50' }}">Potensi</a>
+            <a href="{{ route('desa.pelayanan') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('desa.pelayanan') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800/50' }}">Pelayanan</a>
+            <a href="{{ route('desa.berita') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('desa.berita') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800/50' }}">Berita</a>
+            <a href="{{ route('desa.contact') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('desa.contact') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800/50' }}">Contact</a>
         </div>
     </nav>
 
@@ -70,21 +96,16 @@
         window.addEventListener('scroll', function() {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             
-            // Batasi agar efek baru berjalan setelah men-scroll melewati tinggi navbar (misal > 80px)
             if (scrollTop > 80) {
                 if (scrollTop > lastScrollTop) {
-                    // Scroll ke Bawah -> Sembunyikan navbar dengan mendorongnya ke atas luar layar
                     navbar.classList.add('-translate-y-full');
                 } else {
-                    // Scroll ke Atas -> Munculkan kembali navbar ke posisi normal
                     navbar.classList.remove('-translate-y-full');
                 }
             } else {
-                // Di paling atas layar -> Pastikan tetap tampil
                 navbar.classList.remove('-translate-y-full');
             }
             
-            // Perbarui posisi scroll terakhir, pastikan tidak bernilai negatif saat di-bounce (iOS device)
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         });
     </script>
