@@ -116,8 +116,8 @@
                     <div class="absolute top-0 left-1/2 w-0.5 h-40 bg-slate-400"></div>
                     <div class="absolute top-0 left-[75%] w-0.5 h-6 bg-slate-400"></div>
 
-                    <div class="absolute top-30 left-1/2 w-[37.5%] h-0.5 bg-slate-400"></div>
-                    <div class="absolute top-30 left-[87.5%] w-0.5 h-18 bg-slate-400"></div>
+                    <div class="absolute top-[120px] left-1/2 w-[37.5%] h-0.5 bg-slate-400"></div>
+                    <div class="absolute top-[120px] left-[87.5%] w-0.5 h-18 bg-slate-400"></div>
 
                     <div class="w-full flex justify-end pr-[12.5%] pt-6 relative z-10">
                         <div class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex items-center gap-4 w-64">
