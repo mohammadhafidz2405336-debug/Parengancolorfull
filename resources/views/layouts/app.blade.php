@@ -27,10 +27,12 @@
             <div class="flex items-center justify-between h-20">
                 
                 <div class="flex items-center gap-3">
-                    <img src="{{ asset('images/logo-desa.png') }}" alt="Logo Parengan" class="w-auto h-12 object-contain filter drop-shadow-md">
-                    <div>
-                        <span class="block text-sm font-black tracking-wider text-white uppercase leading-tight">PARENGAN</span>
-                        <span class="block text-sm font-bold text-amber-400 tracking-widest uppercase italic -mt-0.5 ml-8">COLORFULL</span>
+                    <div class="h-12 w-auto flex-shrink-0 flex items-center">
+                        <img src="{{ asset('images/logo-desa.png') }}" alt="Logo Parengan" class="h-full w-auto object-contain filter drop-shadow-md">
+                    </div>
+                    <div class="flex flex-col justify-center">
+                        <span class="block text-sm font-black tracking-wider text-white uppercase leading-none">PARENGAN</span>
+                        <span class="block text-sm font-bold text-amber-400 tracking-widest uppercase italic ml-8 leading-none mt-1">COLORFULL</span>
                     </div>
                 </div>
 
