@@ -16,5 +16,4 @@ Route::controller(DesaController::class)->group(function () {
     Route::get('/potensi', 'potensi')->name('desa.potensi');
     Route::get('/pelayanan', 'pelayanan')->name('desa.pelayanan');
     Route::get('/berita', 'berita')->name('desa.berita');
-    Route::get('/contact', 'contact')->name('desa.contact');
 });
