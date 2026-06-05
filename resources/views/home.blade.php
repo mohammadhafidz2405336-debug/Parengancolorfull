@@ -55,7 +55,7 @@
                         <p class="text-xs text-gray-300 mt-0.5">Layanan Administration Terpadu</p>
                     </div>
                 </a>
-                <a href="#" class="group flex items-center gap-4 bg-white/10 hover:bg-white/15 border border-white/10 p-4 rounded-xl backdrop-blur-xs transition transform hover:-translate-y-0.5">
+                <a href="{{ route('desa.potensi') }}" class="group flex items-center gap-4 bg-white/10 hover:bg-white/15 border border-white/10 p-4 rounded-xl backdrop-blur-xs transition transform hover:-translate-y-0.5">
                     <div class="w-12 h-12 bg-blue-900/80 text-white rounded-lg flex items-center justify-center text-xl shadow-inner group-hover:scale-105 transition">🏪</div>
                     <div>
                         <h3 class="font-bold text-base leading-tight">UMKM Desa</h3>
