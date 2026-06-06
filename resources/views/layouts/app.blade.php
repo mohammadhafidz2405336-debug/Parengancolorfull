@@ -165,7 +165,7 @@
             <div class="mt-12 pt-6 border-t border-blue-900/30 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400 font-medium">
                 <p>&copy; {{ date('Y') }} Pemerintah Desa Parengan. All Rights Reserved.</p>
                 <div class="flex items-center gap-1.5">
-                    <span>Dikembangkan oleh Tim BBM Universitas Negeri Malang</span>
+                    <span>Dikembangkan oleh Tim BBM UM Desa Parengan</span>
                 </div>
             </div>
         </div>
