@@ -22,6 +22,7 @@ class AdminController extends Controller
     {
         return view('admin.berita_create');
     }
+
     // Fungsi untuk menampilkan halaman form statistik kependudukan
     public function kependudukanIndex()
     {
@@ -34,6 +35,7 @@ class AdminController extends Controller
         // Logika penyimpanan data ke database akan ditaruh di sini
         return redirect()->back()->with('success', 'Statistik kependudukan berhasil diperbarui!');
     }
+
     // Fungsi untuk menampilkan halaman daftar aparatur desa
     public function aparaturIndex()
     {
@@ -44,5 +46,28 @@ class AdminController extends Controller
     public function aparaturCreate()
     {
         return view('admin.aparatur_create');
+    }
+
+    // ==========================================
+    // TAMBAHAN BARU UNTUK PELAYANAN & POTENSI
+    // ==========================================
+
+    // Fungsi untuk menampilkan halaman kelola pelayanan surat
+    public function pelayananIndex()
+    {
+        return view('admin.pelayanan_index');
+    }
+
+    // Fungsi untuk memproses verifikasi surat (sementara simulasi frontend)
+    public function pelayananUpdate(Request $request, $id)
+    {
+        // Karena masih tahap frontend, kita cukup kembalikan ke halaman sebelumnya
+        return redirect()->back()->with('success', 'Status permohonan surat berhasil diperbarui (Simulasi)!');
+    }
+
+    // Fungsi untuk menampilkan halaman kelola potensi & UMKM
+    public function potensiIndex()
+    {
+        return view('admin.potensi_index');
     }
 }

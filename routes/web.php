@@ -32,4 +32,9 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/aparatur', [AdminController::class, 'aparaturIndex'])->name('admin.aparatur.index');
     Route::get('/aparatur/tambah', [AdminController::class, 'aparaturCreate'])->name('admin.aparatur.create');
+
+    Route::get('/pelayanan', [AdminController::class, 'pelayananIndex'])->name('admin.pelayanan.index');
+    Route::post('/pelayanan/{id}/verifikasi', [AdminController::class, 'pelayananUpdate'])->name('admin.pelayanan.update');
+
+    Route::get('/potensi', [AdminController::class, 'potensiIndex'])->name('admin.potensi.index');
 });

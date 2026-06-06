@@ -46,6 +46,21 @@
                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('admin.aparatur.*') ? 'bg-blue-800 text-white shadow-inner' : 'text-blue-100 hover:bg-[#1e406d]' }}">
                 <i class="fa-solid fa-user-tie w-5"></i> Aparatur Desa
             </a>
+
+            <!-- TAMBAHAN NAVIGASI BARU -->
+            <div class="pt-4 pb-2">
+                <p class="px-4 text-[10px] font-bold text-blue-400/50 uppercase tracking-wider">Layanan Warga</p>
+            </div>
+
+            <a href="{{ route('admin.pelayanan.index') }}" 
+               class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('admin.pelayanan.*') ? 'bg-blue-800 text-white shadow-inner' : 'text-blue-100 hover:bg-[#1e406d]' }}">
+                <i class="fa-solid fa-file-invoice w-5"></i> Permohonan Surat
+            </a>
+
+            <a href="{{ route('admin.potensi.index') }}" 
+               class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('admin.potensi.*') ? 'bg-blue-800 text-white shadow-inner' : 'text-blue-100 hover:bg-[#1e406d]' }}">
+                <i class="fa-solid fa-store w-5"></i> Potensi UMKM
+            </a>
         </nav>
     </aside>
 
