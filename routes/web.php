@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DesaController;
 use App\Http\Controllers\AdminController; // Tambahkan ini
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,4 +40,13 @@ Route::prefix('admin')->group(function () {
     Route::get('/pelayanan/{id}/detail', [AdminController::class, 'pelayananDetail'])->name('admin.pelayanan.detail');
 
     Route::get('/potensi', [AdminController::class, 'potensiIndex'])->name('admin.potensi.index');
+});
+
+Route::get('/jalankan-migrasi-desa', function() {
+    try {
+        Artisan::call('migrate', ['--force' => true]);
+        return "Selamat! Semua tabel database berhasil dibuat di Railway.";
+    } catch (\Exception $e) {
+        return "Gagal migrasi: " . $e->getMessage();
+    }
 });
