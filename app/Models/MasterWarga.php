@@ -21,7 +21,7 @@ class MasterWarga extends Model
     ];
 
     // Otomatis enkripsi kolom NIK saat masuk ke database
-    protected $casts = [
-        'nik' => 'encrypted',
-    ];
+    // protected $casts = [
+    //     'nik' => 'encrypted',
+    // ];
 }

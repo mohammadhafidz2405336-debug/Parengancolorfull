@@ -42,11 +42,16 @@ Route::prefix('admin')->group(function () {
     Route::get('/potensi', [AdminController::class, 'potensiIndex'])->name('admin.potensi.index');
 });
 
-Route::get('/jalankan-migrasi-desa', function() {
+Route::get('/jalankan-migrasi-seeder', function() {
     try {
-        Artisan::call('migrate', ['--force' => true]);
-        return "Selamat! Semua tabel database berhasil dibuat di Railway.";
+        // Menjalankan migrasi DAN seeder sekaligus secara paksa (--force)
+        Artisan::call('migrate', [
+            '--force' => true,
+            '--seed' => true
+        ]);
+        
+        return "Selamat! Semua tabel berhasil dibuat dan data seeder berhasil dimasukkan ke Railway.";
     } catch (\Exception $e) {
-        return "Gagal migrasi: " . $e->getMessage();
+        return "Proses gagal: " . $e->getMessage();
     }
 });
