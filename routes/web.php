@@ -16,6 +16,7 @@ Route::controller(DesaController::class)->group(function () {
     Route::get('/profile-desa', 'profile')->name('desa.profile');
     Route::get('/potensi', 'potensi')->name('desa.potensi');
     Route::get('/pelayanan', 'pelayanan')->name('desa.pelayanan');
+    Route::post('/pelayanan/kirim', 'kirimPermohonan')->name('surat.kirim');
     Route::get('/berita', 'berita')->name('desa.berita');
 });
 
@@ -35,6 +36,7 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/pelayanan', [AdminController::class, 'pelayananIndex'])->name('admin.pelayanan.index');
     Route::post('/pelayanan/{id}/verifikasi', [AdminController::class, 'pelayananUpdate'])->name('admin.pelayanan.update');
+    Route::get('/pelayanan/{id}/detail', [AdminController::class, 'pelayananDetail'])->name('admin.pelayanan.detail');
 
     Route::get('/potensi', [AdminController::class, 'potensiIndex'])->name('admin.potensi.index');
 });

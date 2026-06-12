@@ -3,15 +3,23 @@
 @section('title', 'Pelayanan Digital')
 
 @section('content')
-<!-- ========================================== -->
-<!-- HERO SECTION (Tampilan Atas - Gambar Utama) -->
-<!-- ========================================== -->
+<div class="max-w-7xl mx-auto px-4 pt-4">
+    @if(session('success'))
+        <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-2xl text-xs font-bold">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if($errors->any())
+        <div class="bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-2xl text-xs font-bold">
+            {{ $errors->first() }}
+        </div>
+    @endif
+</div>
 <div class="w-full min-h-[40vh] bg-cover bg-center relative flex flex-col justify-between" 
      style="background-image: url('{{ asset('images/bg-parengan.jpg') }}');">
     <div class="absolute inset-0 bg-black/50 z-0"></div>
 
     <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 flex-grow">
-        <!-- Sisi Kiri Hero -->
         <div class="lg:col-span-8 flex flex-col justify-center px-6 sm:px-12 lg:px-20 py-12 text-white" data-aos="fade-right">
             <span class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold uppercase tracking-wider bg-black/20 backdrop-blur-xs px-3 py-1.5 rounded-full w-max mb-3 border border-white/10">
                 <span class="relative flex h-2 w-2">
@@ -29,7 +37,6 @@
         </div>
     </div>
 
-    <!-- Jalur Statistik / Informasi Ringkas -->
     <div class="relative z-10 w-full bg-slate-100 py-3 text-center border-t border-gray-200">
         <p class="text-[11px] sm:text-xs text-slate-500 font-medium">
             • Silakan pilih jenis layanan surat di bawah ini untuk memulai pengajuan •
@@ -37,144 +44,32 @@
     </div>
 </div>
 
-<!-- ========================================== -->
-<!-- MAIN WRAPPER SECTION (Bg: Slate-50)       -->
-<!-- ========================================== -->
 <div class="bg-slate-50 w-full py-16 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
 
-        <!-- Grid Menu Layanan Digital -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-aos="fade-up">
-            
-            <!-- Kartu 1: SKTM -->
-            <div class="bg-white rounded-3xl border border-slate-100 shadow-xs p-6 flex flex-col justify-between h-[360px] transform hover:-translate-y-2 hover:shadow-md transition-all duration-300">
-                <div class="space-y-4">
-                    <div class="w-12 h-12 bg-blue-50 text-blue-900 rounded-2xl flex items-center justify-center text-xl shadow-inner">
-                        🏥
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach($listSurat as $surat)
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">{{ $surat->nama_surat }}</h3>
+                        <p class="text-sm text-slate-500 mb-4">Layanan pengajuan {{ $surat->nama_surat }} secara online untuk warga desa.</p>
                     </div>
-                    <div class="space-y-2">
-                        <h3 class="text-xl font-black text-slate-900 leading-snug">Surat Keterangan Tidak Mampu (SKTM)</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Digunakan untuk keperluan keringanan biaya pengobatan medis, pengajuan syarat beasiswa pendidikan, atau permohonan bantuan sosial dari pemerintah.
-                        </p>
-                    </div>
+                    
+                    <button onclick="openModal({{ $surat->id }}, '{{ $surat->nama_surat }}')" 
+                            class="w-full bg-[#1A365D] hover:bg-blue-900 text-white text-sm font-semibold py-2.5 px-4 rounded-xl transition text-center">
+                        Ajukan Permohonan
+                    </button>
                 </div>
-                
-                <button onclick="openModal('Surat Keterangan Tidak Mampu')" class="w-full bg-[#1A365D] hover:bg-[#22457a] text-white text-xs font-bold py-3 px-4 rounded-xl shadow-sm transition duration-300 text-center">
-                    Ajukan Permohonan
-                </button>
-            </div>
-
-            <!-- Kartu 2: SKD -->
-            <div class="bg-white rounded-3xl border border-slate-100 shadow-xs p-6 flex flex-col justify-between h-[360px] transform hover:-translate-y-2 hover:shadow-md transition-all duration-300">
-                <div class="space-y-4">
-                    <div class="w-12 h-12 bg-amber-50 text-amber-700 rounded-2xl flex items-center justify-center text-xl shadow-inner">
-                        📍
-                    </div>
-                    <div class="space-y-2">
-                        <h3 class="text-xl font-black text-slate-900 leading-snug">Surat Keterangan Domisili</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Digunakan sebagai surat bukti resmi domisili atau tempat tinggal terkini untuk keperluan syarat melamar pekerjaan, administrasi perbankan, maupun urusan legalitas lainnya.
-                        </p>
-                    </div>
-                </div>
-                
-                <button onclick="openModal('Surat Keterangan Domisili')" class="w-full bg-[#1A365D] hover:bg-[#22457a] text-white text-xs font-bold py-3 px-4 rounded-xl shadow-sm transition duration-300 text-center">
-                    Ajukan Permohonan
-                </button>
-            </div>
-
-            <!-- Kartu 3: Dokumen Kependudukan -->
-            <div class="bg-white rounded-3xl border border-slate-100 shadow-xs p-6 flex flex-col justify-between h-[360px] transform hover:-translate-y-2 hover:shadow-md transition-all duration-300">
-                <div class="space-y-4">
-                    <div class="w-12 h-12 bg-purple-50 text-purple-700 rounded-2xl flex items-center justify-center text-xl shadow-inner">
-                        🗂️
-                    </div>
-                    <div class="space-y-2">
-                        <h3 class="text-xl font-black text-slate-900 leading-snug">Pengantar Dokumen Kependudukan</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Surat pengantar resmi dari desa untuk pengurusan atau pembuatan berkas e-KTP baru, pembaharuan Kartu Keluarga (KK), Akta Kelahiran, maupun Surat Keterangan Pindah.
-                        </p>
-                    </div>
-                </div>
-                
-                <button onclick="openModal('Dokumen Kependudukan')" class="w-full bg-[#1A365D] hover:bg-[#22457a] text-white text-xs font-bold py-3 px-4 rounded-xl shadow-sm transition duration-300 text-center">
-                    Ajukan Permohonan
-                </button>
-            </div>
-
-            <!-- Kartu 4: Surat Keterangan Usaha (SKU) -->
-            <div class="bg-white rounded-3xl border border-slate-100 shadow-xs p-6 flex flex-col justify-between h-[360px] transform hover:-translate-y-2 hover:shadow-md transition-all duration-300">
-                <div class="space-y-4">
-                    <div class="w-12 h-12 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center text-xl shadow-inner">
-                        🏪
-                    </div>
-                    <div class="space-y-2">
-                        <h3 class="text-xl font-black text-slate-900 leading-snug">Surat Keterangan Usaha (SKU)</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Diperuntukkan bagi para pelaku UMKM desa sebagai syarat legalitas penunjang permohonan pembiayaan modal, pembuatan badan usaha, atau pengajuan kredit perbankan KUR.
-                        </p>
-                    </div>
-                </div>
-                
-                <button onclick="openModal('Surat Keterangan Usaha (SKU)')" class="w-full bg-[#1A365D] hover:bg-[#22457a] text-white text-xs font-bold py-3 px-4 rounded-xl shadow-sm transition duration-300 text-center">
-                    Ajukan Permohonan
-                </button>
-            </div>
-
-            <!-- Kartu 5: Surat Keterangan Bersih Diri -->
-            <div class="bg-white rounded-3xl border border-slate-100 shadow-xs p-6 flex flex-col justify-between h-[360px] transform hover:-translate-y-2 hover:shadow-md transition-all duration-300">
-                <div class="space-y-4">
-                    <div class="w-12 h-12 bg-rose-50 text-rose-700 rounded-2xl flex items-center justify-center text-xl shadow-inner">
-                        📜
-                    </div>
-                    <div class="space-y-2">
-                        <h3 class="text-xl font-black text-slate-900 leading-snug">Surat Keterangan Kelakuan Baik</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Surat keterangan pengantar kelakuan baik yang diterbitkan oleh pemerintah desa guna melengkapi prasyarat pendaftaran institusi, melamar pekerjaan, atau pembuatan SKCK.
-                        </p>
-                    </div>
-                </div>
-                
-                <button onclick="openModal('Surat Keterangan Kelakuan Baik')" class="w-full bg-[#1A365D] hover:bg-[#22457a] text-white text-xs font-bold py-3 px-4 rounded-xl shadow-sm transition duration-300 text-center">
-                    Ajukan Permohonan
-                </button>
-            </div>
-
-            <!-- Kartu 6: Layanan Pengaduan -->
-            <div class="bg-white rounded-3xl border border-slate-100 shadow-xs p-6 flex flex-col justify-between h-[360px] transform hover:-translate-y-2 hover:shadow-md transition-all duration-300">
-                <div class="space-y-4">
-                    <div class="w-12 h-12 bg-indigo-50 text-indigo-700 rounded-2xl flex items-center justify-center text-xl shadow-inner">
-                        📣
-                    </div>
-                    <div class="space-y-2">
-                        <h3 class="text-xl font-black text-slate-900 leading-snug">Layanan Aspirasi & Pengaduan</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Wadah penyampaian aspirasi, saran pembangunan, ataupun laporan terkait fasilitas umum dan kendala kedinasan langsung kepada perangkat Pemerintah Desa Parengan.
-                        </p>
-                    </div>
-                </div>
-                
-                <button onclick="openModal('Layanan Aspirasi & Pengaduan')" class="w-full bg-[#1A365D] hover:bg-[#22457a] text-white text-xs font-bold py-3 px-4 rounded-xl shadow-sm transition duration-300 text-center">
-                    Kirim Pengaduan
-                </button>
-            </div>
-
+            @endforeach
         </div>
     </div>
 </div>
 
-<!-- ========================================== -->
-<!-- MODAL OVERLAY SECTION                      -->
-<!-- ========================================== -->
 <div id="modalLayanan" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 transition-all duration-300">
-    <!-- Backdrop Blur -->
     <div onclick="closeModal()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-300 opacity-0" id="modalBackdrop"></div>
 
-    <!-- Modal Box Container -->
     <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 w-full max-w-lg overflow-hidden relative z-10 transform transition-all duration-300 scale-95 opacity-0" id="modalBox">
         
-        <!-- Header Modal -->
         <div class="bg-[#1A365D] text-white px-6 py-5 flex items-center justify-between">
             <div>
                 <span class="text-[10px] font-extrabold uppercase tracking-widest text-amber-400 bg-black/20 px-2 py-0.5 rounded-md">Pengajuan Online</span>
@@ -187,33 +82,34 @@
             </button>
         </div>
 
-        <!-- Formulir Input -->
-        <form action="#" method="POST" class="p-6 space-y-4 max-h-[70vh] overflow-y-auto bg-white">
+        <form action="{{ route('surat.kirim') }}" method="POST" enctype="multipart/form-data" class="p-6 space-y-4 max-h-[70vh] overflow-y-auto bg-white">
             @csrf
-            <input type="hidden" id="inputJenisSurat" name="jenis_surat">
+            <input type="hidden" id="inputJenisSurat" name="jenis_surat_id">
 
             <div class="space-y-1">
                 <label class="block text-xs font-bold uppercase tracking-wide text-slate-600">Nama Lengkap</label>
-                <input type="text" name="nama" required placeholder="Masukkan nama sesuai KTP" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-900 focus:ring-1 focus:ring-blue-900 text-xs outline-none bg-slate-50/50 transition">
+                <input type="text" name="nama" required placeholder="Masukkan nama sesuai KTP" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-900 focus:ring-1 focus:ring-blue-900 text-xs text-slate-900 font-medium outline-none bg-slate-50/50 transition">
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="space-y-1">
                     <label class="block text-xs font-bold uppercase tracking-wide text-slate-600">NIK (No. KTP)</label>
-                    <input type="number" name="nik" required placeholder="16 digit nomor NIK" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-900 focus:ring-1 focus:ring-blue-900 text-xs outline-none bg-slate-50/50 transition [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                    <input type="number" name="nik" required placeholder="16 digit nomor NIK" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-900 focus:ring-1 focus:ring-blue-900 text-xs text-slate-900 font-medium outline-none bg-slate-50/50 transition [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                 </div>
                 <div class="space-y-1">
                     <label class="block text-xs font-bold uppercase tracking-wide text-slate-600">No. WhatsApp / HP</label>
-                    <input type="tel" name="telepon" required placeholder="Contoh: 081234..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-900 focus:ring-1 focus:ring-blue-900 text-xs outline-none bg-slate-50/50 transition">
+                    <input type="tel" name="telepon" required placeholder="Contoh: 081234..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-900 focus:ring-1 focus:ring-blue-900 text-xs text-slate-900 font-medium outline-none bg-slate-50/50 transition">
                 </div>
             </div>
 
             <div class="space-y-1">
                 <label class="block text-xs font-bold uppercase tracking-wide text-slate-600">Keperluan Pengajuan</label>
-                <textarea name="keperluan" rows="3" required placeholder="Jelaskan alasan atau tujuan pengajuan secara rinci..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-900 focus:ring-1 focus:ring-blue-900 text-xs outline-none bg-slate-50/50 transition resize-none"></textarea>
+                <textarea name="keperluan" rows="3" required placeholder="Jelaskan alasan atau tujuan pengajuan secara rinci..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-900 focus:ring-1 focus:ring-blue-900 text-xs text-slate-900 font-medium outline-none bg-slate-50/50 transition resize-none"></textarea>
             </div>
 
-            <!-- Tombol Aksi -->
+            <div id="formSyaratDinamis" class="space-y-4 pt-2 border-t border-dashed border-slate-100">
+                </div>
+
             <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
                 <button type="button" onclick="closeModal()" class="w-1/3 px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold tracking-wide transition">
                     Batal
@@ -227,21 +123,132 @@
 </div>
 
 <script>
-    function openModal(jenisLayanan) {
+    function openModal(idJenisSurat, jenisLayanan) {
         const modal = document.getElementById('modalLayanan');
         const modalBox = document.getElementById('modalBox');
         const backdrop = document.getElementById('modalBackdrop');
         
         document.getElementById('modalTitle').innerText = jenisLayanan;
-        document.getElementById('inputJenisSurat').value = jenisLayanan;
+        document.getElementById('inputJenisSurat').value = idJenisSurat; 
+
+        const wadahDinamis = document.getElementById('formSyaratDinamis');
+        wadahDinamis.innerHTML = ''; // Reset input lama
+
+        let kolomTambahan = [];
+        const namaSuratLower = jenisLayanan.toLowerCase();
+
+        // 💡 PEMETAAN BARU: Menggunakan tipe data (text, date, file)
+        if (namaSuratLower.includes('nikah')) {
+            kolomTambahan = [
+                { nama: 'Nama Pasangan', type: 'text' },
+                { nama: 'Tempat Pernikahan', type: 'text' },
+                { nama: 'Tanggal Pernikahan', type: 'date' },
+                { nama: 'Agama Pasangan', type: 'text' }
+            ];
+        } 
+        else if (namaSuratLower.includes('kartu keluarga') || namaSuratLower.includes('kk')) {
+            kolomTambahan = [
+                { nama: 'Alasan Pengajuan', type: 'text' },
+                { nama: 'Alamat Lengkap KK', type: 'text' },
+                { nama: 'Scan / Foto KK Lama', type: 'file' }
+            ];
+        } 
+        else if (namaSuratLower.includes('akta lahir')) {
+            kolomTambahan = [
+                { nama: 'Nama Anak', type: 'text' },
+                { nama: 'Tempat Lahir Anak', type: 'text' },
+                { nama: 'Tanggal Lahir Anak', type: 'date' },
+                { nama: 'Nama Ayah', type: 'text' },
+                { nama: 'Nama Ibu', type: 'text' }
+            ];
+        } 
+        else if (namaSuratLower.includes('kia')) {
+            kolomTambahan = [
+                { nama: 'Nama Anak', type: 'text' },
+                { nama: 'NIK Anak', type: 'text' },
+                { nama: 'Tanggal Lahir Anak', type: 'date' },
+                { nama: 'Foto Anak (Jika ada)', type: 'file' }
+            ];
+        } 
+        else if (namaSuratLower.includes('ktp')) {
+            kolomTambahan = [
+                { nama: 'Alasan Pembuatan', type: 'text' },
+                { nama: 'Golongan Darah', type: 'text' },
+                { nama: 'Status Perkawinan', type: 'text' },
+                { nama: 'Scan / Foto KK Pemohon', type: 'file' }
+            ];
+        } 
+        else if (namaSuratLower.includes('domisili')) {
+            kolomTambahan = [
+                { nama: 'Jenis Kelamin', type: 'text' },
+                { nama: 'Tempat Lahir', type: 'text' },
+                { nama: 'Tanggal Lahir', type: 'date' },
+                { nama: 'Kewarganegaraan', type: 'text' },
+                { nama: 'Agama', type: 'text' },
+                { nama: 'Alamat Asal', type: 'text' }
+            ];
+        } 
+        else if (namaSuratLower.includes('sktm')) {
+            kolomTambahan = [
+                { nama: 'Pekerjaan', type: 'text' },
+                { nama: 'Penghasilan Bulanan', type: 'text' },
+                { nama: 'Jumlah Tanggungan Orang Tua', type: 'text' },
+                { nama: 'Foto Rumah Depan', type: 'file' }
+            ];
+        }
+
+        // Cetak Elemen ke dalam Form Modal secara Otomatis
+        if (kolomTambahan.length > 0) {
+            wadahDinamis.classList.remove('hidden');
+            wadahDinamis.innerHTML = `<div class="text-[10px] font-bold text-blue-900 tracking-wider uppercase mb-1">📋 Informasi Data & Berkas Syarat</div>`;
+            
+            kolomTambahan.forEach(item => {
+                let inputElement = '';
+
+                if (item.type === 'file') {
+                    // Desain Khusus Input File/Upload Gambar agar rapi pakai Tailwind
+                    inputElement = `
+                        <input type="file" 
+                               name="tambahan_file[${item.nama}]" 
+                               required 
+                               accept="image/*,application/pdf"
+                               class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-700 bg-slate-50/50 file:mr-4 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-[#1A365D] hover:file:bg-blue-100 transition outline-none">
+                    `;
+                } else if (item.type === 'date') {
+                    // Desain Input Tanggal (Date Picker bawaan browser)
+                    inputElement = `
+                        <input type="date" 
+                               name="tambahan[${item.nama}]" 
+                               required 
+                               class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-900 focus:ring-1 focus:ring-blue-900 text-xs text-slate-900 font-medium outline-none bg-slate-50/50 transition">
+                    `;
+                } else {
+                    // Input Teks Biasa
+                    inputElement = `
+                        <input type="text" 
+                               name="tambahan[${item.nama}]" 
+                               required 
+                               placeholder="Masukkan ${item.nama.toLowerCase()}..." 
+                               class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-900 focus:ring-1 focus:ring-blue-900 text-xs text-slate-900 font-medium outline-none bg-slate-50/50 transition">
+                    `;
+                }
+
+                const susunanHTML = `
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold uppercase tracking-wide text-slate-600">${item.nama}</label>
+                        ${inputElement}
+                    </div>
+                `;
+                wadahDinamis.insertAdjacentHTML('beforeend', susunanHTML);
+            });
+        } else {
+            wadahDinamis.classList.add('hidden');
+        }
 
         modal.classList.remove('hidden');
-        
-        // Memicu efek transisi CSS
         setTimeout(() => {
             backdrop.classList.remove('opacity-0');
             backdrop.classList.add('opacity-100');
-            
             modalBox.classList.remove('scale-95', 'opacity-0');
             modalBox.classList.add('scale-100', 'opacity-100');
         }, 20);

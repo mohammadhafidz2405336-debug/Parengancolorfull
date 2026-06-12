@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            // Tambahkan baris ini untuk relasi ke roles:
+            $table->foreignId('role_id')->nullable()->constrained('roles')->onDelete('set null');
+            
+            $table->string('name'); // Di Laravel bawaannya 'name', saran saya ikuti ini saja daripada 'Nama'
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

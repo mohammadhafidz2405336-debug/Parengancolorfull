@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('permohonan_surat', function (Blueprint $table) {
+            $table->id();
+            
+            // Diubah menjadi nullable dan diarahkan ke tabel users (sebagai penanggung jawab/admin)
+            $table->foreignId('admin_id')->nullable()->constrained('users')->onDelete('set null');
+            
+            $table->foreignId('jenis_surat_id')->constrained('master_jenis_surat')->onDelete('cascade');
+            
+            $table->string('nik_hash')->index(); // Tetap ada untuk pencarian admin
+            $table->text('data_input');          // Tetap menampung data form + NIK terenkripsi
+            $table->string('status')->default('pending'); 
+            $table->text('keterangan_admin')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('permohonan_surat');
+    }
+};
