@@ -13,7 +13,7 @@ class AdminController extends Controller
     public function index()
     {
         $totalPermohonan = PermohonanSurat::count();
-        return view('admin.dashboard', compact('totalPermohonan'));
+        return view('admin.dasboard', compact('totalPermohonan'));
     }
 
     // ==========================================

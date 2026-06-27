@@ -49,21 +49,33 @@
 
             <div class="space-y-4 w-full">
                 <a href="{{ route('desa.pelayanan') }}" class="group flex items-center gap-4 bg-white/10 hover:bg-white/15 border border-white/10 p-4 rounded-xl backdrop-blur-xs transition transform hover:-translate-y-0.5">
-                    <div class="w-12 h-12 bg-blue-900/80 text-white rounded-lg flex items-center justify-center text-xl shadow-inner group-hover:scale-105 transition">🗂️</div>
+                    <div class="w-12 h-12 bg-white-900/80 text-white rounded-lg flex items-center justify-center text-xl shadow-inner group-hover:scale-105 transition"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path fill="#FFFFFF" d="M7 2H3a1 1 0 0 0-1 1v18a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1M5 21a2 2 0 1 1 2-2a2 2 0 0 1-2 2m2-9H3V3h4Z" />
+                        <circle cx="5.01" cy="19.01" r="1" fill="currentColor" />
+                        <path fill="#FFFFFF" d="M14 2h8v2.02h-8zm-4 0h2.01v2.02H10zm4 4h8v2.02h-8zm-4 0h2.01v2.02H10zm4 4h8v2.02h-8zm-4 0h2.01v2.02H10z" />
+                    </svg>
+                    </div>
                     <div>
                         <h3 class="font-bold text-base leading-tight">Layanan Desa</h3>
                         <p class="text-xs text-gray-300 mt-0.5">Layanan Administration Terpadu</p>
                     </div>
                 </a>
                 <a href="{{ route('desa.potensi') }}" class="group flex items-center gap-4 bg-white/10 hover:bg-white/15 border border-white/10 p-4 rounded-xl backdrop-blur-xs transition transform hover:-translate-y-0.5">
-                    <div class="w-12 h-12 bg-blue-900/80 text-white rounded-lg flex items-center justify-center text-xl shadow-inner group-hover:scale-105 transition">🏪</div>
+                    <div class="w-12 h-12 bg-white-900/80 text-white rounded-lg flex items-center justify-center text-xl shadow-inner group-hover:scale-105 transition"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path fill="#FFFFFF" d="M12 18H6v-4h6m9 0v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6m0-10H4v2h16z" />
+                    </svg></div>
                     <div>
                         <h3 class="font-bold text-base leading-tight">UMKM Desa</h3>
                         <p class="text-xs text-gray-300 mt-0.5">Produk Lokal Berkualitas</p>
                     </div>
                 </a>
                 <a href="{{ route('desa.berita') }}" class="group flex items-center gap-4 bg-white/10 hover:bg-white/15 border border-white/10 p-4 rounded-xl backdrop-blur-xs transition transform hover:-translate-y-0.5">
-                    <div class="w-12 h-12 bg-blue-900/80 text-white rounded-lg flex items-center justify-center text-xl shadow-inner group-hover:scale-105 transition">📰</div>
+                    <div class="w-12 h-12 bg-white-900/80 text-white rounded-lg flex items-center justify-center text-xl shadow-inner group-hover:scale-105 transition"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path fill="currentColor" d="M5.616 20q-.691 0-1.153-.462T4 18.384V5.616q0-.691.463-1.153T5.616 4h9.29q.323 0 .628.13q.305.132.522.349l3.465 3.465q.218.218.348.522q.131.305.131.628v9.29q0 .691-.462 1.154T18.384 20zM15 5v3.192q0 .348.23.578t.578.23H19zm1 11q.214 0 .357-.143t.143-.357t-.143-.357T16 15H8q-.213 0-.357.143T7.5 15.5t.143.357T8 16zm-4.5-7q.214 0 .357-.143T12 8.5t-.143-.357T11.5 8H8q-.213 0-.357.143T7.5 8.5t.143.357T8 9zm4.5 3.5q.214 0 .357-.143T16.5 12t-.143-.357T16 11.5H8q-.213 0-.357.143T7.5 12t.143.357T8 12.5z" />
+                        </svg></div>
                     <div>
                         <h3 class="font-bold text-base leading-tight">Berita Desa</h3>
                         <p class="text-xs text-gray-300 mt-0.5">Informasi Terkini</p>
@@ -160,7 +172,7 @@
 
         <!-- TOMBOL TOGGLE SAMBUTAN & PROGRAM DESA INTERAKTIF -->
         <div class="flex justify-center gap-2 mb-10" data-aos="fade-up">
-            <!-- Tombol Sambutan -->
+            <!-- Tombol Sambutan -->  
             <button @click="activeTab = 'sambutan'" 
                     :class="activeTab === 'sambutan' ? 'bg-[#1A365D] text-white' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'"
                     class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold shadow-sm transition">
@@ -264,8 +276,11 @@
             <div class="bg-white rounded-2xl shadow-xs border border-slate-100 p-6 flex flex-col h-full">
                 <!-- Info Alamat Header -->
                 <div class="flex items-start gap-4 mb-4">
-                    <div class="w-10 h-10 bg-slate-900 text-white rounded-xl flex items-center justify-center text-lg flex-shrink-0 shadow-xs">
-                        📍
+                    <div class="w-10 h-10 bg-white-900 text-white rounded-xl flex items-center justify-center text-lg flex-shrink-0 shadow-xs">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path fill="#FF0000" d="M12 11.5A2.5 2.5 0 0 1 9.5 9A2.5 2.5 0 0 1 12 6.5A2.5 2.5 0 0 1 14.5 9a2.5 2.5 0 0 1-2.5 2.5M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7" />
+                        </svg>
                     </div>
                     <div>
                         <h4 class="font-bold text-base text-slate-900 leading-tight">Alamat Kantor Desa</h4>
@@ -286,8 +301,11 @@
                 
                 <!-- Card 1: Telepon -->
                 <div class="bg-white rounded-2xl p-6 flex items-start gap-5 border border-slate-100 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] transition hover:transform hover:-translate-y-0.5 duration-200 flex-grow">
-                    <div class="w-14 h-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 shadow-md">
-                        📞
+                    <div class="w-14 h-14 bg-green-600 text-white rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="70%" height ="80%" viewBox="0 0 24 24">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path fill="#FFFFFF" d="M6.62 10.79c1.44 2.83 3.76 5.15 6.59 6.59l2.2-2.2c.28-.28.67-.36 1.02-.25c1.12.37 2.32.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57c.11.35.03.74-.25 1.02z" />
+                        </svg>
                     </div>
                     <div class="space-y-1">
                         <h4 class="font-bold text-base text-slate-900">Telepon</h4>
@@ -300,9 +318,20 @@
 
                 <!-- Card 2: Email -->
                 <div class="bg-white rounded-2xl p-6 flex items-start gap-5 border border-slate-100 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] transition hover:transform hover:-translate-y-0.5 duration-200 flex-grow">
-                    <div class="w-14 h-14 bg-purple-600 text-white rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 shadow-md">
-                        ✉️
+                    <div class="w-12 h-12 flex-shrink-0 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <g fill="none" stroke="#EA4335" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                <path stroke-dasharray="66" d="M4 5h16c0.55 0 1 0.45 1 1v12c0 0.55 -0.45 1 -1 1h-16c-0.55 0 -1 -0.45 -1 -1v-12c0 -0.55 0.45 -1 1 -1Z">
+                                    <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.6s" values="66;0" />
+                                </path>
+                                <path stroke-dasharray="24" stroke-dashoffset="24" d="M3 6.5l9 5.5l9 -5.5">
+                                    <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.3s" to="0" />
+                                </path>
+                            </g>
+                        </svg>
                     </div>
+                    
                     <div class="space-y-1">
                         <h4 class="font-bold text-base text-slate-900">Email</h4>
                         <p class="text-sm font-semibold text-slate-800 tracking-wide">parengan@gmail.com</p>
@@ -314,9 +343,30 @@
 
                 <!-- Card 3: Instagram -->
                 <div class="bg-white rounded-2xl p-6 flex items-start gap-5 border border-slate-100 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] transition hover:transform hover:-translate-y-0.5 duration-200 flex-grow">
-                    <div class="w-14 h-14 bg-amber-500 text-white rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 shadow-md">
-                        📸
+                    <div class="w-14 h-14 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 256 256">
+                            <path d="M0 0h256v256H0z" fill="none" />
+                            <g fill="none">
+                                <rect width="256" height="256" fill="url(#SVGKdMMobCR)" rx="60" />
+                                <rect width="256" height="256" fill="url(#SVGqYUiQbXV)" rx="60" />
+                                <path fill="#fff" d="M128.009 28c-27.158 0-30.567.119-41.233.604c-10.646.488-17.913 2.173-24.271 4.646c-6.578 2.554-12.157 5.971-17.715 11.531c-5.563 5.559-8.98 11.138-11.542 17.713c-2.48 6.36-4.167 13.63-4.646 24.271c-.477 10.667-.602 14.077-.602 41.236s.12 30.557.604 41.223c.49 10.646 2.175 17.913 4.646 24.271c2.556 6.578 5.973 12.157 11.533 17.715c5.557 5.563 11.136 8.988 17.709 11.542c6.363 2.473 13.631 4.158 24.275 4.646c10.667.485 14.073.604 41.23.604c27.161 0 30.559-.119 41.225-.604c10.646-.488 17.921-2.173 24.284-4.646c6.575-2.554 12.146-5.979 17.702-11.542c5.563-5.558 8.979-11.137 11.542-17.712c2.458-6.361 4.146-13.63 4.646-24.272c.479-10.666.604-14.066.604-41.225s-.125-30.567-.604-41.234c-.5-10.646-2.188-17.912-4.646-24.27c-2.563-6.578-5.979-12.157-11.542-17.716c-5.562-5.562-11.125-8.979-17.708-11.53c-6.375-2.474-13.646-4.16-24.292-4.647c-10.667-.485-14.063-.604-41.23-.604zm-8.971 18.021c2.663-.004 5.634 0 8.971 0c26.701 0 29.865.096 40.409.575c9.75.446 15.042 2.075 18.567 3.444c4.667 1.812 7.994 3.979 11.492 7.48c3.5 3.5 5.666 6.833 7.483 11.5c1.369 3.52 3 8.812 3.444 18.562c.479 10.542.583 13.708.583 40.396s-.104 29.855-.583 40.396c-.446 9.75-2.075 15.042-3.444 18.563c-1.812 4.667-3.983 7.99-7.483 11.488c-3.5 3.5-6.823 5.666-11.492 7.479c-3.521 1.375-8.817 3-18.567 3.446c-10.542.479-13.708.583-40.409.583c-26.702 0-29.867-.104-40.408-.583c-9.75-.45-15.042-2.079-18.57-3.448c-4.666-1.813-8-3.979-11.5-7.479s-5.666-6.825-7.483-11.494c-1.369-3.521-3-8.813-3.444-18.563c-.479-10.542-.575-13.708-.575-40.413s.096-29.854.575-40.396c.446-9.75 2.075-15.042 3.444-18.567c1.813-4.667 3.983-8 7.484-11.5s6.833-5.667 11.5-7.483c3.525-1.375 8.819-3 18.569-3.448c9.225-.417 12.8-.542 31.437-.563zm62.351 16.604c-6.625 0-12 5.37-12 11.996c0 6.625 5.375 12 12 12s12-5.375 12-12s-5.375-12-12-12zm-53.38 14.021c-28.36 0-51.354 22.994-51.354 51.355s22.994 51.344 51.354 51.344c28.361 0 51.347-22.983 51.347-51.344c0-28.36-22.988-51.355-51.349-51.355zm0 18.021c18.409 0 33.334 14.923 33.334 33.334c0 18.409-14.925 33.334-33.334 33.334s-33.333-14.925-33.333-33.334c0-18.411 14.923-33.334 33.333-33.334" />
+                                <defs>
+                                    <radialGradient id="SVGKdMMobCR" cx="0" cy="0" r="1" gradientTransform="matrix(0 -253.715 235.975 0 68 275.717)" gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="#fd5" />
+                                        <stop offset=".1" stop-color="#fd5" />
+                                        <stop offset=".5" stop-color="#ff543e" />
+                                        <stop offset="1" stop-color="#c837ab" />
+                                    </radialGradient>
+                                    <radialGradient id="SVGqYUiQbXV" cx="0" cy="0" r="1" gradientTransform="rotate(78.68 -32.69 -16.937)scale(113.412 467.488)" gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="#3771c8" />
+                                        <stop offset=".128" stop-color="#3771c8" />
+                                        <stop offset="1" stop-color="#60f" stop-opacity="0" />
+                                    </radialGradient>
+                                </defs>
+                            </g>
+                        </svg>
                     </div>
+                    
                     <div class="space-y-1">
                         <h4 class="font-bold text-base text-slate-900">Instagram</h4>
                         <p class="text-sm font-semibold text-slate-800 tracking-wide">@parengancolorfull</p>

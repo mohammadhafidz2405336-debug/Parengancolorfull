@@ -2,14 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DesaController;
-use App\Http\Controllers\AdminController; // Tambahkan ini
+use App\Http\Controllers\AdminController; 
+use App\Http\Controllers\BeritaController; // Panggil Controller Baru
 use Illuminate\Support\Facades\Artisan;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes - Website Resmi Desa Parengan
-|--------------------------------------------------------------------------
-*/
 
 // Route Halaman Publik Desa
 Route::controller(DesaController::class)->group(function () {
@@ -18,16 +13,21 @@ Route::controller(DesaController::class)->group(function () {
     Route::get('/potensi', 'potensi')->name('desa.potensi');
     Route::get('/pelayanan', 'pelayanan')->name('desa.pelayanan');
     Route::post('/pelayanan/kirim', 'kirimPermohonan')->name('surat.kirim');
-    Route::get('/berita', 'berita')->name('desa.berita');
+    // Jalur berita publik dipindahkan ke BeritaController
 });
+Route::get('/berita', [BeritaController::class, 'index'])->name('desa.berita');
+Route::get('/berita/{id}', [BeritaController::class, 'show'])->name('desa.berita.show');
 
 // Route Group Halaman Dashboard Admin
 Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     
-    // Tambahkan dua route ini untuk mengelola berita
-    Route::get('/berita', [AdminController::class, 'beritaIndex'])->name('admin.berita.index');
-    Route::get('/berita/tambah', [AdminController::class, 'beritaCreate'])->name('admin.berita.create');
+    // Fitur Manajemen Berita (Menggunakan BeritaController)
+    Route::get('/berita', [BeritaController::class, 'adminIndex'])->name('admin.berita.index');
+    Route::get('/berita/tambah', [BeritaController::class, 'create'])->name('admin.berita.create');
+    Route::post('/berita/simpan', [BeritaController::class, 'store'])->name('admin.berita.store');
+    Route::delete('/berita/{id}/hapus', [BeritaController::class, 'destroy'])->name('admin.berita.destroy');
+
     // Route untuk mengelola data kependudukan
     Route::get('/kependudukan', [AdminController::class, 'kependudukanIndex'])->name('admin.kependudukan.index');
     Route::post('/kependudukan/update', [AdminController::class, 'kependudukanUpdate'])->name('admin.kependudukan.update');
@@ -44,12 +44,7 @@ Route::prefix('admin')->group(function () {
 
 Route::get('/jalankan-migrasi-seeder', function() {
     try {
-        // Menjalankan migrasi DAN seeder sekaligus secara paksa (--force)
-        Artisan::call('migrate', [
-            '--force' => true,
-            '--seed' => true
-        ]);
-        
+        Artisan::call('migrate', ['--force' => true, '--seed' => true]);
         return "Selamat! Semua tabel berhasil dibuat dan data seeder berhasil dimasukkan ke Railway.";
     } catch (\Exception $e) {
         return "Proses gagal: " . $e->getMessage();
