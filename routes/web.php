@@ -41,17 +41,3 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/potensi', [AdminController::class, 'potensiIndex'])->name('admin.potensi.index');
 });
-
-Route::get('/jalankan-migrasi-seeder', function() {
-    try {
-        // Melakukan reset total database dan otomatis isi seeder dari cloud Railway
-        Illuminate\Support\Facades\Artisan::call('migrate:fresh', [
-            '--force' => true,
-            '--seed' => true
-        ]);
-        
-        return "Selamat! Database Railway berhasil di-RESET TOTAL (migrate:fresh) dan seeder sukses dimasukkan!";
-    } catch (\Exception $e) {
-        return "Gagal melakukan reset database: " . $e->getMessage();
-    }
-});
