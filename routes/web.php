@@ -44,9 +44,14 @@ Route::prefix('admin')->group(function () {
 
 Route::get('/jalankan-migrasi-seeder', function() {
     try {
-        Artisan::call('migrate', ['--force' => true, '--seed' => true]);
-        return "Selamat! Semua tabel berhasil dibuat dan data seeder berhasil dimasukkan ke Railway.";
+        // Jalankan migrate:fresh secara paksa (--force) di server cloud
+        Illuminate\Support\Facades\Artisan::call('migrate:fresh', [
+            '--force' => true,
+            '--seed' => true // Otomatis mengisi seeder warga & jenis surat baru setelah di-reset
+        ]);
+        
+        return "Selamat! Database berhasil di-RESET (migrate:fresh) dan data seeder berhasil dimasukkan!";
     } catch (\Exception $e) {
-        return "Proses gagal: " . $e->getMessage();
+        return "Gagal melakukan migrasi: " . $e->getMessage();
     }
 });
