@@ -44,14 +44,14 @@ Route::prefix('admin')->group(function () {
 
 Route::get('/jalankan-migrasi-seeder', function() {
     try {
-        // Jalankan migrate:fresh secara paksa (--force) di server cloud
+        // Melakukan reset total database dan otomatis isi seeder dari cloud Railway
         Illuminate\Support\Facades\Artisan::call('migrate:fresh', [
             '--force' => true,
-            '--seed' => true // Otomatis mengisi seeder warga & jenis surat baru setelah di-reset
+            '--seed' => true
         ]);
         
-        return "Selamat! Database berhasil di-RESET (migrate:fresh) dan data seeder berhasil dimasukkan!";
+        return "Selamat! Database Railway berhasil di-RESET TOTAL (migrate:fresh) dan seeder sukses dimasukkan!";
     } catch (\Exception $e) {
-        return "Gagal melakukan migrasi: " . $e->getMessage();
+        return "Gagal melakukan reset database: " . $e->getMessage();
     }
 });
