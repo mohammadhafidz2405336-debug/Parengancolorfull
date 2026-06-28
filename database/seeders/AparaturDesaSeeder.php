@@ -13,7 +13,7 @@ class AparaturDesaSeeder extends Seeder
     public function run(): void
     {
         // Daftar jabatan struktural Desa Parengan
-        $jabatanAparatur = [
+        $jabatan = [
             'Kepala Desa',
             'Sekretaris Desa',
             'Kasi Pemerintahan',

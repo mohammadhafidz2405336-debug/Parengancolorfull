@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('aparatur_desa', function (Blueprint $table) {
             $table->id();
-            $table->string('jabatan');
+            $table->string('jabatan')->nullable();
             $table->string('nama')->nullable(); 
             $table->string('foto')->nullable(); 
             
