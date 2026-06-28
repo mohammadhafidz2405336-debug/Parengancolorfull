@@ -21,8 +21,8 @@ class AparaturDesaSeeder extends Seeder
             'Kepala Dusun'
         ];
 
-        // Tambahkan bagian ini agar data benar-benar masuk ke database:
         foreach ($jabatanAparatur as $jabatan) {
+            // Cukup insert langsung tanpa pengecekan
             DB::table('aparatur_desa')->insert([
                 'jabatan'      => $jabatan,
                 'nama'         => 'Belum Diatur',
@@ -30,6 +30,9 @@ class AparaturDesaSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ]);
+            
+            // Debugging: Cetak ke console agar kita tahu perulangan berjalan
+            $this->command->info("Inserting: " . $jabatan);
         }
     }
 }
