@@ -12,7 +12,6 @@ class AparaturDesaSeeder extends Seeder
      */
     public function run(): void
     {
-        // Daftar jabatan struktural Desa Parengan
         $jabatanAparatur = [
             'Kepala Desa',
             'Sekretaris Desa',
@@ -21,5 +20,16 @@ class AparaturDesaSeeder extends Seeder
             'Kasi Pelayanan',
             'Kepala Dusun'
         ];
+
+        // Tambahkan bagian ini agar data benar-benar masuk ke database:
+        foreach ($jabatanAparatur as $jabatan) {
+            DB::table('aparatur_desa')->insert([
+                'jabatan'      => $jabatan,
+                'nama'         => 'Belum Diatur',
+                'status_aktif' => 'Aktif',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ]);
+        }
     }
 }
