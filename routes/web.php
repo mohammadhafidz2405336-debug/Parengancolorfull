@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DesaController;
 use App\Http\Controllers\AdminController; 
-use App\Http\Controllers\BeritaController; // Panggil Controller Baru
+use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\ProfileDesaController;
 use Illuminate\Support\Facades\Artisan;
 
 // Route Halaman Publik Desa
@@ -28,9 +29,9 @@ Route::prefix('admin')->group(function () {
     Route::post('/berita/simpan', [BeritaController::class, 'store'])->name('admin.berita.store');
     Route::delete('/berita/{id}/hapus', [BeritaController::class, 'destroy'])->name('admin.berita.destroy');
 
-    // Route untuk mengelola data kependudukan
-    Route::get('/kependudukan', [AdminController::class, 'kependudukanIndex'])->name('admin.kependudukan.index');
-    Route::post('/kependudukan/update', [AdminController::class, 'kependudukanUpdate'])->name('admin.kependudukan.update');
+    // Route untuk mengelola halaman profile desa
+    Route::get('/profile-desa', [ProfileDesaController::class, 'index'])->name('admin.profile_desa.index');
+    Route::post('/profile-desa/update', [ProfileDesaController::class, 'update'])->name('admin.profile_desa.update');   
 
     Route::get('/aparatur', [AdminController::class, 'aparaturIndex'])->name('admin.aparatur.index');
     Route::get('/aparatur/{id}/edit', [AdminController::class, 'aparaturEdit'])->name('admin.aparatur.edit');

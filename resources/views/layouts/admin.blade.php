@@ -37,9 +37,9 @@
                 <i class="fa-solid fa-newspaper w-5"></i> Kelola Berita
             </a>
 
-            <a href="{{ route('admin.kependudukan.index') }}" 
+            <a href="{{ route('admin.profile_desa.index') }}" 
                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('admin.kependudukan.*') ? 'bg-blue-800 text-white shadow-inner' : 'text-blue-100 hover:bg-[#1e406d]' }}">
-                <i class="fa-solid fa-users w-5"></i> Kependudukan
+                <i class="fa-solid fa-users w-5"></i> Profile Desa
             </a>
 
             <a href="{{ route('admin.aparatur.index') }}" 
