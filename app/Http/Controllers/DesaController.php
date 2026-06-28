@@ -20,7 +20,11 @@ class DesaController extends Controller
     // Halaman Profil Desa
     public function profile()
     {
-        return view('profile');
+        // Ambil semua data perangkat desa dari database
+        $aparatur = DB::table('aparatur_desa')->get();
+
+        // Kirim data $aparatur ke file blade profile-desa
+        return view('profile', compact('aparatur'));
     }
 
     // Halaman Potensi (UMKM, Pertanian, dll)

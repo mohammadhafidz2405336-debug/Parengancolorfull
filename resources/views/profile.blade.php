@@ -96,25 +96,35 @@
         <div class="w-full flex flex-col items-center overflow-x-auto pb-8" data-aos="fade-up">
             <div class="min-w-[800px] w-full flex flex-col items-center relative">
 
-                <!-- Kepala Desa -->
+                @php
+                    // Helper untuk mempermudah pencarian perangkat berdasarkan nama jabatannya
+                    $kades = $aparatur->where('jabatan', 'Kepala Desa')->first();
+                    $sekdes = $aparatur->where('jabatan', 'Sekretaris Desa')->first();
+                    $kasiPemerintahan = $aparatur->where('jabatan', 'Kasi Pemerintahan')->first();
+                    $kasiKesra = $aparatur->where('jabatan', 'Kasi Kesejahteraan')->first();
+                    $kasiPelayanan = $aparatur->where('jabatan', 'Kasi Pelayanan')->first();
+                    $kadusun = $aparatur->where('jabatan', 'Kepala Dusun')->first();
+                @endphp
+
                 <div class="flex justify-center w-full relative z-10">
-                    <div onclick="openModal('Kepala Desa', 'Slamet Rosyidin', 'Mewujudkan Desa Parengan yang mandiri, sejahtera, dan transparan melalui tata kelola pemerintahan yang akuntabel.', 'kades@parengan.desa.id', '08:00 - 15:00 WIB')" 
-                         class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex items-center gap-4 w-64 cursor-pointer hover:border-blue-500 hover:shadow-lg transition duration-300 group">
-                        <div class="w-12 h-12 bg-slate-200 rounded-full flex-shrink-0 flex items-center justify-center group-hover:bg-blue-100 transition">
-                            <svg class="w-6 h-6 text-slate-400 group-hover:text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z" />
-                            </svg>
+                    <div onclick="openModal('Kepala Desa', '{{ $kades->nama ?? 'Belum Diatur' }}', '{{ addslashes($kades->tupoksi ?? 'Tupoksi belum diatur oleh admin.') }}', '{{ $kades->email ?? '-' }}', '{{ $kades->jam_pelayanan ?? '08:00 - 15:00 WIB' }}', '{{ $kades->foto ?? '' }}')" 
+                        class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex items-center gap-4 w-64 cursor-pointer hover:border-blue-500 hover:shadow-lg transition duration-300 group">
+                        <div class="w-12 h-12 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 shadow-sm flex items-center justify-center bg-slate-200">
+                            @if(!empty($kades->foto))
+                                <img src="{{ asset('storage/' . $kades->foto) }}" class="w-full h-full object-cover">
+                            @else
+                                <i class="fa-solid fa-user text-slate-400"></i>
+                            @endif
                         </div>
                         <div>
                             <p class="text-xs text-slate-500 font-medium">Kepala Desa</p>
-                            <p class="text-sm font-black text-slate-900 group-hover:text-blue-600 transition">Slamet Rosyidin</p>
+                            <p class="text-sm font-black text-slate-900 group-hover:text-blue-600 transition">{{ $kades->nama ?? 'Belum Diatur' }}</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="w-0.5 h-6 bg-slate-400 ml-0.5"></div>
 
-                <!-- Jalur Sekretaris -->
                 <div class="w-full relative">
                     <div class="absolute top-0 left-1/2 w-[25%] h-0.5 bg-slate-400"></div>
                     <div class="absolute top-0 left-1/2 w-0.5 h-40 bg-slate-400"></div>
@@ -123,24 +133,24 @@
                     <div class="absolute top-[120px] left-1/2 w-[37.5%] h-0.5 bg-slate-400"></div>
                     <div class="absolute top-[120px] left-[87.5%] w-0.5 h-18 bg-slate-400"></div>
 
-                    <!-- Sekretaris Desa -->
                     <div class="w-full flex justify-end pr-[12.5%] pt-6 relative z-10">
-                        <div onclick="openModal('Sekretaris Desa', 'Ahmad Fauzi, S.Kom', 'Memimpin, mengoordinasikan, dan mengendalikan seluruh kegiatan administrasi desa serta memberikan pelayanan teknis kepada perangkat desa lainnya.', 'sekdes@parengan.desa.id', '08:00 - 15:00 WIB')"
-                             class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex items-center gap-4 w-64 cursor-pointer hover:border-blue-500 hover:shadow-lg transition duration-300 group">
-                            <div class="w-12 h-12 bg-slate-200 rounded-full flex-shrink-0 flex items-center justify-center group-hover:bg-blue-100 transition">
-                                <svg class="w-6 h-6 text-slate-400 group-hover:text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z" />
-                                </svg>
+                        <div onclick="openModal('Sekretaris Desa', '{{ $sekdes->nama ?? 'Belum Diatur' }}', '{{ addslashes($sekdes->tupoksi ?? 'Tupoksi belum diatur oleh admin.') }}', '{{ $sekdes->email ?? '-' }}', '{{ $sekdes->jam_pelayanan ?? '08:00 - 15:00 WIB' }}', '{{ $sekdes->foto ?? '' }}')"
+                            class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex items-center gap-4 w-64 cursor-pointer hover:border-blue-500 hover:shadow-lg transition duration-300 group">
+                            <div class="w-12 h-12 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 shadow-sm flex items-center justify-center bg-slate-200">
+                                @if(!empty($sekdes->foto))
+                                    <img src="{{ asset('storage/' . $sekdes->foto) }}" class="w-full h-full object-cover">
+                                @else
+                                    <i class="fa-solid fa-user text-slate-400"></i>
+                                @endif
                             </div>
                             <div>
                                 <p class="text-xs text-slate-500 font-medium">Sekretaris Desa</p>
-                                <p class="text-sm font-black text-slate-900 group-hover:text-blue-600 transition">Ahmad Fauzi</p>
+                                <p class="text-sm font-black text-slate-900 group-hover:text-blue-600 transition">{{ $sekdes->nama ?? 'Belum Diatur' }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Struktur Bawah -->
                 <div class="w-full grid grid-cols-4 relative mt-13">
                     <div class="col-span-3 relative">
                         <div class="absolute top-0 left-[16.66%] right-[16.66%] h-0.5 bg-slate-400"></div>
@@ -153,75 +163,139 @@
                     <div class="col-span-1"></div>
                 </div>
 
-                <!-- Seksi-Seksi & Kepala Dusun -->
                 <div class="w-full relative">
                     <div class="grid grid-cols-4 gap-4 pt-0 w-full">
 
-                        <!-- Kasi / Kaur -->
                         <div class="col-span-3 bg-blue-50/60 border border-blue-100 p-4 rounded-2xl relative z-10">
                             <div class="grid grid-cols-3 gap-4">
                                 
-                                <!-- Kasi Pemerintahan -->
-                                <div onclick="openModal('Kasi Pemerintahan', 'Slamet Rosyidin', 'Menyusun rencana, mengendalikan, dan mengevaluasi pelaksanaan administrasi kependudukan, pertanahan, serta ketenteraman wilayah desa.', 'pemerintahan@parengan.desa.id', '08:00 - 14:00 WIB')"
-                                     class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex flex-col sm:flex-row items-center text-center sm:text-left gap-3 cursor-pointer hover:border-blue-500 hover:shadow-md transition group">
-                                    <div class="w-10 h-10 bg-slate-200 rounded-full flex-shrink-0 flex items-center justify-center group-hover:bg-blue-100">
-                                        <svg class="w-5 h-5 text-slate-400 group-hover:text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z" />
-                                        </svg>
+                                <div onclick="openModal('Kasi Pemerintahan', '{{ $kasiPemerintahan->nama ?? 'Belum Diatur' }}', '{{ addslashes($kasiPemerintahan->tupoksi ?? 'Tupoksi belum diatur oleh admin.') }}', '{{ $kasiPemerintahan->email ?? '-' }}', '{{ $kasiPemerintahan->jam_pelayanan ?? '08:00 - 14:00 WIB' }}', '{{ $kasiPemerintahan->foto ?? '' }}')"
+                                    class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex flex-col sm:flex-row items-center text-center sm:text-left gap-3 cursor-pointer hover:border-blue-500 hover:shadow-md transition group">
+                                    <div class="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 shadow-sm flex items-center justify-center bg-slate-200">
+                                        @if(!empty($kasiPemerintahan->foto))
+                                            <img src="{{ asset('storage/' . $kasiPemerintahan->foto) }}" class="w-full h-full object-cover">
+                                        @else
+                                            <i class="fa-solid fa-user text-slate-400"></i>
+                                        @endif
                                     </div>
                                     <div>
                                         <p class="text-[11px] text-slate-500 font-medium">Kasi Pemerintahan</p>
-                                        <p class="text-xs font-black text-slate-900 group-hover:text-blue-600">Slamet Rosyidin</p>
+                                        <p class="text-xs font-black text-slate-900 group-hover:text-blue-600">{{ $kasiPemerintahan->nama ?? 'Belum Diatur' }}</p>
                                     </div>
                                 </div>
 
-                                <!-- Kasi Kesejahteraan -->
-                                <div onclick="openModal('Kasi Kesejahteraan', 'Budi Santoso', 'Melaksanakan tugas pemberdayaan masyarakat, mengelola sarana prasarana olahraga, sosial budaya, serta bantuan sosial desa.', 'kesra@parengan.desa.id', '08:00 - 14:00 WIB')"
-                                     class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex flex-col sm:flex-row items-center text-center sm:text-left gap-3 cursor-pointer hover:border-blue-500 hover:shadow-md transition group">
-                                    <div class="w-10 h-10 bg-slate-200 rounded-full flex-shrink-0 flex items-center justify-center group-hover:bg-blue-100">
-                                        <svg class="w-5 h-5 text-slate-400 group-hover:text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z" />
-                                        </svg>
+                                <div onclick="openModal('Kasi Kesejahteraan', '{{ $kasiKesra->nama ?? 'Belum Diatur' }}', '{{ addslashes($kasiKesra->tupoksi ?? 'Tupoksi belum diatur oleh admin.') }}', '{{ $kasiKesra->email ?? '-' }}', '{{ $kasiKesra->jam_pelayanan ?? '08:00 - 14:00 WIB' }}', '{{ $kasiKesra->foto ?? '' }}')"
+                                    class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex flex-col sm:flex-row items-center text-center sm:text-left gap-3 cursor-pointer hover:border-blue-500 hover:shadow-md transition group">
+                                    <div class="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 shadow-sm flex items-center justify-center bg-slate-200">
+                                        @if(!empty($kasiKesra->foto))
+                                            <img src="{{ asset('storage/' . $kasiKesra->foto) }}" class="w-full h-full object-cover">
+                                        @else
+                                            <i class="fa-solid fa-user text-slate-400"></i>
+                                        @endif
                                     </div>
                                     <div>
                                         <p class="text-[11px] text-slate-500 font-medium">Kasi Kesejahteraan</p>
-                                        <p class="text-xs font-black text-slate-900 group-hover:text-blue-600">Budi Santoso</p>
+                                        <p class="text-xs font-black text-slate-900 group-hover:text-blue-600">{{ $kasiKesra->nama ?? 'Belum Diatur' }}</p>
                                     </div>
                                 </div>
 
-                                <!-- Kasi Pelayanan -->
-                                <div onclick="openModal('Kasi Pelayanan', 'Siti Aminah', 'Melayani pengurusan berkas administrasi nikah, surat pengantar berkas kependudukan, serta pencatatan jaminan kesehatan warga.', 'pelayanan@parengan.desa.id', '08:00 - 14:00 WIB')"
-                                     class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex flex-col sm:flex-row items-center text-center sm:text-left gap-3 cursor-pointer hover:border-blue-500 hover:shadow-md transition group">
-                                    <div class="w-10 h-10 bg-slate-200 rounded-full flex-shrink-0 flex items-center justify-center group-hover:bg-blue-100">
-                                        <svg class="w-5 h-5 text-slate-400 group-hover:text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z" />
-                                        </svg>
+                                <div onclick="openModal('Kasi Pelayanan', '{{ $kasiPelayanan->nama ?? 'Belum Diatur' }}', '{{ addslashes($kasiPelayanan->tupoksi ?? 'Tupoksi belum diatur oleh admin.') }}', '{{ $kasiPelayanan->email ?? '-' }}', '{{ $kasiPelayanan->jam_pelayanan ?? '08:00 - 14:00 WIB' }}', '{{ $kasiPelayanan->foto ?? '' }}')"
+                                    class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex flex-col sm:flex-row items-center text-center sm:text-left gap-3 cursor-pointer hover:border-blue-500 hover:shadow-md transition group">
+                                    <div class="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 shadow-sm flex items-center justify-center bg-slate-200">
+                                        @if(!empty($kasiPelayanan->foto))
+                                            <img src="{{ asset('storage/' . $kasiPelayanan->foto) }}" class="w-full h-full object-cover">
+                                        @else
+                                            <i class="fa-solid fa-user text-slate-400"></i>
+                                        @endif
                                     </div>
                                     <div>
                                         <p class="text-[11px] text-slate-500 font-medium">Kasi Pelayanan</p>
-                                        <p class="text-xs font-black text-slate-900 group-hover:text-blue-600">Siti Aminah</p>
+                                        <p class="text-xs font-black text-slate-900 group-hover:text-blue-600">{{ $kasiPelayanan->nama ?? 'Belum Diatur' }}</p>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
 
-                        <!-- Kepala Dusun -->
                         <div class="col-span-1 flex items-start relative z-10">
-                            <div onclick="openModal('Kepala Dusun', 'Joko Susilo', 'Membantu Kepala Desa dalam pelaksanaan tugas kewilayahan, pembinaan ketenteraman, dan penyerapan aspirasi warga di tingkat dusun.', '-', '24 Jam (Darurat)')"
-                                 class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex flex-col sm:flex-row items-center text-center sm:text-left gap-3 w-full cursor-pointer hover:border-blue-500 hover:shadow-md transition group">
-                                <div class="w-10 h-10 bg-slate-200 rounded-full flex-shrink-0 flex items-center justify-center group-hover:bg-blue-100">
-                                    <svg class="w-5 h-5 text-slate-400 group-hover:text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z" />
-                                    </svg>
+                            <div onclick="openModal('Kepala Dusun', '{{ $kadusun->nama ?? 'Belum Diatur' }}', '{{ addslashes($kadusun->tupoksi ?? 'Tupoksi belum diatur oleh admin.') }}', '{{ $kadusun->email ?? '-' }}', '{{ $kadusun->jam_pelayanan ?? '24 Jam (Darurat)' }}', '{{ $kadusun->foto ?? '' }}')"
+                                class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex flex-col sm:flex-row items-center text-center sm:text-left gap-3 w-full cursor-pointer hover:border-blue-500 hover:shadow-md transition group">
+                                <div class="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 shadow-sm flex items-center justify-center bg-slate-200">
+                                    @if(!empty($kadusun->foto))
+                                        <img src="{{ asset('storage/' . $kadusun->foto) }}" class="w-full h-full object-cover">
+                                    @else
+                                        <i class="fa-solid fa-user text-slate-400"></i>
+                                    @endif
                                 </div>
                                 <div>
                                     <p class="text-[11px] text-slate-500 font-medium">Kepala Dusun</p>
-                                    <p class="text-xs font-black text-slate-900 group-hover:text-blue-600">Joko Susilo</p>
+                                    <p class="text-xs font-black text-slate-900 group-hover:text-blue-600">{{ $kadusun->nama ?? 'Belum Diatur' }}</p>
                                 </div>
                             </div>
                         </div>
 
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- PANEL DETAIL RESPONSIVE: HP (Pop-up Tengah) | Web (Slide-over Kanan) -->
+        <div id="perangkatModal" class="fixed inset-0 z-50 opacity-0 pointer-events-none bg-slate-900/60 backdrop-blur-sm flex items-center justify-center md:flex md:justify-end transition-opacity duration-300">
+            
+            <!-- Elemen Card / Panel -->
+            <div id="modalCard" class="bg-white w-full max-w-md shadow-2xl border border-slate-200 overflow-hidden transform transition-all duration-300 ease-out
+                        rounded-3xl p-0 mx-4 scale-95
+                        md:h-full md:rounded-none md:mx-0 md:translate-x-full md:scale-100 md:border-l">
+                
+                <!-- Header Banner -->
+                <div class="bg-gradient-to-r from-blue-600 to-sky-500 h-32 relative flex items-end px-6 pb-4">
+                    <button onclick="closeModal()" class="absolute top-4 right-4 text-white bg-black/10 hover:bg-black/30 p-2 rounded-full transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                
+                <!-- Lingkaran Foto / Avatar Perangkat Dinamis -->
+                <div class="flex px-6 -mt-12 relative z-10 md:justify-start justify-center">
+                    <div id="modalFotoContainer" class="w-24 h-24 bg-white rounded-full border-4 border-white overflow-hidden shadow-lg flex items-center justify-center">
+                        <!-- Konten Foto di-inject via JS -->
+                    </div>
+                </div>
+
+                <!-- Isi Informasi Perangkat -->
+                <div class="p-6 space-y-6 md:text-left text-center">
+                    <div>
+                        <h4 id="modalNama" class="text-2xl font-black text-slate-900">Nama Perangkat</h4>
+                        <p id="modalJabatan" class="text-sm font-semibold text-blue-600 tracking-wide bg-blue-50 inline-block px-3 py-1 rounded-full mt-1.5">Jabatan</p>
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-5 space-y-4 text-left">
+                        <div>
+                            <span class="text-[11px] uppercase tracking-wider text-slate-400 font-bold block mb-1">Tugas Pokok & Fungsi (Tupoksi)</span>
+                            <p id="modalTupoksi" class="text-sm text-slate-700 font-normal leading-relaxed text-justify bg-slate-50 p-3 rounded-xl border border-slate-100">Deskripsi tugas pokok perangkat desa.</p>
+                        </div>
+                        
+                        <div class="space-y-3 pt-2">
+                            <div class="flex items-center gap-3 text-slate-700">
+                                <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center text-amber-600 flex-shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Email Resmi</span>
+                                    <span id="modalEmail" class="text-sm font-medium text-slate-800 break-all">-</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-3 text-slate-700">
+                                <div class="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center text-green-600 flex-shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Jam Pelayanan Kantor</span>
+                                    <span id="modalJam" class="text-sm font-medium text-slate-800">-</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -454,36 +528,40 @@
             });
         });
 
-        function openModal(jabatan, nama, tupoksi, email, jam) {
+        function openModal(jabatan, nama, tupoksi, email, jam, foto) {
             document.getElementById('modalJabatan').innerText = jabatan;
             document.getElementById('modalNama').innerText = nama;
             document.getElementById('modalTupoksi').innerText = tupoksi;
             document.getElementById('modalEmail').innerText = email;
             document.getElementById('modalJam').innerText = jam;
 
+            // Handle Perubahan Foto secara dinamis di Modal
+            const fotoContainer = document.getElementById('modalFotoContainer');
+            if (foto && foto !== '') {
+                fotoContainer.innerHTML = `<img src="/storage/${foto}" class="w-full h-full object-cover">`;
+            } else {
+                fotoContainer.innerHTML = `<svg class="w-12 h-12 text-slate-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z" /></svg>`;
+            }
+
             const modal = document.getElementById('perangkatModal');
             const card = document.getElementById('modalCard');
             
-            // Munculkan background gelap (overlay)
             modal.classList.remove('opacity-0', 'pointer-events-none');
             modal.classList.add('opacity-100', 'pointer-events-auto');
 
-            // Cek ukuran layar untuk animasi card
             if (window.innerWidth >= 768) { 
-                // Desktop: Slide-over dari kanan
                 setTimeout(() => {
                     card.classList.remove('md:translate-x-full');
                     card.classList.add('md:translate-x-0');
                 }, 50);
             } else { 
-                // Mobile: Pop-up membal di tengah
                 setTimeout(() => {
                     card.classList.remove('scale-95');
                     card.classList.add('scale-100');
                 }, 50);
             }
         }
-
+        
         function closeModal() {
             const modal = document.getElementById('perangkatModal');
             const card = document.getElementById('modalCard');

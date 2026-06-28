@@ -33,7 +33,8 @@ Route::prefix('admin')->group(function () {
     Route::post('/kependudukan/update', [AdminController::class, 'kependudukanUpdate'])->name('admin.kependudukan.update');
 
     Route::get('/aparatur', [AdminController::class, 'aparaturIndex'])->name('admin.aparatur.index');
-    Route::get('/aparatur/tambah', [AdminController::class, 'aparaturCreate'])->name('admin.aparatur.create');
+    Route::get('/aparatur/{id}/edit', [AdminController::class, 'aparaturEdit'])->name('admin.aparatur.edit');
+    Route::post('/aparatur/{id}/update', [AdminController::class, 'aparaturUpdate'])->name('admin.aparatur.update');
 
     Route::get('/pelayanan', [AdminController::class, 'pelayananIndex'])->name('admin.pelayanan.index');
     Route::post('/pelayanan/{id}/verifikasi', [AdminController::class, 'pelayananUpdate'])->name('admin.pelayanan.update');

@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             MasterWargaSeeder::class,
             MasterJenisSuratSeeder::class,
+            AparaturDesaSeeder::class,
             // Jika ada seeder lain (seperti seeder jenis surat), bisa ditaruh di sini
         ]);
     }

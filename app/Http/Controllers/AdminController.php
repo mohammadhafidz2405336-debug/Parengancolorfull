@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\PermohonanSurat;
 use App\Models\Berita;
+use Illuminate\Support\Facades\DB;      // <--- TAMBAHKAN BARIS INI
+use Illuminate\Support\Facades\Storage;
 use App\Models\Aparatur;
 use Illuminate\Support\Facades\Crypt;
 
@@ -98,7 +100,70 @@ class AdminController extends Controller
 
     public function beritaCreate() { return view('admin.berita_create'); }
     public function kependudukanIndex() { return view('admin.kependudukan_index'); }
-    public function aparaturIndex() { return view('admin.aparatur_index'); }
-    public function aparaturCreate() { return view('admin.aparatur_create'); }
     public function potensiIndex() { return view('admin.potensi_index'); }
+    
+    public function aparaturIndex() 
+    { 
+        // 1. Ambil data dari tabel aparatur_desa
+        $aparatur = \DB::table('aparatur_desa')->get(); 
+        
+        // 2. Kirim variabel $aparatur ke dalam file blade index
+        return view('admin.aparatur_index', compact('aparatur')); 
+    }
+
+    public function aparaturEdit($id)
+    {
+        // Ambil data perangkat berdasarkan ID dari tabel aparatur_desa
+        $perangkat = \DB::table('aparatur_desa')->where('id', $id)->first();
+        
+        if (!$perangkat) {
+            return redirect()->route('admin.aparatur.index')->with('error', 'Data tidak ditemukan!');
+        }
+
+        return view('admin.aparatur_edit', compact('perangkat'));
+    }
+
+    public function aparaturUpdate(Request $request, $id)
+    {
+        // Validasi input data
+        $request->validate([
+            'nama'          => 'required|string|max:255',
+            'email'         => 'nullable|string|max:255',
+            'jam_pelayanan' => 'nullable|string|max:255',
+            'tupoksi'       => 'nullable|string',
+            'foto'          => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Ambil data lama perangkat desa
+        $perangkat = DB::table('aparatur_desa')->where('id', $id)->first();
+        
+        if (!$perangkat) {
+            return redirect()->route('admin.aparatur.index')->with('error', 'Data tidak ditemukan!');
+        }
+
+        $dataUpdate = [
+            'nama'          => $request->nama,
+            'email'         => $request->email,
+            'jam_pelayanan' => $request->jam_pelayanan,
+            'tupoksi'       => $request->tupoksi,
+            'updated_at'    => now(),
+        ];
+
+        // Jika ada upload foto baru
+        if ($request->hasFile('foto')) {
+            // Hapus foto lama jika ada di storage
+            if ($perangkat->foto && Storage::disk('public')->exists($perangkat->foto)) {
+                Storage::disk('public')->delete($perangkat->foto);
+            }
+
+            // Simpan foto baru ke folder storage/app/public/aparatur
+            $path = $request->file('foto')->store('aparatur', 'public');
+            $dataUpdate['foto'] = $path;
+        }
+
+        // Eksekusi update ke database
+        DB::table('aparatur_desa')->where('id', $id)->update($dataUpdate);
+
+        return redirect()->route('admin.aparatur.index')->with('success', 'Data aparatur berhasil diperbarui!');
+    }
 }
