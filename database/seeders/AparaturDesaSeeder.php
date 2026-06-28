@@ -13,7 +13,7 @@ class AparaturDesaSeeder extends Seeder
     public function run(): void
     {
         // Daftar jabatan struktural Desa Parengan
-        $jabatan = [
+        $jabatanAparatur = [
             'Kepala Desa',
             'Sekretaris Desa',
             'Kasi Pemerintahan',
@@ -21,21 +21,5 @@ class AparaturDesaSeeder extends Seeder
             'Kasi Pelayanan',
             'Kepala Dusun'
         ];
-
-        foreach ($jabatanAparatur as $jabatan) {
-            // Memastikan data tidak duplikat jika seeder dijalankan ulang
-            $exists = DB::table('aparatur_desa')->where('jabatan', $jabatan)->exists();
-            
-            if (!$exists) {
-                DB::table('aparatur_desa')->insert([
-                    'jabatan'      => $jabatan,
-                    'nama'         => 'Belum Diatur', // Teks penanda awal agar halaman profil tidak kosong
-                    'foto'         => null,           // Belum ada foto, nanti di-upload admin
-                    'status_aktif' => 'Aktif',
-                    'created_at'   => now(),
-                    'updated_at'   => now(),
-                ]);
-            }
-        }
     }
 }
