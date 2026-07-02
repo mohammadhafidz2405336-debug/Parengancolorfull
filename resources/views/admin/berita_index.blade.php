@@ -52,6 +52,12 @@
                         </td>
                         <td class="py-4 px-6">
                             <div class="flex items-center justify-center gap-2">
+                                <a href="{{ route('admin.berita.edit', $item->id) }}" 
+                                class="w-8 h-8 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 flex items-center justify-center text-xs transition" 
+                                title="Edit">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+
                                 <form action="{{ route('admin.berita.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus berita ini?')">
                                     @csrf
                                     @method('DELETE')

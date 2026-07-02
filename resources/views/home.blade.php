@@ -309,7 +309,7 @@
                     </div>
                     <div class="space-y-1">
                         <h4 class="font-bold text-base text-slate-900">Telepon</h4>
-                        <p class="text-sm font-semibold text-slate-800 tracking-wide">0863536829</p>
+                        <p class="text-sm font-semibold text-slate-800 tracking-wide">0852-57552704</p>
                         <p class="text-xs text-slate-500 font-medium leading-relaxed pt-1">
                             Hubungi kami untuk informasi lebih lanjut tentang desa dan pelayanan yang tersedia
                         </p>

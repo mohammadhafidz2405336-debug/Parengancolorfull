@@ -28,6 +28,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/berita/tambah', [BeritaController::class, 'create'])->name('admin.berita.create');
     Route::post('/berita/simpan', [BeritaController::class, 'store'])->name('admin.berita.store');
     Route::delete('/berita/{id}/hapus', [BeritaController::class, 'destroy'])->name('admin.berita.destroy');
+    Route::get('/berita/{id}/edit', [BeritaController::class, 'edit'])->name('admin.berita.edit');
 
     // Route untuk mengelola halaman profile desa
     Route::get('/profile-desa', [ProfileDesaController::class, 'index'])->name('admin.profile_desa.index');

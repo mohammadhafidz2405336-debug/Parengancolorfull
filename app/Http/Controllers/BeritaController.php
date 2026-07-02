@@ -83,4 +83,10 @@ class BeritaController extends Controller
 
         return view('berita_detail', compact('berita', 'beritaTerbaru'));
     }
+
+    public function edit($id)
+    {
+        $berita = Berita::findOrFail($id);
+        return view('admin.berita_edit', compact('berita'));
+    }
 }
