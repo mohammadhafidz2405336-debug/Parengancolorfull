@@ -63,6 +63,15 @@
     <div class="max-w-4xl">
         <form action="{{ route('admin.profile_desa.update') }}" method="POST" enctype="multipart/form-data" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 space-y-6">
             @csrf
+            @if ($errors->any())
+                <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+                    <ul class="text-sm text-red-700 font-semibold">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             @if(session('success'))
                 <div class="p-4 mb-4 text-xs text-emerald-800 rounded-xl bg-emerald-50 border border-emerald-200 font-bold">

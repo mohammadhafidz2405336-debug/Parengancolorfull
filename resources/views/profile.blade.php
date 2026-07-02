@@ -79,92 +79,175 @@
 
         <!-- STRUKTUR ORGANISASI INTERAKTIF (TETAP SESUAI ASLI) -->
         <div class="w-full flex flex-col items-center overflow-x-auto pb-8" data-aos="fade-up">
-            <div class="min-w-[800px] w-full flex flex-col items-center relative">
+            <!-- Kontainer utama -->
+            <div class="min-w-[1000px] w-full flex flex-col items-center relative">
                 @php
                     $kades = $aparatur->where('jabatan', 'Kepala Desa')->first();
                     $sekdes = $aparatur->where('jabatan', 'Sekretaris Desa')->first();
+                    $kaurKeuangan = $aparatur->where('jabatan', 'Kaur Keuangan')->first();
+                    $kaurUmum = $aparatur->where('jabatan', 'Kaur Umum')->first();
                     $kasiPemerintahan = $aparatur->where('jabatan', 'Kasi Pemerintahan')->first();
                     $kasiKesra = $aparatur->where('jabatan', 'Kasi Kesejahteraan')->first();
                     $kasiPelayanan = $aparatur->where('jabatan', 'Kasi Pelayanan')->first();
                     $kadusun = $aparatur->where('jabatan', 'Kepala Dusun')->first();
                 @endphp
 
+                <!-- 1. KEPALA DESA (Tingkat Paling Atas) -->
                 <div class="flex justify-center w-full relative z-10">
                     <div onclick="openModal('Kepala Desa', '{{ $kades->nama ?? 'Belum Diatur' }}', '{{ addslashes($kades->tupoksi ?? 'Tupoksi belum diatur.') }}', '{{ $kades->email ?? '-' }}', '{{ $kades->jam_pelayanan ?? '08:00 - 15:00 WIB' }}', '{{ $kades->foto ?? '' }}')" 
                         class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex items-center gap-4 w-64 cursor-pointer hover:border-blue-500 hover:shadow-lg transition duration-300 group">
                         <div class="w-12 h-12 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 shadow-sm flex items-center justify-center bg-slate-200">
                             @if(!empty($kades->foto)) <img src="{{ asset('storage/' . $kades->foto) }}" class="w-full h-full object-cover"> @else <i class="fa-solid fa-user text-slate-400"></i> @endif
                         </div>
-                        <div><p class="text-xs text-slate-500 font-medium">Kepala Desa</p><p class="text-sm font-black text-slate-900 group-hover:text-blue-600 transition">{{ $kades->nama ?? 'Belum Diatur' }}</p></div>
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium">Kepala Desa</p>
+                            <p class="text-sm font-black text-slate-900 group-hover:text-blue-600 transition">{{ $kades->nama ?? 'Belum Diatur' }}</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- (Bagian struktur lainnya dipertahankan sama persis) -->
-                <div class="w-0.5 h-6 bg-slate-400 ml-0.5"></div>
+                <!-- Garis Turun dari Kepala Desa -->
+                <div class="w-0.5 h-8 bg-slate-400"></div>
+
+                <!-- 2. TINGKAT 1 (Kaur Keuangan & Sekretaris Desa) -->
                 <div class="w-full relative">
+                    <!-- Garis Horizontal Penghubung Kiri & Kanan -->
+                    <div class="absolute top-0 left-[25%] w-[50%] h-0.5 bg-slate-400"></div>
+                    <!-- Garis Vertikal Turun ke Kaur Keuangan (-translate-x-1/2 ditambahkan) -->
+                    <div class="absolute top-0 left-[25%] -translate-x-1/2 w-0.5 h-6 bg-slate-400"></div>
+                    <!-- Garis Utama Tengah -->
+                    <div class="absolute top-0 left-1/2 -ml-[1px] w-0.5 h-full bg-slate-400"></div>
+                    <!-- Garis Vertikal Turun ke Sekretaris Desa (-translate-x-1/2 ditambahkan) -->
+                    <div class="absolute top-0 left-[75%] -translate-x-1/2 w-0.5 h-6 bg-slate-400"></div>
+
+                    <div class="grid grid-cols-2 w-full pt-6 relative z-10">
+                        <!-- Kaur Keuangan (Kiri) -->
+                        <div class="flex justify-center">
+                            <div onclick="openModal('Kaur Keuangan', '{{ $kaurKeuangan->nama ?? 'Belum Diatur' }}', '{{ addslashes($kaurKeuangan->tupoksi ?? 'Tupoksi belum diatur.') }}', '{{ $kaurKeuangan->email ?? '-' }}', '{{ $kaurKeuangan->jam_pelayanan ?? '08:00 - 15:00 WIB' }}', '{{ $kaurKeuangan->foto ?? '' }}')" 
+                                class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex items-center gap-4 w-64 cursor-pointer hover:border-blue-500 hover:shadow-lg transition duration-300 group">
+                                <div class="w-12 h-12 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 shadow-sm flex items-center justify-center bg-slate-200">
+                                    @if(!empty($kaurKeuangan->foto)) <img src="{{ asset('storage/' . $kaurKeuangan->foto) }}" class="w-full h-full object-cover"> @else <i class="fa-solid fa-user text-slate-400"></i> @endif
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500 font-medium">Kaur Keuangan</p>
+                                    <p class="text-sm font-black text-slate-900 group-hover:text-blue-600 transition">{{ $kaurKeuangan->nama ?? 'Belum Diatur' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Sekretaris Desa (Kanan) -->
+                        <div class="flex justify-center">
+                            <div onclick="openModal('Sekretaris Desa', '{{ $sekdes->nama ?? 'Belum Diatur' }}', '{{ addslashes($sekdes->tupoksi ?? 'Tupoksi belum diatur.') }}', '{{ $sekdes->email ?? '-' }}', '{{ $sekdes->jam_pelayanan ?? '08:00 - 15:00 WIB' }}', '{{ $sekdes->foto ?? '' }}')"
+                                class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex items-center gap-4 w-64 cursor-pointer hover:border-blue-500 hover:shadow-lg transition duration-300 group">
+                                <div class="w-12 h-12 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 shadow-sm flex items-center justify-center bg-slate-200">
+                                    @if(!empty($sekdes->foto)) <img src="{{ asset('storage/' . $sekdes->foto) }}" class="w-full h-full object-cover"> @else <i class="fa-solid fa-user text-slate-400"></i> @endif
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500 font-medium">Sekretaris Desa</p>
+                                    <p class="text-sm font-black text-slate-900 group-hover:text-blue-600 transition">{{ $sekdes->nama ?? 'Belum Diatur' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jarak Garis Vertikal Lanjutan -->
+                <div class="w-0.5 h-8 bg-slate-400"></div>
+
+                <!-- 3. TINGKAT 2 (Kepala Dusun) -->
+                <div class="w-full relative">
+                    <!-- Garis Horizontal Tengah ke Kanan -->
                     <div class="absolute top-0 left-1/2 w-[25%] h-0.5 bg-slate-400"></div>
-                    <div class="absolute top-0 left-1/2 w-0.5 h-40 bg-slate-400"></div>
-                    <div class="absolute top-0 left-[75%] w-0.5 h-6 bg-slate-400"></div>
-                    <div class="absolute top-[120px] left-1/2 w-[37.5%] h-0.5 bg-slate-400"></div>
-                    <div class="absolute top-[120px] left-[87.5%] w-0.5 h-18 bg-slate-400"></div>
-                    <div class="w-full flex justify-end pr-[12.5%] pt-6 relative z-10">
-                        <div onclick="openModal('Sekretaris Desa', '{{ $sekdes->nama ?? 'Belum Diatur' }}', '{{ addslashes($sekdes->tupoksi ?? 'Tupoksi belum diatur.') }}', '{{ $sekdes->email ?? '-' }}', '{{ $sekdes->jam_pelayanan ?? '08:00 - 15:00 WIB' }}', '{{ $sekdes->foto ?? '' }}')"
-                            class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex items-center gap-4 w-64 cursor-pointer hover:border-blue-500 hover:shadow-lg transition duration-300 group">
-                            <div class="w-12 h-12 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 shadow-sm flex items-center justify-center bg-slate-200">
-                                @if(!empty($sekdes->foto)) <img src="{{ asset('storage/' . $sekdes->foto) }}" class="w-full h-full object-cover"> @else <i class="fa-solid fa-user text-slate-400"></i> @endif
-                            </div>
-                            <div><p class="text-xs text-slate-500 font-medium">Sekretaris Desa</p><p class="text-sm font-black text-slate-900 group-hover:text-blue-600 transition">{{ $sekdes->nama ?? 'Belum Diatur' }}</p></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Struktur Bawah -->
-                <div class="w-full grid grid-cols-4 relative mt-13">
-                    <div class="col-span-3 relative">
-                        <div class="absolute top-0 left-[16.66%] right-[16.66%] h-0.5 bg-slate-400"></div>
-                        <div class="grid grid-cols-3 w-full">
-                            <div class="flex justify-center"><div class="w-0.5 h-6 bg-slate-400"></div></div>
-                            <div class="flex justify-center"><div class="w-0.5 h-6 bg-slate-400"></div></div>
-                            <div class="flex justify-center"><div class="w-0.5 h-6 bg-slate-400"></div></div>
-                        </div>
-                    </div>
-                    <div class="col-span-1"></div>
-                </div>
+                    <!-- Garis Utama Tengah -->
+                    <div class="absolute top-0 left-1/2 -ml-[1px] w-0.5 h-full bg-slate-400"></div>
+                    <!-- Garis Vertikal Turun ke Kepala Dusun (-translate-x-1/2 ditambahkan) -->
+                    <div class="absolute top-0 left-[75%] -translate-x-1/2 w-0.5 h-6 bg-slate-400"></div>
 
-                <div class="w-full relative">
-                    <div class="grid grid-cols-4 gap-4 pt-0 w-full">
-                        <div class="col-span-3 bg-blue-50/60 border border-blue-100 p-4 rounded-2xl relative z-10">
-                            <div class="grid grid-cols-3 gap-4">
-                                <div onclick="openModal('Kasi Pemerintahan', '{{ $kasiPemerintahan->nama ?? 'Belum Diatur' }}', '{{ addslashes($kasiPemerintahan->tupoksi ?? 'Tupoksi belum diatur.') }}', '{{ $kasiPemerintahan->email ?? '-' }}', '{{ $kasiPemerintahan->jam_pelayanan ?? '08:00 - 14:00 WIB' }}', '{{ $kasiPemerintahan->foto ?? '' }}')"
-                                    class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex items-center gap-3 cursor-pointer hover:border-blue-500 transition group">
-                                    <div class="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 flex items-center justify-center bg-slate-200">
-                                        @if(!empty($kasiPemerintahan->foto)) <img src="{{ asset('storage/' . $kasiPemerintahan->foto) }}" class="w-full h-full object-cover"> @else <i class="fa-solid fa-user text-slate-400"></i> @endif
-                                    </div>
-                                    <div><p class="text-[11px] text-slate-500 font-medium">Kasi Pemerintahan</p><p class="text-xs font-black text-slate-900 group-hover:text-blue-600">{{ $kasiPemerintahan->nama ?? 'Belum Diatur' }}</p></div>
-                                </div>
-                                <div onclick="openModal('Kasi Kesejahteraan', '{{ $kasiKesra->nama ?? 'Belum Diatur' }}', '{{ addslashes($kasiKesra->tupoksi ?? 'Tupoksi belum diatur.') }}', '{{ $kasiKesra->email ?? '-' }}', '{{ $kasiKesra->jam_pelayanan ?? '08:00 - 14:00 WIB' }}', '{{ $kasiKesra->foto ?? '' }}')"
-                                    class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex items-center gap-3 cursor-pointer hover:border-blue-500 transition group">
-                                    <div class="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 flex items-center justify-center bg-slate-200">
-                                        @if(!empty($kasiKesra->foto)) <img src="{{ asset('storage/' . $kasiKesra->foto) }}" class="w-full h-full object-cover"> @else <i class="fa-solid fa-user text-slate-400"></i> @endif
-                                    </div>
-                                    <div><p class="text-[11px] text-slate-500 font-medium">Kasi Kesejahteraan</p><p class="text-xs font-black text-slate-900 group-hover:text-blue-600">{{ $kasiKesra->nama ?? 'Belum Diatur' }}</p></div>
-                                </div>
-                                <div onclick="openModal('Kasi Pelayanan', '{{ $kasiPelayanan->nama ?? 'Belum Diatur' }}', '{{ addslashes($kasiPelayanan->tupoksi ?? 'Tupoksi belum diatur.') }}', '{{ $kasiPelayanan->email ?? '-' }}', '{{ $kasiPelayanan->jam_pelayanan ?? '08:00 - 14:00 WIB' }}', '{{ $kasiPelayanan->foto ?? '' }}')"
-                                    class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex items-center gap-3 cursor-pointer hover:border-blue-500 transition group">
-                                    <div class="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 flex items-center justify-center bg-slate-200">
-                                        @if(!empty($kasiPelayanan->foto)) <img src="{{ asset('storage/' . $kasiPelayanan->foto) }}" class="w-full h-full object-cover"> @else <i class="fa-solid fa-user text-slate-400"></i> @endif
-                                    </div>
-                                    <div><p class="text-[11px] text-slate-500 font-medium">Kasi Pelayanan</p><p class="text-xs font-black text-slate-900 group-hover:text-blue-600">{{ $kasiPelayanan->nama ?? 'Belum Diatur' }}</p></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-span-1 flex items-start relative z-10">
+                    <div class="grid grid-cols-2 w-full pt-6 relative z-10">
+                        <div></div> <!-- Sisi Kiri Kosong -->
+                        <!-- Kepala Dusun (Kanan) -->
+                        <div class="flex justify-center">
                             <div onclick="openModal('Kepala Dusun', '{{ $kadusun->nama ?? 'Belum Diatur' }}', '{{ addslashes($kadusun->tupoksi ?? 'Tupoksi belum diatur.') }}', '{{ $kadusun->email ?? '-' }}', '{{ $kadusun->jam_pelayanan ?? '24 Jam' }}', '{{ $kadusun->foto ?? '' }}')"
-                                class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex items-center gap-3 w-full cursor-pointer hover:border-blue-500 transition group">
-                                <div class="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 flex items-center justify-center bg-slate-200">
+                                class="bg-[#FAFAFA] border border-slate-200 shadow-md p-4 rounded-xl flex items-center gap-4 w-64 cursor-pointer hover:border-blue-500 hover:shadow-lg transition duration-300 group">
+                                <div class="w-12 h-12 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 shadow-sm flex items-center justify-center bg-slate-200">
                                     @if(!empty($kadusun->foto)) <img src="{{ asset('storage/' . $kadusun->foto) }}" class="w-full h-full object-cover"> @else <i class="fa-solid fa-user text-slate-400"></i> @endif
                                 </div>
-                                <div><p class="text-[11px] text-slate-500 font-medium">Kepala Dusun</p><p class="text-xs font-black text-slate-900 group-hover:text-blue-600">{{ $kadusun->nama ?? 'Belum Diatur' }}</p></div>
+                                <div>
+                                    <p class="text-xs text-slate-500 font-medium">Kepala Dusun</p>
+                                    <p class="text-sm font-black text-slate-900 group-hover:text-blue-600 transition">{{ $kadusun->nama ?? 'Belum Diatur' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jarak Garis Vertikal Lanjutan -->
+                <div class="w-0.5 h-8 bg-slate-400"></div>
+
+                <!-- 4. TINGKAT TERBAWAH (4 Bagian Kasi & Kaur Umum) -->
+                <div class="w-full relative">
+                    <!-- Garis Horizontal Mencakup 4 Kolom -->
+                    <div class="absolute top-0 left-[12.5%] w-[75%] h-0.5 bg-slate-400"></div>
+                    <!-- Garis Vertikal ke tiap Node (-translate-x-1/2 ditambahkan) -->
+                    <div class="absolute top-0 left-[12.5%] -translate-x-1/2 w-0.5 h-6 bg-slate-400"></div>
+                    <div class="absolute top-0 left-[37.5%] -translate-x-1/2 w-0.5 h-6 bg-slate-400"></div>
+                    <div class="absolute top-0 left-[62.5%] -translate-x-1/2 w-0.5 h-6 bg-slate-400"></div>
+                    <div class="absolute top-0 left-[87.5%] -translate-x-1/2 w-0.5 h-6 bg-slate-400"></div>
+
+                    <!-- Grid 4 Kolom -->
+                    <div class="grid grid-cols-4 gap-4 px-4 pt-6 relative z-10 w-full">
+                        <!-- 4.1 Kasi Pemerintahan -->
+                        <div class="flex justify-center w-full">
+                            <div onclick="openModal('Kasi Pemerintahan', '{{ $kasiPemerintahan->nama ?? 'Belum Diatur' }}', '{{ addslashes($kasiPemerintahan->tupoksi ?? 'Tupoksi belum diatur.') }}', '{{ $kasiPemerintahan->email ?? '-' }}', '{{ $kasiPemerintahan->jam_pelayanan ?? '08:00 - 14:00 WIB' }}', '{{ $kasiPemerintahan->foto ?? '' }}')"
+                                class="bg-[#FAFAFA] border border-slate-200 shadow-md p-3 rounded-xl flex items-center gap-3 w-full max-w-[220px] cursor-pointer hover:border-blue-500 transition group">
+                                <div class="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 flex items-center justify-center bg-slate-200">
+                                    @if(!empty($kasiPemerintahan->foto)) <img src="{{ asset('storage/' . $kasiPemerintahan->foto) }}" class="w-full h-full object-cover"> @else <i class="fa-solid fa-user text-slate-400"></i> @endif
+                                </div>
+                                <div class="overflow-hidden">
+                                    <p class="text-[11px] text-slate-500 font-medium truncate">Kasi Pemerintahan</p>
+                                    <p class="text-xs font-black text-slate-900 group-hover:text-blue-600 truncate">{{ $kasiPemerintahan->nama ?? 'Belum Diatur' }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4.2 Kasi Kesejahteraan -->
+                        <div class="flex justify-center w-full">
+                            <div onclick="openModal('Kasi Kesejahteraan', '{{ $kasiKesra->nama ?? 'Belum Diatur' }}', '{{ addslashes($kasiKesra->tupoksi ?? 'Tupoksi belum diatur.') }}', '{{ $kasiKesra->email ?? '-' }}', '{{ $kasiKesra->jam_pelayanan ?? '08:00 - 14:00 WIB' }}', '{{ $kasiKesra->foto ?? '' }}')"
+                                class="bg-[#FAFAFA] border border-slate-200 shadow-md p-3 rounded-xl flex items-center gap-3 w-full max-w-[220px] cursor-pointer hover:border-blue-500 transition group">
+                                <div class="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 flex items-center justify-center bg-slate-200">
+                                    @if(!empty($kasiKesra->foto)) <img src="{{ asset('storage/' . $kasiKesra->foto) }}" class="w-full h-full object-cover"> @else <i class="fa-solid fa-user text-slate-400"></i> @endif
+                                </div>
+                                <div class="overflow-hidden">
+                                    <p class="text-[11px] text-slate-500 font-medium truncate">Kasi Kesejahteraan</p>
+                                    <p class="text-xs font-black text-slate-900 group-hover:text-blue-600 truncate">{{ $kasiKesra->nama ?? 'Belum Diatur' }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4.3 Kasi Pelayanan -->
+                        <div class="flex justify-center w-full">
+                            <div onclick="openModal('Kasi Pelayanan', '{{ $kasiPelayanan->nama ?? 'Belum Diatur' }}', '{{ addslashes($kasiPelayanan->tupoksi ?? 'Tupoksi belum diatur.') }}', '{{ $kasiPelayanan->email ?? '-' }}', '{{ $kasiPelayanan->jam_pelayanan ?? '08:00 - 14:00 WIB' }}', '{{ $kasiPelayanan->foto ?? '' }}')"
+                                class="bg-[#FAFAFA] border border-slate-200 shadow-md p-3 rounded-xl flex items-center gap-3 w-full max-w-[220px] cursor-pointer hover:border-blue-500 transition group">
+                                <div class="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 flex items-center justify-center bg-slate-200">
+                                    @if(!empty($kasiPelayanan->foto)) <img src="{{ asset('storage/' . $kasiPelayanan->foto) }}" class="w-full h-full object-cover"> @else <i class="fa-solid fa-user text-slate-400"></i> @endif
+                                </div>
+                                <div class="overflow-hidden">
+                                    <p class="text-[11px] text-slate-500 font-medium truncate">Kasi Pelayanan</p>
+                                    <p class="text-xs font-black text-slate-900 group-hover:text-blue-600 truncate">{{ $kasiPelayanan->nama ?? 'Belum Diatur' }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4.4 Kaur Umum -->
+                        <div class="flex justify-center w-full">
+                            <div onclick="openModal('Kaur Umum', '{{ $kaurUmum->nama ?? 'Belum Diatur' }}', '{{ addslashes($kaurUmum->tupoksi ?? 'Tupoksi belum diatur.') }}', '{{ $kaurUmum->email ?? '-' }}', '{{ $kaurUmum->jam_pelayanan ?? '08:00 - 15:00 WIB' }}', '{{ $kaurUmum->foto ?? '' }}')"
+                                class="bg-[#FAFAFA] border border-slate-200 shadow-md p-3 rounded-xl flex items-center gap-3 w-full max-w-[220px] cursor-pointer hover:border-blue-500 transition group">
+                                <div class="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden ring-2 ring-slate-100 flex items-center justify-center bg-slate-200">
+                                    @if(!empty($kaurUmum->foto)) <img src="{{ asset('storage/' . $kaurUmum->foto) }}" class="w-full h-full object-cover"> @else <i class="fa-solid fa-user text-slate-400"></i> @endif
+                                </div>
+                                <div class="overflow-hidden">
+                                    <p class="text-[11px] text-slate-500 font-medium truncate">Kaur Umum</p>
+                                    <p class="text-xs font-black text-slate-900 group-hover:text-blue-600 truncate">{{ $kaurUmum->nama ?? 'Belum Diatur' }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
