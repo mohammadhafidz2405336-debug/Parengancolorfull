@@ -14,7 +14,7 @@ class MasterWargaSeeder extends Seeder
     {
         $faker = \Faker\Factory::create('id_ID');
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 40; $i++) {
             // Generate 16 digit angka NIK acak terlebih dahulu
             $nikAcak = $faker->numerify('3524############'); 
 

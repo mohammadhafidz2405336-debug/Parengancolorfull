@@ -31,6 +31,11 @@
                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('admin.dashboard') ? 'bg-blue-800 text-white shadow-inner' : 'text-blue-100 hover:bg-[#1e406d]' }}">
                 <i class="fa-solid fa-chart-line w-5"></i> Dashboard
             </a>
+            
+            <a href="{{ route('admin.warga.index') }}" 
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('admin.warga.*') ? 'bg-blue-800 text-white shadow-inner' : 'text-blue-100 hover:bg-[#1e406d]' }}">
+                <i class="fa-solid fa-users-rectangle w-5"></i> Data Warga
+            </a>
 
             <a href="{{ route('admin.berita.index') }}" 
                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('admin.berita.*') ? 'bg-blue-800 text-white shadow-inner' : 'text-blue-100 hover:bg-[#1e406d]' }}">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\PermohonanSurat;
 use App\Models\Berita;
+use App\Models\MasterWarga;
 use Illuminate\Support\Facades\DB;      // <--- TAMBAHKAN BARIS INI
 use Illuminate\Support\Facades\Storage;
 use App\Models\Aparatur;
@@ -165,5 +166,59 @@ class AdminController extends Controller
         DB::table('aparatur_desa')->where('id', $id)->update($dataUpdate);
 
         return redirect()->route('admin.aparatur.index')->with('success', 'Data aparatur berhasil diperbarui!');
+    }
+
+    // Tambahkan di dalam class AdminController
+    public function wargaIndex(Request $request)
+    {
+        // Mengambil query pencarian jika ada
+        $search = $request->input('search');
+
+        // Query data dengan pencarian dan pagination 20 per halaman
+        $query = MasterWarga::latest();
+
+        if ($search) {
+            $query->where('nama', 'like', "%{$search}%")
+                ->orWhere('nik_hash', '=', hash('sha256', $search)); 
+        }
+
+        $warga = $query->paginate(20);
+
+        // Tetap kirim query search ke pagination agar saat pindah halaman search tetap terbawa
+        $warga->appends(['search' => $search]);
+
+        $warga->getCollection()->transform(function ($item) {
+            $nikAsli = $item->nik; // Data sudah otomatis terdekripsi oleh model
+            $item->nik_sensor = substr($nikAsli, 0, 4) . '********' . substr($nikAsli, -4);
+            return $item;
+        });
+
+        return view('admin.warga_index', compact('warga'));
+    }
+
+    public function wargaImport(Request $request)
+    {
+        // Validasi file yang diupload harus berupa excel/csv
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+
+        // TODO: Logika import Excel akan ditaruh di sini nantinya.
+        
+        return redirect()->back()->with('success', 'Fitur import Excel sedang dalam tahap pengembangan!');
+    }
+
+    public function wargaShow($id)
+    {
+        $warga = MasterWarga::findOrFail($id);
+
+        // Langsung akses $warga->nik, otomatis terdekripsi
+        return response()->json([
+            'nama' => $warga->nama,
+            'nik_asli' => $warga->nik, 
+            'rt' => $warga->rt,
+            'rw' => $warga->rw,
+            'created_at' => $warga->created_at->format('d M Y')
+        ]);
     }
 }

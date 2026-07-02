@@ -42,4 +42,10 @@ Route::prefix('admin')->group(function () {
     Route::get('/pelayanan/{id}/detail', [AdminController::class, 'pelayananDetail'])->name('admin.pelayanan.detail');
 
     Route::get('/potensi', [AdminController::class, 'potensiIndex'])->name('admin.potensi.index');
+
+
+    // Manajemen Data Warga
+    Route::get('/warga', [AdminController::class, 'wargaIndex'])->name('admin.warga.index');
+    Route::post('/warga/import', [AdminController::class, 'wargaImport'])->name('admin.warga.import');
+    Route::get('/warga/{id}/detail', [AdminController::class, 'wargaShow'])->name('admin.warga.detail');
 });
