@@ -97,6 +97,8 @@ class PotensiController extends Controller
 
         $id = $request->input('umkm_id');
         $data = $request->except(['foto']);
+        
+        $data['jenis'] = 'umkm';
 
         if ($request->hasFile('foto')) {
             $this->initCloudinary();
@@ -115,7 +117,7 @@ class PotensiController extends Controller
             PotensiUmkm::create($data);
         }
 
-        return redirect()->route('admin.potensi.index')->with('success', 'Data tersimpan di Cloudinary!');
+        return redirect()->route('admin.potensi.index')->with('success', 'Data UMKM berhasil disimpan!');
     }
 
     // Menghapus data UMKM
