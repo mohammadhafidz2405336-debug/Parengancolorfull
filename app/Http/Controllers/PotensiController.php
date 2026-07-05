@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\PotensiUmkm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Cloudinary\Configuration\Configuration;
+use Cloudinary\Api\Upload\UploadApi; /
 
 class PotensiController extends Controller
 {
+    private function initCloudinary()
+    {
+        Configuration::instance(env('CLOUDINARY_URL'));
+    }
+
     // Mengakses satu halaman utama yang berisi semua form dan tabel
     public function index(Request $request)
     {
@@ -39,7 +46,7 @@ class PotensiController extends Controller
 
         $slot = $request->input('slot');
         
-        // Cari data unggulan lama pada slot ini
+        // Cari data unggulan lama
         $unggulan = PotensiUmkm::where('jenis', 'unggulan')->where('lokasi', $slot)->first();
 
         $data = [
@@ -47,22 +54,30 @@ class PotensiController extends Controller
             'kategori' => $request->kategori,
             'deskripsi' => $request->deskripsi,
             'jenis' => 'unggulan',
+            'lokasi' => $slot, // Pastikan kolom lokasi tersimpan
         ];
 
         if ($request->hasFile('foto')) {
-            if ($unggulan && $unggulan->foto && \Storage::disk('public')->exists($unggulan->foto)) {
-                \Storage::disk('public')->delete($unggulan->foto);
-            }
-            $data['foto'] = $request->file('foto')->store('potensi', 'public');
+            // Konfigurasi Cloudinary
+            Configuration::instance(env('CLOUDINARY_URL'));
+
+            // Upload file baru ke Cloudinary
+            $upload = (new UploadApi())->upload($request->file('foto')->getRealPath(), [
+                'folder' => 'potensi_desa'
+            ]);
+
+            // Masukkan URL aman dari Cloudinary ke database
+            $data['foto'] = $upload['secure_url'];
         }
 
-        // Kunci update data berdasarkan jenis 'unggulan' dan slot 'lokasi' (kiri/kanan)
+        // Simpan ke database
         PotensiUmkm::updateOrCreate(
             ['jenis' => 'unggulan', 'lokasi' => $slot],
             $data
         );
 
-        return redirect()->route('admin.potensi.index')->with('success', "Template Potensi Unggulan Sisi " . ucfirst($slot) . " berhasil diperbarui!");
+        return redirect()->route('admin.potensi.index')
+                        ->with('success', "Template Potensi Unggulan Sisi " . ucfirst($slot) . " berhasil diperbarui!");
     }
 
     // Menyimpan UMKM Baru atau Update UMKM yang sudah ada
@@ -81,30 +96,26 @@ class PotensiController extends Controller
         ]);
 
         $id = $request->input('umkm_id');
-        $data = $request->all();
-        $data['jenis'] = 'umkm';
+        $data = $request->except(['foto']);
 
-        if ($id) {
-            // Proses Update UMKM
-            $umkm = PotensiUmkm::findOrFail($id);
-            if ($request->hasFile('foto')) {
-                if ($umkm->foto && Storage::disk('public')->exists($umkm->foto)) {
-                    Storage::disk('public')->delete($umkm->foto);
-                }
-                $data['foto'] = $request->file('foto')->store('potensi', 'public');
-            }
-            $umkm->update($data);
-            $msg = 'Data UMKM berhasil diperbarui!';
-        } else {
-            // Proses Tambah UMKM Baru
-            if ($request->hasFile('foto')) {
-                $data['foto'] = $request->file('foto')->store('potensi', 'public');
-            }
-            PotensiUmkm::create($data);
-            $msg = 'UMKM baru berhasil didaftarkan!';
+        if ($request->hasFile('foto')) {
+            $this->initCloudinary();
+            // Upload ke Cloudinary
+            $upload = (new UploadApi())->upload($request->file('foto')->getRealPath(), [
+                'folder' => 'potensi_desa'
+            ]);
+            // Simpan URL dari Cloudinary ke database
+            $data['foto'] = $upload['secure_url']; 
         }
 
-        return redirect()->route('admin.potensi.index')->with('success', $msg);
+        if ($id) {
+            $umkm = PotensiUmkm::findOrFail($id);
+            $umkm->update($data);
+        } else {
+            PotensiUmkm::create($data);
+        }
+
+        return redirect()->route('admin.potensi.index')->with('success', 'Data tersimpan di Cloudinary!');
     }
 
     // Menghapus data UMKM

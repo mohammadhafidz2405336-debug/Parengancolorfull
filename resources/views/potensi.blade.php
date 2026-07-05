@@ -53,7 +53,9 @@
                 @if($potensiKiri)
                     <div class="bg-white rounded-3xl shadow-xs border border-slate-100 p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" data-aos="fade-right">
                         <div class="lg:col-span-5 h-72 sm:h-96 rounded-2xl overflow-hidden shadow-md relative">
-                            <img src="{{ $potensiKiri->foto ? asset('storage/' . $potensiKiri->foto) : asset('images/placeholder.jpg') }}" alt="{{ $potensiKiri->nama }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                            <img src="{{ $potensiKiri->foto ? $potensiKanan->foto : asset('images/placeholder.jpg') }}" 
+                            alt="{{ $potensiKiri->nama }}" 
+                            class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
                             <span class="absolute top-4 left-4 bg-blue-800 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                                 🌟 {{ $potensiKiri->kategori ?? 'Unggulan' }}
                             </span>
@@ -90,7 +92,9 @@
                             @endif
                         </div>
                         <div class="lg:col-span-5 h-72 sm:h-96 rounded-2xl overflow-hidden shadow-md relative order-1 lg:order-2">
-                            <img src="{{ $potensiKanan->foto ? asset('storage/' . $potensiKanan->foto) : asset('images/placeholder.jpg') }}" alt="{{ $potensiKanan->nama }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                            <img src="{{ $potensiKanan->foto ? $potensiKanan->foto : asset('images/placeholder.jpg') }}" 
+                                alt="{{ $potensiKanan->nama }}" 
+                                class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
                             <span class="absolute top-4 right-4 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                                 🌟 {{ $potensiKanan->kategori ?? 'Unggulan' }}
                             </span>
@@ -117,7 +121,9 @@
             <div class="bg-white rounded-2xl border border-slate-100 shadow-xs overflow-hidden flex flex-col justify-between transform hover:-translate-y-2 hover:shadow-md transition-all duration-300">
                 <div>
                     <div class="h-48 bg-slate-200 relative">
-                        <img src="{{ $item->foto ? asset('storage/' . $item->foto) : asset('images/placeholder.jpg') }}" alt="{{ $item->nama }}" class="w-full h-full object-cover">
+                        <img src="{{ $item->foto ? $item->foto : asset('images/placeholder.jpg') }}" 
+                            alt="{{ $item->nama }}" 
+                            class="w-full h-full object-cover">
                         <span class="absolute bottom-3 left-3 bg-blue-900/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-md backdrop-blur-xs">
                             Kategori: {{ $item->kategori ?? 'Lainnya' }}
                         </span>
