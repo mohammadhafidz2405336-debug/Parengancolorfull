@@ -100,4 +100,32 @@ class BeritaController extends Controller
         $berita = Berita::findOrFail($id);
         return view('admin.berita_edit', compact('berita'));
     }
+
+    public function update(Request $request, $id)
+    {
+        $berita = Berita::findOrFail($id);
+
+        // Validasi
+        $request->validate([
+            'judul' => 'required',
+            'gambar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Update data dasar
+        $berita->judul = $request->judul;
+        // ... update field lainnya ...
+
+        // Cek jika ada gambar baru
+        if ($request->hasFile('gambar')) {
+            Configuration::instance(env('CLOUDINARY_URL'));
+            $result = (new UploadApi())->upload($request->file('gambar')->getRealPath(), [
+                'folder' => 'berita'
+            ]);
+            $berita->gambar = $result['secure_url'];
+        }
+
+        $berita->save();
+
+        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil diupdate!');
+    }
 }
