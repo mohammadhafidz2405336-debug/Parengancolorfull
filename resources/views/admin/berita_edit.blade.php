@@ -13,7 +13,7 @@
     </div>
 
     <div class="max-w-4xl">
-        <form action="{{ route('admin.berita.edit', $berita->id) }}" method="POST" enctype="multipart/form-data" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 space-y-6">
+        <form action="{{ route('admin.berita.update', $berita->id) }}" method="POST" enctype="multipart/form-data" ...>
             @csrf 
             @method('PUT')
             
