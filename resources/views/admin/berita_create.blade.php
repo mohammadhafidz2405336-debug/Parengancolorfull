@@ -39,11 +39,11 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label for="instansi" class="block text-xs font-bold uppercase text-slate-500 tracking-wider mb-2">Instansi/Kelompok</label>
-                        <input type="text" id="instansi" name="instansi" value="{{ old('instansi', $berita->instansi ?? '') }}" placeholder="Contoh: KKN UM" class="w-full px-4 py-3 rounded-xl border border-slate-200...">
+                        <input type="text" id="instansi" name="instansi" value="{{ old('instansi', $berita->instansi ?? '') }}" placeholder="Contoh: Pemerinta Desa" class="w-full px-4 py-3 rounded-xl border border-slate-200...">
                     </div>
                     <div>
                         <label for="pewarta" class="block text-xs font-bold uppercase text-slate-500 tracking-wider mb-2">Nama Pewarta</label>
-                        <input type="text" id="pewarta" name="pewarta" value="{{ old('pewarta', $berita->pewarta ?? '') }}" placeholder="Contoh: Mohammad Hafidz Suhaiby" class="w-full px-4 py-3 rounded-xl border border-slate-200...">
+                        <input type="text" id="pewarta" name="pewarta" value="{{ old('pewarta', $berita->pewarta ?? '') }}" placeholder="Contoh: Mohammad Moreno" class="w-full px-4 py-3 rounded-xl border border-slate-200...">
                     </div>
                 </div>
             </div>

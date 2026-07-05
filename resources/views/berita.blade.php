@@ -67,6 +67,9 @@
             @endforelse
 
         </div>
+        <div class="mt-12 flex justify-center">
+            {{ $allBerita->links('pagination::tailwind') }}
+        </div>
     </div>
 </div>
 @endsection

@@ -13,7 +13,9 @@ class BeritaController extends Controller
     // Tampilan Berita untuk Publik/Warga
     public function index()
     {
-        $allBerita = Berita::latest()->get();
+        // Mengambil berita terbaru dengan batasan 6 per halaman
+        $allBerita = Berita::latest()->paginate(6); 
+        
         return view('berita', compact('allBerita'));
     }
 
