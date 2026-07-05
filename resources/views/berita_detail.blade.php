@@ -55,12 +55,26 @@
                 <div class="text-slate-700 text-base sm:text-[17px] leading-relaxed font-normal tracking-wide space-y-6">
                     @foreach(explode("\n", $berita->isi_berita) as $paragraf)
                         @if(trim($paragraf) !== '')
-                            <p class="text-justify [text-indent:2.5rem]">
-                                {{ trim($paragraf) }}
-                            </p>
+                            <p class="text-justify [text-indent:2.5rem]">{{ trim($paragraf) }}</p>
                         @endif
                     @endforeach
                 </div>
+
+                <div class="mt-12 p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                        <div>
+                            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Diterbitkan oleh:</p>
+                            <p class="text-sm font-bold text-[#1A365D]">{{ $berita->instansi ?? 'Pemerintah Desa' }}</p>
+                        </div>
+                        <div class="h-8 w-[1px] bg-slate-200 hidden sm:block"></div>
+                        <div>
+                            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Pewarta:</p>
+                            <p class="text-sm font-bold text-slate-800">{{ $berita->pewarta ?? 'Redaksi' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-100 mt-10 pt-6 ...">
 
                 <div class="border-t border-slate-100 mt-10 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <a href="{{ route('desa.berita') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 hover:border-[#1A365D] hover:bg-slate-50 text-slate-600 hover:text-[#1A365D] text-xs font-black uppercase tracking-wider transition-all duration-200">

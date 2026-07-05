@@ -71,16 +71,11 @@ class BeritaController extends Controller
     public function destroy($id)
     {
         $berita = Berita::findOrFail($id);
-
-        // Hapus file gambar dari storage jika ada sebelum menghapus baris database
-        if ($berita->gambar && Storage::disk('public')->exists($berita->gambar)) {
-            Storage::disk('public')->delete($berita->gambar);
-        }
-
+        
         $berita->delete();
 
         return redirect()->route('admin.berita.index')
-                         ->with('success', 'Berita berhasil dihapus!');
+                        ->with('success', 'Berita berhasil dihapus!');
     }
 
     // Tampilan Detail Berita Lengkap untuk Publik
@@ -105,28 +100,30 @@ class BeritaController extends Controller
     {
         $berita = Berita::findOrFail($id);
 
-        // Validasi
+        // 1. Validasi (tambahkan semua field yang bisa diedit)
         $request->validate([
-            'judul' => 'required',
-            'gambar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'judul'      => 'required|string|max:255',
+            'kategori'   => 'required|string',
+            'penulis'    => 'required|string|max:100',
+            'isi_berita' => 'required|string',
+            'gambar'     => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Update data dasar
-        $berita->judul = $request->judul;
-        // ... update field lainnya ...
+        // 2. Update data dasar
+        $berita->judul      = $request->judul;
+        $berita->kategori   = $request->kategori;
+        $berita->penulis    = $request->penulis;
+        $berita->isi_berita = $request->isi_berita;
 
-        // Cek jika ada gambar baru
+        // 3. Cek jika ada gambar baru
         if ($request->hasFile('gambar')) {
-            // 1. Konfigurasi ke Cloudinary (menggunakan CLOUDINARY_URL dari .env)
             \Cloudinary\Configuration\Configuration::instance(env('CLOUDINARY_URL'));
-
-            // 2. Upload file
             $upload = (new \Cloudinary\Api\Upload\UploadApi())->upload($request->file('gambar')->getRealPath(), [
                 'folder' => 'berita'
             ]);
 
-            // 3. Simpan URL secure dari Cloudinary ke variable yang akan masuk ke database
-            $data['gambar'] = $upload['secure_url'];
+            // LANGSUNG MASUKKAN KE OBJEK $berita
+            $berita->gambar = $upload['secure_url'];
         }
 
         $berita->save();

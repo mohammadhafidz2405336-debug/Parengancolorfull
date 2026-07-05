@@ -166,12 +166,13 @@
 
             <!-- Hak Cipta (Bagian Paling Bawah) -->
             <div class="mt-12 pt-6 border-t border-blue-900/30 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400 font-medium">
+    
                 <p>&copy; {{ date('Y') }} Pemerintah Desa Parengan. All Rights Reserved.</p>
-                <div>
-                    <img src="{{ asset('images/LOGO WEBE.png') }}" alt="Logo Parengan" class="h-full w-auto object-contain filter drop-shadow-md">
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <span>Dikembangkan oleh Tim BBM (KKN) Universitas Negeri Malang Desa Parengan 2026</span>
+
+                <div class="flex items-center gap-3">
+                    <img src="{{ asset('images/LOGO WEBE.png') }}" alt="Logo Parengan" class="h-6 w-auto object-contain filter drop-shadow-md">
+                    
+                    <span>Dikembangkan oleh Tim BBM Universitas Negeri Malang Desa Parengan 2026</span>
                 </div>
             </div>
         </div>
