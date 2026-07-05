@@ -6,7 +6,7 @@ use App\Models\PotensiUmkm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Cloudinary\Configuration\Configuration;
-use Cloudinary\Api\Upload\UploadApi; 
+use Cloudinary\Api\Upload\UploadApi;
 
 class PotensiController extends Controller
 {
