@@ -101,7 +101,7 @@
                         @forelse($beritaTerbaru as $terbaru)
                         <a href="{{ route('desa.berita.show', $terbaru->id) }}" class="flex gap-4 group items-start border-b border-slate-50 pb-4 last:border-0 last:pb-0">
                             <div class="w-20 aspect-square rounded-xl overflow-hidden bg-slate-100 border border-slate-200/50 flex-shrink-0 relative shadow-sm">
-                                <img src="{{ asset('storage/' . $terbaru->gambar) }}" alt="Thumbnail" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                                <img src="{{ $terbaru->gambar }}" alt="{{ $terbaru->judul }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                             </div>
                             
                             <div class="min-w-0 flex flex-col justify-between h-full">

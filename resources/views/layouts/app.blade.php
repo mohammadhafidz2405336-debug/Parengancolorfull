@@ -211,5 +211,146 @@
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         });
     </script>
+    <div x-data="{ 
+                open: false, 
+                messages: [], 
+                newMessage: '', 
+                loading: false,
+                async sendChat() {
+                    if (!this.newMessage.trim() || this.loading) return;
+                    
+                    this.messages.push({ sender: 'user', text: this.newMessage });
+                    const textToSend = this.newMessage;
+                    this.newMessage = '';
+                    this.loading = true;
+
+                    // Otomatis scroll ke bawah setelah user kirim pesan
+                    this.$nextTick(() => { this.scrollToBottom(); });
+
+                    try {
+                        const response = await fetch('{{ route('chat.ai.send') }}', {
+                            method: 'POST', 
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({ message: textToSend })
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            this.messages.push({ sender: 'ai', text: data.reply });
+                        } else {
+                            this.messages.push({ sender: 'ai', text: data.reply || 'Aduh, sistem database desa kami sedang sibuk.' });
+                        }
+                    } catch (error) {
+                        this.messages.push({ sender: 'ai', text: 'Gagal terhubung ke server. Pastikan koneksi internet Anda aktif.' });
+                    } finally {
+                        this.loading = false;
+                        this.$nextTick(() => { this.scrollToBottom(); });
+                    }
+                },
+                scrollToBottom() {
+                    if(this.$refs.chatArea) {
+                        this.$refs.chatArea.scrollTo({
+                            top: this.$refs.chatArea.scrollHeight,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            }" 
+            class="fixed bottom-6 right-6 z-50 font-sans">
+            
+            <button @click="open = !open; if(open) $nextTick(() => scrollToBottom())" 
+                    class="bg-gradient-to-r from-[#1A365D] to-[#2a5282] hover:from-[#2a5282] hover:to-[#1A365D] text-white p-3.5 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.3)] flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-95 border border-slate-600/50 group">
+                <div x-show="!open" class="flex items-center justify-center relative">
+                    <img src="{{ asset('images/logo-desa.png') }}" onerror="this.src='https://placehold.co/40x40?text=Logo'" alt="Logo Desa" class="w-8 w-8 rounded-full object-cover border border-amber-400/60 shadow-sm transition-transform duration-500 group-hover:rotate-12">
+                    <span class="absolute -top-1.5 -right-1.5 flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                    </span>
+                </div>
+                
+                <div x-show="open" x-cloak class="flex items-center justify-center w-8 h-8 transition-transform duration-300 transform rotate-90">
+                    <iconify-icon icon="layout-line" width="24" class="text-amber-400" style="transform: rotate(45deg);"></iconify-icon>
+                    <iconify-icon icon="mdi:close" width="26" class="text-amber-400"></iconify-icon>
+                </div>
+            </button>
+
+            <div x-show="open" x-cloak
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 translate-y-12 scale-95"
+                x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                x-transition:leave-end="opacity-0 translate-y-12 scale-95"
+                class="absolute bottom-20 right-0 w-[calc(100vw-2rem)] sm:w-[440px] bg-slate-900/95 backdrop-blur-xl border border-slate-700/70 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.4)] flex flex-col overflow-hidden h-[420px]">
+                
+                <div class="bg-gradient-to-r from-[#1A365D] via-[#1e3e6b] to-[#2a5282] p-4 flex items-center justify-between border-b border-slate-700/60 shadow-md">
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <img src="{{ asset('images/logo-desa.png') }}" onerror="this.src='https://placehold.co/40x40?text=Logo'" alt="Logo" class="w-10 h-10 rounded-xl object-cover border border-amber-400/40 p-0.5 bg-slate-800">
+                            <span class="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-slate-900 animate-pulse"></span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold text-sm tracking-wide">My Parengan AI</h4>
+                            <span class="text-slate-300 text-xs font-light">Asisten Digital Resmi Desa</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+                        <span class="text-emerald-400 text-[10px] font-medium uppercase tracking-wider">Aktif</span>
+                    </div>
+                </div>
+
+                <div x-ref="chatArea" class="flex-grow p-4 overflow-y-auto space-y-4 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 scrollbar-thin scrollbar-thumb-slate-800">
+                    
+                    <div class="flex gap-2.5 items-start max-w-[85%] animate-fade-in">
+                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[10px]">🤖</div>
+                        <div class="bg-slate-800/90 border border-slate-700/40 p-3.5 rounded-xl rounded-tl-none text-slate-200 leading-relaxed shadow-sm">
+                            Selamat datang di layanan mandiri! Ada yang bisa saya bantu terkait profil wilayah, info pelayanan surat, berita, atau potensi UMKM di **Desa Parengan**?
+                        </div>
+                    </div>
+
+                    <template x-for="msg in messages">
+                        <div :class="msg.sender === 'user' ? 'justify-end' : 'justify-start'" class="flex w-full items-start gap-2.5">
+                            <template x-if="msg.sender !== 'user'">
+                                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[10px]">🤖</div>
+                            </template>
+                            
+                            <div :class="msg.sender === 'user' ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 rounded-br-none font-medium' : 'bg-slate-800/90 border border-slate-700/40 text-slate-200 rounded-tl-none'" 
+                                class="p-3.5 rounded-xl max-w-[82%] whitespace-pre-line shadow-md transition-all duration-200 hover:shadow-lg leading-relaxed text-[13.5px]"
+                                x-text="msg.text">
+                            </div>
+                        </div>
+                    </template>
+
+                    <div x-show="loading" x-cloak class="flex justify-start w-full items-start gap-2.5">
+                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[10px]">🤖</div>
+                        <div class="bg-slate-800/80 border border-slate-700/30 p-3.5 rounded-xl rounded-tl-none flex items-center gap-1.5 shadow-sm">
+                            <span class="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style="animation-delay: 0ms"></span>
+                            <span class="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style="animation-delay: 150ms"></span>
+                            <span class="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style="animation-delay: 300ms"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-slate-950 border-t border-slate-800/80 flex gap-2 items-center">
+                    <div class="relative flex-grow">
+                        <input type="text" 
+                            x-model="newMessage" 
+                            @keydown.enter="sendChat" 
+                            placeholder="Ketik pertanyaan Anda di sini..." 
+                            class="w-full bg-slate-900 border border-slate-700/80 rounded-xl pl-4 pr-10 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/50 transition-all shadow-inner">
+                    </div>
+                    <button @click="sendChat" 
+                            :disabled="!newMessage.trim() || loading"
+                            :class="newMessage.trim() && !loading ? 'bg-amber-500 hover:bg-amber-600 text-slate-950 scale-100' : 'bg-slate-800 text-slate-500 scale-95 cursor-not-allowed'"
+                            class="p-2.5 rounded-xl flex items-center justify-center transition-all duration-300 shadow-md">
+                        <iconify-icon icon="mdi:send" width="20"></iconify-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\ProfileDesaController;
 use App\Http\Controllers\PotensiController;
+use App\Http\Controllers\ChatAiController;
 use Illuminate\Support\Facades\Artisan;
 
 // Route Halaman Publik Desa
@@ -15,6 +16,8 @@ Route::controller(DesaController::class)->group(function () {
     Route::get('/potensi', 'potensi')->name('desa.potensi');
     Route::get('/pelayanan', 'pelayanan')->name('desa.pelayanan');
     Route::post('/pelayanan/kirim', 'kirimPermohonan')->name('surat.kirim');
+    Route::post('/chat-ai', [App\Http\Controllers\ChatAiController::class, 'sendMessage'])->name('chat.ai');
+    Route::post('/chat-ai/kirim', [ChatAiController::class, 'sendMessage'])->name('chat.ai.send');
     // Jalur berita publik dipindahkan ke BeritaController
 });
 Route::get('/berita', [BeritaController::class, 'index'])->name('desa.berita');

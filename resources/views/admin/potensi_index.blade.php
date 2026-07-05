@@ -268,7 +268,7 @@
                         <td class="py-4 px-6">
                             <div class="w-12 h-12 rounded-lg border border-slate-100 overflow-hidden bg-slate-100 flex items-center justify-center">
                                 @if($item->foto)
-                                    <img src="{{ asset('storage/' . $item->foto) }}" class="w-full h-full object-cover">
+                                    <img src="{{ Str::startsWith($item->foto, ['http://', 'https://']) ? $item->foto : asset('storage/' . $item->foto) }}" class="w-full h-full object-cover">
                                 @else
                                     <i class="fa-solid fa-store text-slate-300 text-sm"></i>
                                 @endif
