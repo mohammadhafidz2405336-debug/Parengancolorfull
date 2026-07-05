@@ -48,13 +48,14 @@ class BeritaController extends Controller
         // 2. Upload gambar ke Cloudinary
         $path = null; // Inisialisasi awal
         if ($request->hasFile('gambar')) {
-            Configuration::instance(env('CLOUDINARY_URL'));
+            Configuration::instance(env('CLOUDINARY_URL')); // Sudah ringkas karena ada 'use' di atas
 
-            $result = (new UploadApi())->upload($request->file('gambar')->getRealPath(), [
+            $upload = (new UploadApi())->upload($request->file('gambar')->getRealPath(), [
                 'folder' => 'berita'
             ]);
 
-            $path = $result['secure_url'];
+            $berita->gambar = $upload['secure_url']; // Untuk fungsi update
+            // Atau $path = $upload['secure_url'];  // Untuk fungsi store
         }
 
         // 3. Simpan ke database
@@ -124,12 +125,14 @@ class BeritaController extends Controller
 
         // 3. Cek jika ada gambar baru
         if ($request->hasFile('gambar')) {
-            \Cloudinary\Configuration\Configuration::instance(env('CLOUDINARY_URL'));
-            $upload = (new \Cloudinary\Api\Upload\UploadApi())->upload($request->file('gambar')->getRealPath(), [
+            Configuration::instance(env('CLOUDINARY_URL')); // Sudah ringkas karena ada 'use' di atas
+
+            $upload = (new UploadApi())->upload($request->file('gambar')->getRealPath(), [
                 'folder' => 'berita'
             ]);
 
-            $berita->gambar = $upload['secure_url'];
+            $berita->gambar = $upload['secure_url']; // Untuk fungsi update
+            // Atau $path = $upload['secure_url'];  // Untuk fungsi store
         }
 
         $berita->save();
