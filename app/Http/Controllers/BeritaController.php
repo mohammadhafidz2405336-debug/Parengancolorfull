@@ -117,11 +117,16 @@ class BeritaController extends Controller
 
         // Cek jika ada gambar baru
         if ($request->hasFile('gambar')) {
-            Configuration::instance(env('CLOUDINARY_URL'));
-            $result = (new UploadApi())->upload($request->file('gambar')->getRealPath(), [
+            // 1. Konfigurasi ke Cloudinary (menggunakan CLOUDINARY_URL dari .env)
+            \Cloudinary\Configuration\Configuration::instance(env('CLOUDINARY_URL'));
+
+            // 2. Upload file
+            $upload = (new \Cloudinary\Api\Upload\UploadApi())->upload($request->file('gambar')->getRealPath(), [
                 'folder' => 'berita'
             ]);
-            $berita->gambar = $result['secure_url'];
+
+            // 3. Simpan URL secure dari Cloudinary ke variable yang akan masuk ke database
+            $data['gambar'] = $upload['secure_url'];
         }
 
         $berita->save();

@@ -54,7 +54,10 @@
                     <span class="text-xs text-slate-400 font-medium">Format: JPG, PNG (Maks. 2MB)</span>
                 </div>
                 @if($berita->gambar)
-                    <p class="mt-2 text-xs text-slate-500">Gambar saat ini: <a href="{{ asset('storage/'.$berita->gambar) }}" target="_blank" class="text-blue-600 underline">Lihat Gambar</a></p>
+                    <p class="mt-2 text-xs text-slate-500">
+                        Gambar saat ini: 
+                        <a href="{{ $berita->gambar }}" target="_blank" class="text-blue-600 underline">Lihat Gambar</a>
+                    </p>
                 @endif
             </div>
 
