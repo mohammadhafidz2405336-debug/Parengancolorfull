@@ -39,7 +39,7 @@
                     <div class="flex items-center gap-3 text-xs text-slate-500 mb-3 font-medium">
                         <span>{{ $item->created_at->translatedFormat('d F Y') }}</span>
                         <span class="w-1 h-1 rounded-full bg-slate-300"></span>
-                        <span>Oleh: {{ $item->penulis }}</span>
+                        <span>Oleh: {{ $item->instansi }}</span>
                     </div>
                     
                     <h3 class="text-lg font-bold text-slate-900 leading-snug mb-3 group-hover:text-blue-700 transition line-clamp-2">
