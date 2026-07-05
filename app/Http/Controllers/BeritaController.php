@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Berita;
+use Cloudinary\Configuration\Configuration;
+use Cloudinary\Api\Upload\UploadApi;
 use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
@@ -40,8 +42,17 @@ class BeritaController extends Controller
         ]);
 
         // Proses upload gambar thumbnail ke folder storage/public/berita
-        if ($request->hasFile('gambar')) {
-            $path = $request->file('gambar')->store('berita', 'public');
+       if ($request->hasFile('gambar')) {
+            // Konfigurasi Cloudinary menggunakan URL dari environment variable
+            Configuration::instance(env('CLOUDINARY_URL'));
+
+            // Upload file
+            $result = (new UploadApi())->upload($request->file('gambar')->getRealPath(), [
+                'folder' => 'berita'
+            ]);
+
+            // Ambil URL aman
+            $path = $result['secure_url']; 
         }
 
         Berita::create([
