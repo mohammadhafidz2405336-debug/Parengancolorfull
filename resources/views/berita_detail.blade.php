@@ -38,7 +38,7 @@
                         </div>
                         <div>
                             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Kontributor</p>
-                            <p class="text-sm font-bold text-slate-800">{{ $berita->penulis }}</p>
+                            <p class="text-sm font-bold text-slate-800">{{ $berita->instansi }}</p>
                         </div>
                         <div class="ml-auto text-right sm:block hidden">
                             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Diterbitkan</p>
@@ -62,11 +62,6 @@
 
                 <div class="mt-12 p-6 bg-slate-50 rounded-2xl border border-slate-100">
                     <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                        <div>
-                            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Diterbitkan oleh:</p>
-                            <p class="text-sm font-bold text-[#1A365D]">{{ $berita->instansi ?? 'Pemerintah Desa' }}</p>
-                        </div>
-                        <div class="h-8 w-[1px] bg-slate-200 hidden sm:block"></div>
                         <div>
                             <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Pewarta:</p>
                             <p class="text-sm font-bold text-slate-800">{{ $berita->pewarta ?? 'Redaksi' }}</p>
