@@ -35,38 +35,40 @@ class BeritaController extends Controller
     // Proses Simpan Berita Baru ke Database
     public function store(Request $request)
     {
+        // 1. Validasi: Ganti 'penulis' jadi 'pewarta' dan tambahkan 'instansi'
         $request->validate([
             'judul'      => 'required|string|max:255',
             'kategori'   => 'required|string',
-            'penulis'    => 'required|string|max:100',
+            'instansi'   => 'required|string|max:100', // Tambahkan validasi instansi
+            'pewarta'    => 'required|string|max:100', // Ganti penulis jadi pewarta
             'gambar'     => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'isi_berita' => 'required|string',
         ]);
 
-        // Proses upload gambar thumbnail ke folder storage/public/berita
-       if ($request->hasFile('gambar')) {
-            // Konfigurasi Cloudinary menggunakan URL dari environment variable
+        // 2. Upload gambar ke Cloudinary
+        $path = null; // Inisialisasi awal
+        if ($request->hasFile('gambar')) {
             Configuration::instance(env('CLOUDINARY_URL'));
 
-            // Upload file
             $result = (new UploadApi())->upload($request->file('gambar')->getRealPath(), [
                 'folder' => 'berita'
             ]);
 
-            // Ambil URL aman
-            $path = $result['secure_url']; 
+            $path = $result['secure_url'];
         }
 
+        // 3. Simpan ke database
         Berita::create([
             'judul'      => $request->judul,
             'kategori'   => $request->kategori,
-            'penulis'    => $request->penulis,
-            'gambar'     => $path ?? null,
+            'instansi'   => $request->instansi, // Simpan instansi
+            'pewarta'    => $request->pewarta,  // Simpan pewarta
+            'gambar'     => $path,
             'isi_berita' => $request->isi_berita,
         ]);
 
         return redirect()->route('admin.berita.index')
-                         ->with('success', 'Berita berhasil dipublikasikan!');
+                        ->with('success', 'Berita berhasil dipublikasikan!');
     }
 
     // Proses Hapus Berita
@@ -102,19 +104,22 @@ class BeritaController extends Controller
     {
         $berita = Berita::findOrFail($id);
 
-        // 1. Validasi (tambahkan semua field yang bisa diedit)
+        // 1. Validasi: Update nama field 'penulis' menjadi 'pewarta'
+        // Tambahkan juga validasi untuk 'instansi'
         $request->validate([
             'judul'      => 'required|string|max:255',
             'kategori'   => 'required|string',
-            'penulis'    => 'required|string|max:100',
+            'instansi'   => 'required|string|max:100', // Wajib ada
+            'pewarta'    => 'required|string|max:100', // Ganti dari penulis ke pewarta
             'isi_berita' => 'required|string',
             'gambar'     => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // 2. Update data dasar
+        // 2. Update data: Sesuaikan dengan nama kolom yang baru
         $berita->judul      = $request->judul;
         $berita->kategori   = $request->kategori;
-        $berita->penulis    = $request->penulis;
+        $berita->instansi   = $request->instansi; // Field baru
+        $berita->pewarta    = $request->pewarta;  // Field yang di-rename
         $berita->isi_berita = $request->isi_berita;
 
         // 3. Cek jika ada gambar baru
@@ -124,7 +129,6 @@ class BeritaController extends Controller
                 'folder' => 'berita'
             ]);
 
-            // LANGSUNG MASUKKAN KE OBJEK $berita
             $berita->gambar = $upload['secure_url'];
         }
 
