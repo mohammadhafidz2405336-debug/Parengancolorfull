@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="relative aspect-video rounded-2xl overflow-hidden bg-slate-100 border border-slate-200/60 shadow-inner group mb-8">
-                    <img src="{{ asset('storage/' . $berita->gambar) }}" alt="{{ $berita->judul }}" class="w-full h-full object-cover group-hover:scale-102 transition duration-700 ease-out">
+                    <img src="{{ $berita->gambar }}" alt="{{ $berita->judul }}" class="w-full h-full object-cover group-hover:scale-102 transition duration-700 ease-out">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
                 </div>
 

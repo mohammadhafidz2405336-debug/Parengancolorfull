@@ -39,7 +39,7 @@
                         <td class="py-4 px-6 text-center font-medium text-slate-500">{{ $index + 1 }}</td>
                         <td class="py-4 px-6">
                             <div class="w-24 aspect-video rounded-lg overflow-hidden bg-slate-100 border border-slate-200">
-                                <img src="{{ asset('storage/' . $item->gambar) }}" alt="Thumbnail" class="w-full h-full object-cover">
+                                <img src="{{ $item->gambar }}" alt="Thumbnail" class="w-full h-full object-cover">
                             </div>
                         </td>
                         <td class="py-4 px-6">

@@ -29,7 +29,7 @@
             @forelse($allBerita as $item)
             <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md hover:border-blue-500/30 transition duration-300 flex flex-col group" data-aos="fade-up">
                 <div class="relative aspect-video overflow-hidden bg-slate-100">
-                    <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    <img src="{{ $item->gambar }}" alt="{{ $item->judul }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     <span class="absolute top-3 left-3 bg-blue-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm">
                         {{ $item->kategori }}
                     </span>
