@@ -35,36 +35,36 @@ class BeritaController extends Controller
     // Proses Simpan Berita Baru ke Database
     public function store(Request $request)
     {
-        // 1. Validasi: Ganti 'penulis' jadi 'pewarta' dan tambahkan 'instansi'
+        // 1. Validasi
         $request->validate([
             'judul'      => 'required|string|max:255',
             'kategori'   => 'required|string',
-            'instansi'   => 'required|string|max:100', // Tambahkan validasi instansi
-            'pewarta'    => 'required|string|max:100', // Ganti penulis jadi pewarta
+            'instansi'   => 'required|string|max:100',
+            'pewarta'    => 'required|string|max:100',
             'gambar'     => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'isi_berita' => 'required|string',
         ]);
 
         // 2. Upload gambar ke Cloudinary
-        $path = null; // Inisialisasi awal
+        $path = null; 
         if ($request->hasFile('gambar')) {
-            Configuration::instance(env('CLOUDINARY_URL')); // Sudah ringkas karena ada 'use' di atas
+            Configuration::instance(env('CLOUDINARY_URL'));
 
             $upload = (new UploadApi())->upload($request->file('gambar')->getRealPath(), [
                 'folder' => 'berita'
             ]);
 
-            $berita->gambar = $upload['secure_url']; // Untuk fungsi update
-            // Atau $path = $upload['secure_url'];  // Untuk fungsi store
+            // SIMPAN KE VARIABEL $path, BUKAN $berita->gambar
+            $path = $upload['secure_url']; 
         }
 
         // 3. Simpan ke database
         Berita::create([
             'judul'      => $request->judul,
             'kategori'   => $request->kategori,
-            'instansi'   => $request->instansi, // Simpan instansi
-            'pewarta'    => $request->pewarta,  // Simpan pewarta
-            'gambar'     => $path,
+            'instansi'   => $request->instansi,
+            'pewarta'    => $request->pewarta,
+            'gambar'     => $path, // Gunakan variabel $path di sini
             'isi_berita' => $request->isi_berita,
         ]);
 
