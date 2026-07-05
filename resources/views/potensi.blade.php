@@ -53,7 +53,7 @@
                 @if($potensiKiri)
                     <div class="bg-white rounded-3xl shadow-xs border border-slate-100 p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" data-aos="fade-right">
                         <div class="lg:col-span-5 h-72 sm:h-96 rounded-2xl overflow-hidden shadow-md relative">
-                            <img src="{{ $potensiKiri->foto ? $potensiKanan->foto : asset('images/placeholder.jpg') }}" 
+                            <img src="{{ $potensiKiri->foto ?? asset('images/placeholder.jpg') }}" 
                             alt="{{ $potensiKiri->nama }}" 
                             class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
                             <span class="absolute top-4 left-4 bg-blue-800 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
@@ -78,7 +78,15 @@
 
                 @if($potensiKanan)
                     <div class="bg-white rounded-3xl shadow-xs border border-slate-100 p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" data-aos="fade-left">
-                        <div class="lg:col-span-7 space-y-4 order-2 lg:order-1">
+                    <div class="lg:col-span-5 h-72 sm:h-96 rounded-2xl overflow-hidden shadow-md relative">
+                            <img src="{{ $potensiKanan->foto ?? asset('images/placeholder.jpg') }}" 
+                            alt="{{ $potensiKanan->nama }}" 
+                            class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                            <span class="absolute top-4 left-4 bg-blue-800 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                                🌟 {{ $potensiKanan->kategori ?? 'Unggulan' }}
+                            </span>
+                    </div>    
+                    <div class="lg:col-span-7 space-y-4 order-2 lg:order-1">
                             <h3 class="text-2xl font-black text-slate-900">{{ $potensiKanan->nama }}</h3>
                             <p class="text-slate-600 text-sm leading-relaxed text-justify">
                                 {{ $potensiKanan->deskripsi }}
