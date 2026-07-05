@@ -5,6 +5,7 @@ use App\Http\Controllers\DesaController;
 use App\Http\Controllers\AdminController; 
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\ProfileDesaController;
+use App\Http\Controllers\PotensiController;
 use Illuminate\Support\Facades\Artisan;
 
 // Route Halaman Publik Desa
@@ -42,7 +43,11 @@ Route::prefix('admin')->group(function () {
     Route::post('/pelayanan/{id}/verifikasi', [AdminController::class, 'pelayananUpdate'])->name('admin.pelayanan.update');
     Route::get('/pelayanan/{id}/detail', [AdminController::class, 'pelayananDetail'])->name('admin.pelayanan.detail');
 
-    Route::get('/potensi', [AdminController::class, 'potensiIndex'])->name('admin.potensi.index');
+   // Rute Tunggal Manajemen Potensi Terpadu
+    Route::get('/potensi', [PotensiController::class, 'index'])->name('admin.potensi.index');
+    Route::post('/potensi/unggulan/simpan', [PotensiController::class, 'saveUnggulan'])->name('admin.potensi.save_unggulan');
+    Route::post('/potensi/umkm/simpan', [PotensiController::class, 'saveUmkm'])->name('admin.potensi.save_umkm');
+    Route::delete('/potensi/{id}/hapus', [PotensiController::class, 'destroy'])->name('admin.potensi.destroy');
 
 
     // Manajemen Data Warga

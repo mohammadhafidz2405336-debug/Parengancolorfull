@@ -6,20 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('potensi_umkm', function (Blueprint $table) {
             $table->id();
+            $table->string('nama'); 
+            $table->enum('jenis', ['unggulan', 'umkm']); // Untuk memisahkan mana potensi utama & mana list UMKM
+            $table->string('kategori')->nullable(); // cth: Makanan Ringan, Kerajinan
+            $table->text('deskripsi');
+            $table->string('foto')->nullable();
+            $table->string('pemilik')->nullable();
+            $table->string('lokasi')->nullable();
+            $table->string('kontak')->nullable(); // Nomor WA
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('potensi_umkm');

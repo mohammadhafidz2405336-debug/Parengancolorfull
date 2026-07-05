@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\MasterJenisSurat;
 use App\Models\MasterWarga;
 use App\Models\PermohonanSurat;
+use App\Models\PotensiUmkm;
 use Illuminate\Support\Facades\Crypt;
 
 class DesaController extends Controller
@@ -33,7 +34,13 @@ class DesaController extends Controller
     // Halaman Potensi (UMKM, Pertanian, dll)
     public function potensi()
     {
-        return view('potensi');
+        $potensiKiri = PotensiUmkm::where('jenis', 'unggulan')->where('lokasi', 'kiri')->first();
+        $potensiKanan = PotensiUmkm::where('jenis', 'unggulan')->where('lokasi', 'kanan')->first();
+        
+        // Ambil data direktori UMKM untuk bagian card bawah
+        $umkmList = PotensiUmkm::where('jenis', 'umkm')->latest()->get();
+
+        return view('potensi', compact('potensiKiri', 'potensiKanan', 'umkmList'));
     }
 
     // Halaman Layanan Publik / Administrasi
