@@ -61,8 +61,8 @@
                                 <form action="{{ route('admin.berita.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus berita ini?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center text-xs transition" title="Hapus">
-                                        <i class="fa-solid fa-trash"></i>
+                                    <button type="submit" class="text-red-600 hover:text-red-800">
+                                        Hapus
                                     </button>
                                 </form>
                             </div>
