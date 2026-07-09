@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\PermohonanSurat;
 use App\Models\Berita;
 use App\Models\MasterWarga;
+use App\Models\HomeSetting;
 use Illuminate\Support\Facades\DB;      // <--- TAMBAHKAN BARIS INI
 use Illuminate\Support\Facades\Storage;
+use Cloudinary\Configuration\Configuration;
+use Cloudinary\Api\Upload\UploadApi;
 use App\Models\Aparatur;
 use Illuminate\Support\Facades\Crypt;
 
@@ -17,6 +20,87 @@ class AdminController extends Controller
     {
         $totalPermohonan = PermohonanSurat::count();
         return view('admin.dasboard', compact('totalPermohonan'));
+    }
+
+    public function homeSettingEdit()
+    {
+        $setting = HomeSetting::first() ?? new HomeSetting();
+        return view('admin.home_setting', compact('setting'));
+    }
+
+    // Proses Update / Simpan
+    public function homeSettingUpdate(Request $request)
+    {
+        $setting = HomeSetting::first() ?? new HomeSetting();
+
+        // Ambil data input teks selain token dan file
+        $dataUpdate = $request->except(['_token', 'hero_images', 'kades_foto']);
+
+        // Ambil array data gambar slider saat ini yang tersimpan di database
+        $currentImages = is_array($setting->hero_images) ? $setting->hero_images : [];
+
+        // === LOGIKA PER SLOT GAMBAR SLIDER ===
+        if ($request->hasFile('hero_images')) {
+            $uploadedSlots = $request->file('hero_images');
+
+            foreach (['slot_1', 'slot_2', 'slot_3'] as $slot) {
+                if (isset($uploadedSlots[$slot]) && $uploadedSlots[$slot]->isValid()) {
+                    
+                    // Cek apakah aplikasi berjalan di Production (Railway) dengan memanfaatkan env CLOUDINARY_URL
+                    if (env('CLOUDINARY_URL')) {
+                        
+                        // 1. Inisialisasi Cloudinary SDK
+                        Configuration::instance(env('CLOUDINARY_URL'));
+
+                        // 2. Upload langsung ke Cloudinary ke dalam folder 'beranda/slider'
+                        $upload = (new UploadApi())->upload($uploadedSlots[$slot]->getRealPath(), [
+                            'folder' => 'beranda/slider'
+                        ]);
+
+                        // 3. Simpan URL penuh secure_url dari Cloudinary ke database
+                        $currentImages[$slot] = $upload['secure_url'];
+
+                    } else {
+                        // JIKA DI LOKAL: Gunakan storage lokal bawaan
+                        
+                        // Hapus berkas lama yang ada di storage lokal khusus untuk slot ini
+                        if (isset($currentImages[$slot]) && \Illuminate\Support\Facades\Storage::disk('public')->exists($currentImages[$slot])) {
+                            \Illuminate\Support\Facades\Storage::disk('public')->delete($currentImages[$slot]);
+                        }
+
+                        // Simpan berkas gambar baru ke storage lokal
+                        $path = $uploadedSlots[$slot]->store('beranda/slider', 'public');
+                        
+                        $currentImages[$slot] = $path;
+                    }
+                }
+            }
+        }
+        
+        // Satukan kembali array images yang diperbarui ke dalam dataUpdate
+        $dataUpdate['hero_images'] = $currentImages;
+
+        // === LOGIKA FOTO KADES ===
+        if ($request->hasFile('kades_foto') && $request->file('kades_foto')->isValid()) {
+            if (env('CLOUDINARY_URL')) {
+                Configuration::instance(env('CLOUDINARY_URL'));
+                $uploadKades = (new UploadApi())->upload($request->file('kades_foto')->getRealPath(), [
+                    'folder' => 'beranda/kades'
+                ]);
+                $dataUpdate['kades_foto'] = $uploadKades['secure_url'];
+            } else {
+                if ($setting->kades_foto && \Illuminate\Support\Facades\Storage::disk('public')->exists($setting->kades_foto)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($setting->kades_foto);
+                }
+                $dataUpdate['kades_foto'] = $request->file('kades_foto')->store('beranda/kades', 'public');
+            }
+        }
+
+        // Eksekusi update database
+        $setting->fill($dataUpdate);
+        $setting->save();
+
+        return redirect()->back()->with('success', 'Pengaturan beranda berhasil diperbarui!');
     }
 
     // ==========================================

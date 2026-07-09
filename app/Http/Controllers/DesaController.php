@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\HomeSetting;
 use App\Models\MasterJenisSurat;
 use App\Models\MasterWarga;
 use App\Models\PermohonanSurat;
@@ -13,9 +14,18 @@ use Illuminate\Support\Facades\Crypt;
 class DesaController extends Controller
 {
     // Halaman Beranda (Home)
-    public function home()
+   public function home()
     {
-        return view('home');
+        // Ambil baris pertama data setting, jika belum ada buat instance kosong agar tidak error
+        $setting = HomeSetting::first() ?? new HomeSetting();
+
+        // Hitung statistik otomatis (real-time) dari database
+        $statPenduduk = MasterWarga::count();
+        $statUmkm     = PotensiUmkm::count();
+        $statBerita = DB::table('isi_berita')->count();
+        $statLayanan  = MasterJenisSurat::count();
+
+        return view('home', compact('setting', 'statPenduduk', 'statUmkm', 'statBerita', 'statLayanan'));
     }
 
     // Halaman Profil Desa

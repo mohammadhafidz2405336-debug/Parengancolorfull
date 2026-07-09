@@ -317,7 +317,7 @@
                                 <div class="flex-shrink-0 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[10px]">🤖</div>
                             </template>
                             
-                            <div :class="msg.sender === 'user' ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 rounded-br-none font-medium' : 'bg-slate-800/90 border border-slate-700/40 text-slate-200 rounded-tl-none'" 
+                            <div :class="msg.sender === 'user' ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-br-none font-medium' : 'bg-slate-800/90 border border-slate-700/40 text-slate-200 rounded-tl-none'" 
                                 class="p-3.5 rounded-xl max-w-[82%] whitespace-pre-line shadow-md transition-all duration-200 hover:shadow-lg leading-relaxed text-[13.5px]"
                                 x-text="msg.text">
                             </div>

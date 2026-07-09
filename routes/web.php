@@ -26,6 +26,11 @@ Route::get('/berita/{id}', [BeritaController::class, 'show'])->name('desa.berita
 // Route Group Halaman Dashboard Admin
 Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+
+    // Manajemen Konten Beranda (CMS)
+    // === TAMBAHKAN DUA BARIS ROUTE INI ===
+    Route::get('/home-setting', [AdminController::class, 'homeSettingEdit'])->name('admin.home_setting.edit');
+    Route::post('/home-setting/update', [AdminController::class, 'homeSettingUpdate'])->name('admin.home_setting.update');
     
     // Fitur Manajemen Berita (Menggunakan BeritaController)
     Route::get('/berita', [BeritaController::class, 'adminIndex'])->name('admin.berita.index');
