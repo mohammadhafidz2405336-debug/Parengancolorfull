@@ -7,17 +7,32 @@
 <!-- HERO SECTION (Tampilan Atas - Gambar Utama) -->
 <!-- ========================================== -->
 @php
-    // Memastikan $setting tidak null dan hero_images benar-benar sebuah array/berisi data
-    $sliderImages = (isset($setting) && is_array($setting->hero_images) && count($setting->hero_images) > 0)
-                    ? $setting->hero_images 
-                    : ['images/bg-parengan.jpg', 'images/bg-parengan2.jpg', 'images/bg-parengan3.jpg'];
+    // Inisialisasi array kosong
+    $tempImages = [];
+
+    // Ambil data dari database jika ada dan bertipe array
+    $dbImages = (isset($setting) && is_array($setting->hero_images)) ? $setting->hero_images : [];
+
+    // Ambil urutan dari slot_1 sampai slot_3
+    foreach (['slot_1', 'slot_2', 'slot_3'] as $index => $slot) {
+        if (isset($dbImages[$slot]) && !empty($dbImages[$slot])) {
+            $tempImages[] = $dbImages[$slot];
+        } else {
+            // Jika slot database kosong, berikan fallback gambar default bawaan
+            $fallbackImages = ['images/bg-parengan.jpg', 'images/bg-parengan2.jpg', 'images/bg-parengan3.jpg'];
+            $tempImages[] = $fallbackImages[$index];
+        }
+    }
     
+    // === TAMBAHKAN BARIS INI (Sangat Penting!) ===
+    // array_values memastikan indeks array kembali menjadi angka 0, 1, 2
+    $sliderImages = array_values($tempImages);
     $totalSlides = count($sliderImages);
 @endphp
 
 <div class="w-full min-h-[calc(100vh-80px)] relative flex flex-col justify-between overflow-hidden" 
      x-data="{ activeSlide: 0, totalSlides: {{ $totalSlides }} }"
-     x-init="if(totalSlides > 1) { setInterval(() => { activeSlide = (activeSlide + 1) % totalSlides }, 5000) }">
+     x-init="if(totalSlides > 1) { setInterval(() => { activeSlide = (activeSlide + 1) % totalSlides }, 2000) }">
     
     <div class="absolute inset-0 z-0">
         @foreach($sliderImages as $index => $image)
