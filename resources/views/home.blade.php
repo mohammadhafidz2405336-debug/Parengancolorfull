@@ -32,7 +32,7 @@
 
 <div class="w-full min-h-[calc(100vh-80px)] relative flex flex-col justify-between overflow-hidden" 
      x-data="{ activeSlide: 0, totalSlides: {{ $totalSlides }} }"
-     x-init="if(totalSlides > 1) { setInterval(() => { activeSlide = (activeSlide + 1) % totalSlides }, 2000) }">
+     x-init="if(totalSlides > 1) { setInterval(() => { activeSlide = (activeSlide + 1) % totalSlides }, 5000) }">
     
     <div class="absolute inset-0 z-0">
         @foreach($sliderImages as $index => $image)
@@ -160,6 +160,69 @@
     <div class="max-w-7xl mx-auto">
         
         <!-- GRID KARTU STATISTIK DESA (Efek Muncul Bergantian ke Atas) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+    
+            <div class="bg-white rounded-2xl shadow-xs border-t-4 border-blue-800 p-6 flex flex-col justify-between relative overflow-hidden h-40 transform hover:-translate-y-2 hover:shadow-md transition-all duration-300 cursor-pointer"
+                data-aos="fade-up" data-aos-delay="0">
+                <span class="absolute right-4 top-6 text-6xl opacity-5 select-none">👥</span>
+                <div>
+                    <span class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-800 bg-blue-50 px-2.5 py-1 rounded-md">
+                        👥 Penduduk
+                    </span>
+                    <div class="mt-4 flex items-baseline gap-1">
+                        <span class="text-4xl font-extrabold text-slate-900 tracking-tight">{{ $statPenduduk }}</span>
+                        <span class="text-xs font-bold text-blue-600">jiwa</span>
+                    </div>
+                </div>
+                <p class="text-xs font-medium text-slate-500 border-t border-slate-100 pt-3">Total Penduduk Desa</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xs border-t-4 border-amber-500 p-6 flex flex-col justify-between relative overflow-hidden h-40 transform hover:-translate-y-2 hover:shadow-md transition-all duration-300 cursor-pointer"
+                data-aos="fade-up" data-aos-delay="100">
+                <span class="absolute right-4 top-6 text-6xl opacity-5 select-none">🏪</span>
+                <div>
+                    <span class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md">
+                        💼 UMKM
+                    </span>
+                    <div class="mt-4 flex items-baseline gap-1">
+                        <span class="text-4xl font-extrabold text-slate-900 tracking-tight">{{ $statUmkm }}</span>
+                        <span class="text-xs font-bold text-amber-600">unit</span>
+                    </div>
+                </div>
+                <p class="text-xs font-medium text-slate-500 border-t border-slate-100 pt-3">Total UMKM Desa</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xs border-t-4 border-green-500 p-6 flex flex-col justify-between relative overflow-hidden h-40 transform hover:-translate-y-2 hover:shadow-md transition-all duration-300 cursor-pointer"
+                data-aos="fade-up" data-aos-delay="200">
+                <span class="absolute right-4 top-6 text-6xl opacity-5 select-none">📰</span>
+                <div>
+                    <span class="inline-flex items-center gap-1.5 text-xs font-bold text-green-700 bg-green-50 px-2.5 py-1 rounded-md">
+                        📄 Berita
+                    </span>
+                    <div class="mt-4 flex items-baseline gap-1">
+                        <span class="text-4xl font-extrabold text-slate-900 tracking-tight">{{ $statBerita }}</span>
+                        <span class="text-xs font-bold text-green-600">artikel</span>
+                    </div>
+                </div>
+                <p class="text-xs font-medium text-slate-500 border-t border-slate-100 pt-3">Total Artikel Diterbitkan</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xs border-t-4 border-purple-500 p-6 flex flex-col justify-between relative overflow-hidden h-40 transform hover:-translate-y-2 hover:shadow-md transition-all duration-300 cursor-pointer"
+                data-aos="fade-up" data-aos-delay="300">
+                <span class="absolute right-4 top-6 text-6xl opacity-5 select-none">🗂️</span>
+                <div>
+                    <span class="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-md">
+                        📑 Layanan
+                    </span>
+                    <div class="mt-4 flex items-baseline gap-1">
+                        <span class="text-4xl font-extrabold text-slate-900 tracking-tight">{{ $statLayanan }}</span>
+                        <span class="text-xs font-bold text-purple-600">Jenis</span>
+                    </div>
+                </div>
+                <p class="text-xs font-medium text-slate-500 border-t border-slate-100 pt-3">Total Layanan Desa</p>
+            </div>
+        </div>
+
         <div x-data="{ activeTab: 'sambutan' }">
             <div class="flex justify-center gap-2 mb-10" data-aos="fade-up">
                 <button @click="activeTab = 'sambutan'" 

@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             MasterJenisSuratSeeder::class,
             AparaturDesaSeeder::class,
             TambahKaurSeeder::class,
+            RoleAndUserSeeder::class,
             // Jika ada seeder lain (seperti seeder jenis surat), bisa ditaruh di sini
         ]);
     }

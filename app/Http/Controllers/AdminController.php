@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;      // <--- TAMBAHKAN BARIS INI
 use Illuminate\Support\Facades\Storage;
 use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Upload\UploadApi;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Aparatur;
 use Illuminate\Support\Facades\Crypt;
 

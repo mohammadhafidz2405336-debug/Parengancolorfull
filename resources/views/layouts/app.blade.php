@@ -44,12 +44,20 @@
                 </div>
 
                 <!-- Desktop Menu Navigasi -->
-                <div class="hidden md:flex space-x-2 text-sm font-semibold">
+                <div class="hidden md:flex items-center gap-2 text-sm font-semibold">
+    
                     <a href="{{ route('desa.home') }}" class="px-4 py-2 rounded-lg transition {{ request()->routeIs('desa.home') ? 'bg-slate-800 text-white shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/50' }}">Home</a>
                     <a href="{{ route('desa.profile') }}" class="px-4 py-2 rounded-lg transition {{ request()->routeIs('desa.profile') ? 'bg-slate-800 text-white shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/50' }}">Profile Desa</a>
                     <a href="{{ route('desa.potensi') }}" class="px-4 py-2 rounded-lg transition {{ request()->routeIs('desa.potensi') ? 'bg-slate-800 text-white shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/50' }}">Potensi</a>
                     <a href="{{ route('desa.pelayanan') }}" class="px-4 py-2 rounded-lg transition {{ request()->routeIs('desa.pelayanan') ? 'bg-slate-800 text-white shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/50' }}">Pelayanan</a>
                     <a href="{{ route('desa.berita') }}" class="px-4 py-2 rounded-lg transition {{ request()->routeIs('desa.berita') ? 'bg-slate-800 text-white shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/50' }}">Berita</a>
+
+                    <div class="h-6 w-px bg-slate-700 mx-2"></div>
+
+                    <a href="/admin/login" class="flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-all shadow-md hover:shadow-lg">
+                        <i class="fa-solid fa-user-shield"></i>
+                        Login Admin
+                    </a>
                 </div>
 
                 <!-- Hamburger Button (Mobile) -->
@@ -80,6 +88,10 @@
             <a href="{{ route('desa.potensi') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('desa.potensi') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800/50' }}">Potensi</a>
             <a href="{{ route('desa.pelayanan') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('desa.pelayanan') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800/50' }}">Pelayanan</a>
             <a href="{{ route('desa.berita') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('desa.berita') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800/50' }}">Berita</a>
+            <a href="/admin/login" class="flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-all shadow-md hover:shadow-lg">
+                <i class="fa-solid fa-user-shield"></i>
+                Login Admin
+            </a>
         </div>
     </nav>
 
@@ -144,6 +156,7 @@
                         </li>
                     </ul>
                 </div>
+                
 
                 <!-- Kolom 3: Kontak & Alamat -->
                 <div class="md:col-span-4 space-y-3">
