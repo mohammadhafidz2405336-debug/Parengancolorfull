@@ -14,7 +14,6 @@
     </style>
 </head>
 <body class="bg-[#F0F4F8] text-slate-800 antialiased min-h-screen flex">
-
     <aside class="w-64 bg-[#1A365D] text-white flex flex-col fixed h-full z-20 shadow-xl">
         <div class="p-6 border-b border-blue-900/50 flex items-center gap-3">
             <div class="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden p-0.5">

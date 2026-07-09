@@ -14,17 +14,24 @@ class CheckRole
      *
      * @param  Closure(Request): (Response)  $next
      */
+   // Di dalam CheckRole.php
+    // di dalam file CheckRole.php
     public function handle(Request $request, Closure $next, ...$roles)
     {
         if (!Auth::check()) {
-            return redirect('/admin/login');
+            // Jika belum login sama sekali, lempar ke login dengan pesan eror
+            return redirect('/admin/login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
         if (in_array(Auth::user()->role, $roles)) {
             return $next($request);
         }
 
-        // Jika tidak punya akses, arahkan kembali dengan pesan error
-        return redirect('/admin/dashboard')->with('error', 'Anda tidak memiliki akses ke halaman tersebut.');
+        // JIKA GAGAL PINDAH HALAMAN KARENA ROLE TIDAK COCOK:
+        // Kirim pesan error spesifik yang mencantumkan Role user saat ini vs Role yang dibutuhkan
+        $userRole = Auth::user()->role ?? 'Tidak ada Role';
+        $requiredRoles = implode(', ', $roles);
+        
+        return redirect('/admin/dashboard')->with('error', "Akses Ditolak! Role Anda adalah [{$userRole}], sedangkan halaman ini memerlukan role: [{$requiredRoles}].");
     }
 }
