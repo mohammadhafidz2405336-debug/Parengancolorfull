@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Cloudinary\Configuration\Configuration;
+use Cloudinary\Api\Upload\UploadApi;
 
 class ProfileDesaController extends Controller
 {
@@ -84,18 +86,33 @@ class ProfileDesaController extends Controller
 
         // Logika penanganan upload file gambar foto utama banner jika ada berkas masuk
         if ($request->hasFile('foto_utama')) {
-            // Hapus foto lama di storage jika sebelumnya sudah pernah ada berkas tersimpan
-            if ($profile->foto_utama && Storage::disk('public')->exists($profile->foto_utama)) {
-                Storage::disk('public')->delete($profile->foto_utama);
+            
+            if (env('CLOUDINARY_URL')) {
+                // 1. JIKA DI RAILWAY (Menggunakan Cloudinary)
+                Configuration::instance(env('CLOUDINARY_URL'));
+                
+                $upload = (new UploadApi())->upload($request->file('foto_utama')->getRealPath(), [
+                    'folder' => 'profile_desa'
+                ]);
+                
+                // Simpan URL aman dari Cloudinary ke database
+                $dataUpdate['foto_utama'] = $upload['secure_url'];
+            } else {
+                // 2. JIKA DI LOKAL (Menggunakan Storage Local)
+                // Hapus foto lama di storage lokal jika ada
+                if ($profile && $profile->foto_utama && Storage::disk('public')->exists($profile->foto_utama)) {
+                    Storage::disk('public')->delete($profile->foto_utama);
+                }
+                
+                // Simpan berkas baru ke direktori storage/app/public/profile_desa
+                $path = $request->file('foto_utama')->store('profile_desa', 'public');
+                $dataUpdate['foto_utama'] = $path;
             }
-            // Simpan foto baru ke direktori storage/app/public/profile_desa
-            $path = $request->file('foto_utama')->store('profile_desa', 'public');
-            $dataUpdate['foto_utama'] = $path;
         }
 
         // Eksekusi pembaruan data ke database
         DB::table('profile_desa')->where('id', $profile->id)->update($dataUpdate);
 
-        return redirect()->back()->with('success', 'Seluruh data profil, visi & misi, serta kependudukan berhasil diperbarui!');
+        return redirect()->back()->with('success', 'Seluruh komponen data profil desa berhasil diperbarui!');
     }
 }

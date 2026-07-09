@@ -18,7 +18,24 @@
 
             <div class="relative" data-aos="zoom-in" data-aos-delay="200">
                 <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-amber-400 rounded-2xl blur opacity-20 transform rotate-1"></div>
-                <img src="{{ !empty($profileData->foto_utama) ? asset('storage/' . $profileData->foto_utama) : asset('images/bg-parengan.jpg') }}" alt="Profil Desa" class="relative rounded-2xl shadow-xl border border-slate-200 object-cover w-full h-[350px] lg:h-[400px]">
+                
+                @php
+                    // Cek apakah data foto_utama adalah URL Cloudinary atau file lokal
+                    if (!empty($profileData->foto_utama)) {
+                        if (\Illuminate\Support\Str::startsWith($profileData->foto_utama, 'http')) {
+                            $fotoSrc = $profileData->foto_utama;
+                        } else {
+                            $fotoSrc = asset('storage/' . $profileData->foto_utama);
+                        }
+                    } else {
+                        // Gambar default jika kosong
+                        $fotoSrc = asset('images/default-banner.jpg'); 
+                    }
+                @endphp
+
+                <img src="{{ $fotoSrc }}" 
+                    alt="Foto Utama {{ $profileData->nama_desa ?? 'Desa Parengan' }}" 
+                    class="rounded-2xl shadow-xl w-full object-cover h-[400px] relative z-10 border border-white/50">
             </div>
         </div>
 
