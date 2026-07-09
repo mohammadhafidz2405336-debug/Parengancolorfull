@@ -68,13 +68,24 @@
     <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 flex-grow">
         
         <div class="lg:col-span-7 flex flex-col justify-center px-6 sm:px-12 lg:px-20 py-12 text-white" data-aos="fade-right">
-            <span class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold uppercase tracking-wider bg-black/20 backdrop-blur-xs px-3 py-1.5 rounded-full w-max mb-3 border border-white/10">
-                <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+            <!-- Kontainer Utama agar Logo dan Kapsul bersandingan horizontal -->
+            <div class="flex items-center gap-3 mb-3">
+                
+                <!-- LOGO DESA PARENGAN (Di luar kapsul) -->
+                <img src="{{ asset('images/LOGO DESA PARENGAN.png') }}" alt="Logo Desa Parengan" class="h-12 w-auto object-contain drop-shadow-sm" />
+
+                <!-- KAPSUL DESA DIGITAL (Tanpa logo di dalamnya) -->
+                <span class="inline-flex items-center gap-2 text-xs sm:text-xl font-semibold  tracking-wider bg-black/20 backdrop-blur-xs px-3 py-1.5 rounded-full w-max border border-white/10">
+                    <!-- Lampu Indikator -->
+                    <span class="relative flex h-7 w-7 items-center justify-center">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                    </span>
+                    
+                    Desa Digital
                 </span>
-                Desa Digital
-            </span>
+
+            </div>
             <h1 class="text-6xl sm:text-8xl font-extrabold tracking-tight leading-tight mb-2 drop-shadow-md">
                 Desa Parengan
             </h1>

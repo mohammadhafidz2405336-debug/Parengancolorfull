@@ -71,6 +71,18 @@
                 <i class="fa-solid fa-store w-5"></i> Potensi UMKM
             </a>
         </nav>
+        <div class="p-4 border-t border-blue-900/50 mt-auto">
+            <a href="{{ route('admin.logout') }}" 
+               onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+               class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all cursor-pointer">
+                <i class="fa-solid fa-right-from-bracket w-5"></i> Logout
+            </a>
+            
+            <!-- Form Tersembunyi untuk Metode POST ke Route Logout -->
+            <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="hidden">
+                @csrf
+            </form>
+        </div>
     </aside>
 
     <main class="flex-1 min-h-screen flex flex-col pl-64">

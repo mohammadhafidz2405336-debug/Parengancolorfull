@@ -19,8 +19,19 @@ class AdminController extends Controller
 {
     public function index()
     {
+        // Mengambil data riil dari database
+        $totalPenduduk   = MasterWarga::count();
+        $totalBerita     = Berita::count();
+        $totalAparatur   = DB::table('aparatur_desa')->count(); // Menggunakan DB sesuai struktur method aparaturIndex
         $totalPermohonan = PermohonanSurat::count();
-        return view('admin.dasboard', compact('totalPermohonan'));
+
+        // TAMBAHAN: Mengambil 5 log aktivitas sistem terbaru untuk ditampilkan di dashboard
+        $activities = DB::table('activity_logs')
+                        ->latest()
+                        ->take(5)
+                        ->get();
+
+        return view('admin.dasboard', compact('totalPenduduk', 'totalBerita', 'totalAparatur', 'totalPermohonan', 'activities'));
     }
 
     public function homeSettingEdit()
@@ -101,6 +112,14 @@ class AdminController extends Controller
         $setting->fill($dataUpdate);
         $setting->save();
 
+        // TAMBAHAN LOG: Mengubah Pengaturan Beranda
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> baru saja memperbarui <span class="italic text-[#1A365D] font-medium">Pengaturan Beranda Desa</span>.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
+
         return redirect()->back()->with('success', 'Pengaturan beranda berhasil diperbarui!');
     }
 
@@ -111,10 +130,19 @@ class AdminController extends Controller
     public function pelayananIndex()
     {
         $permohonan = PermohonanSurat::with('jenisSurat')->latest()->get();
+
+        // TAMBAHAN LOG: Membuka Halaman Layanan Surat
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> mengakses halaman panel <span class="font-medium text-blue-700">Permohonan Surat Warga</span>.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
+
         return view('admin.pelayanan_index', compact('permohonan'));
     }
 
-    // Method untuk Detail (AJAX) - Tanpa Logging untuk saat ini
+    // Method untuk Detail (AJAX)
     public function pelayananDetail($id)
     {
         try {
@@ -132,6 +160,14 @@ class AdminController extends Controller
                     $nikAsli = 'Error Dekripsi';
                 }
             }
+
+            // TAMBAHAN LOG: Membuka detail Surat (Melihat Data) via Ajax
+            DB::table('activity_logs')->insert([
+                'user_id'     => Auth::id(),
+                'description' => '<strong>' . Auth::user()->name . '</strong> memeriksa dokumen detail permohonan surat Kode berkas: <span class="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">' . $permohonan->id . '</span>.',
+                'created_at'  => now(),
+                'updated_at'  => now()
+            ]);
 
             return response()->json([
                 'status'   => 'success',
@@ -161,6 +197,14 @@ class AdminController extends Controller
             'keterangan_admin' => $request->keterangan_admin,
         ]);
 
+        // TAMBAHAN LOG: Mengubah / Memperbarui Status Surat
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> mengubah status permohonan surat berkas #' . $id . ' menjadi <span class="uppercase font-bold text-blue-600">' . $request->status . '</span>.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
+
         return redirect()->route('admin.pelayanan.index')
                          ->with('success', 'Status berhasil diperbarui ke: ' . ucfirst($request->status));
     }
@@ -172,6 +216,15 @@ class AdminController extends Controller
     public function beritaIndex()
     {
         $berita = Berita::latest()->get();
+
+        // TAMBAHAN LOG: Membuka Manajemen Berita
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> melihat daftar data pada halaman <span class="font-medium text-blue-700">Kelola Artikel Berita</span>.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
+
         return view('admin.berita_index', compact('berita'));
     }
 
@@ -181,6 +234,15 @@ class AdminController extends Controller
             'jumlah_penduduk' => 'required|numeric',
             'jumlah_kk' => 'required|numeric'
         ]);
+
+        // TAMBAHAN LOG: Mengupdate data manual statistik kependudukan
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> memperbarui parameter konfigurasi data statistik manual kependudukan desa.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
+
         return redirect()->back()->with('success', 'Data statistik berhasil diperbarui!');
     }
 
@@ -193,6 +255,14 @@ class AdminController extends Controller
         // 1. Ambil data dari tabel aparatur_desa
         $aparatur = \DB::table('aparatur_desa')->get(); 
         
+        // TAMBAHAN LOG: Membuka Daftar Aparatur
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> membuka dan memantau list data manajemen <span class="font-medium text-purple-700">Aparatur Desa</span>.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
+
         // 2. Kirim variabel $aparatur ke dalam file blade index
         return view('admin.aparatur_index', compact('aparatur')); 
     }
@@ -250,6 +320,14 @@ class AdminController extends Controller
         // Eksekusi update ke database
         DB::table('aparatur_desa')->where('id', $id)->update($dataUpdate);
 
+        // TAMBAHAN LOG: Mengubah Data Aparatur
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> mengubah informasi profil staf Aparatur Desa atas nama <span class="font-semibold text-[#1A365D]">' . $request->nama . '</span>.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
+
         return redirect()->route('admin.aparatur.index')->with('success', 'Data aparatur berhasil diperbarui!');
     }
 
@@ -278,6 +356,14 @@ class AdminController extends Controller
             return $item;
         });
 
+        // TAMBAHAN LOG: Membuka / Mencari Data Warga
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> membuka modul <span class="font-medium text-blue-700">Data Kependudukan Warga</span>' . ($search ? ' dan melakukan pencarian kata kunci: "' . $search . '"' : '') . '.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
+
         return view('admin.warga_index', compact('warga'));
     }
 
@@ -288,6 +374,14 @@ class AdminController extends Controller
             'file' => 'required|mimes:xlsx,xls,csv'
         ]);
 
+        // TAMBAHAN LOG: Mencoba melakukan import data
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> memicu sistem untuk mengunggah dokumen import excel eksternal data warga.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
+
         // TODO: Logika import Excel akan ditaruh di sini nantinya.
         
         return redirect()->back()->with('success', 'Fitur import Excel sedang dalam tahap pengembangan!');
@@ -296,6 +390,14 @@ class AdminController extends Controller
     public function wargaShow($id)
     {
         $warga = MasterWarga::findOrFail($id);
+
+        // TAMBAHAN LOG: Melihat detail data warga via Ajax Modal
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> membuka pop-up modal detail kependudukan riil milik warga bernama <span class="font-semibold">' . $warga->nama . '</span>.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
 
         // Langsung akses $warga->nik, otomatis terdekripsi
         return response()->json([
