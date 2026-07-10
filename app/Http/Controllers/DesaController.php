@@ -9,6 +9,7 @@ use App\Models\MasterJenisSurat;
 use App\Models\MasterWarga;
 use App\Models\PermohonanSurat;
 use App\Models\PotensiUmkm;
+use App\Models\Berita;
 use Illuminate\Support\Facades\Crypt;
 
 class DesaController extends Controller
@@ -19,10 +20,18 @@ class DesaController extends Controller
         // Ambil baris pertama data setting, jika belum ada buat instance kosong agar tidak error
         $setting = HomeSetting::first() ?? new HomeSetting();
 
+        // PERBAIKAN: Ambil data pertama dari tabel profile_desa terlebih dahulu
+        $profile = DB::table('profile_desa')->first();
+
         // Hitung statistik otomatis (real-time) dari database
-        $statPenduduk = MasterWarga::count();
+        // Sekarang $profile sudah ada dan bisa dijumlahkan dengan aman
+        $statPenduduk = $profile ? ($profile->jumlah_laki + $profile->jumlah_perempuan) : 0;
+        
         $statUmkm     = PotensiUmkm::count();
-        $statBerita = DB::table('isi_berita')->count();
+        
+        // Disarankan menggunakan Model Berita langsung (seperti di AdminController Anda)
+        $statBerita   = Berita::count(); 
+        
         $statLayanan  = MasterJenisSurat::count();
 
         return view('home', compact('setting', 'statPenduduk', 'statUmkm', 'statBerita', 'statLayanan'));
