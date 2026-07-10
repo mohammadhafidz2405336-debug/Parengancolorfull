@@ -181,7 +181,9 @@
                         👥 Penduduk
                     </span>
                     <div class="mt-4 flex items-baseline gap-1">
-                        <span class="text-4xl font-extrabold text-slate-900 tracking-tight">{{ $statPenduduk }}</span>
+                        <span class="text-4xl font-extrabold text-slate-900 tracking-tight">
+                            {{ number_format(($profile->jumlah_laki ?? 0) + ($profile->jumlah_perempuan ?? 0)) }}
+                        </span>
                         <span class="text-xs font-bold text-blue-600">jiwa</span>
                     </div>
                 </div>

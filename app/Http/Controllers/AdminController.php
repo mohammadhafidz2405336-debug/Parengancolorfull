@@ -20,18 +20,24 @@ class AdminController extends Controller
     public function index()
     {
         // Mengambil data riil dari database
-        $totalPenduduk   = MasterWarga::count();
-        $totalBerita     = Berita::count();
-        $totalAparatur   = DB::table('aparatur_desa')->count(); // Menggunakan DB sesuai struktur method aparaturIndex
-        $totalPermohonan = PermohonanSurat::count();
+        $totalBerita     = Berita::count(); //[cite: 3]
+        $totalAparatur   = DB::table('aparatur_desa')->count(); //[cite: 3]
+        $totalPermohonan = PermohonanSurat::count(); //[cite: 3]
 
-        // TAMBAHAN: Mengambil 5 log aktivitas sistem terbaru untuk ditampilkan di dashboard
+        // Ambil data pertama dari tabel profile_desa[cite: 5]
+        $profile = DB::table('profile_desa')->first();
+        
+        // GANTI KEMBALI MENJADI $totalPenduduk agar sesuai dengan file Blade Anda
+        $totalPenduduk = $profile ? ($profile->jumlah_laki + $profile->jumlah_perempuan) : 0;
+
+        // Mengambil 10 log aktivitas sistem terbaru untuk ditampilkan di dashboard[cite: 3]
         $activities = DB::table('activity_logs')
                         ->latest()
                         ->take(10)
                         ->get();
 
-        return view('admin.dasboard', compact('totalPenduduk', 'totalBerita', 'totalAparatur', 'totalPermohonan', 'activities'));
+        // Pastikan di dalam compact menggunakan 'totalPenduduk'
+        return view('admin.dasboard', compact('totalPenduduk', 'totalBerita', 'totalAparatur', 'totalPermohonan', 'activities')); //[cite: 3]
     }
 
     public function homeSettingEdit()
