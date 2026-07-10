@@ -22,6 +22,16 @@ class DesaController extends Controller
 
         // PERBAIKAN: Ambil data pertama dari tabel profile_desa terlebih dahulu
         $profile = DB::table('profile_desa')->first();
+        if (!$profile) {
+            DB::table('profile_desa')->insert([
+                'nama_desa' => 'Desa Parengan',
+                'jumlah_laki' => 0,
+                'jumlah_perempuan' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+            $profile = DB::table('profile_desa')->first();
+        }
 
         // Hitung statistik otomatis (real-time) dari database
         // Sekarang $profile sudah ada dan bisa dijumlahkan dengan aman
