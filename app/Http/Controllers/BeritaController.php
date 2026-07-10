@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Berita;
 use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Upload\UploadApi;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
@@ -68,6 +70,14 @@ class BeritaController extends Controller
             'isi_berita' => $request->isi_berita,
         ]);
 
+        // TAMBAHAN LOG: Membuat Berita
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> membuat berita baru: <span class="font-medium text-blue-700">' . $request->judul . '</span>.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
+
         return redirect()->route('admin.berita.index')
                         ->with('success', 'Berita berhasil dipublikasikan!');
     }
@@ -78,6 +88,13 @@ class BeritaController extends Controller
         $berita = Berita::findOrFail($id);
         
         $berita->delete();
+
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> menghapus artikel berita berjudul: <span class="font-medium text-red-600">' . $judulBerita . '</span>.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
 
         return redirect()->route('admin.berita.index')
                         ->with('success', 'Berita berhasil dihapus!');
@@ -136,6 +153,14 @@ class BeritaController extends Controller
         }
 
         $berita->save();
+
+        // TAMBAHAN LOG: Mengupdate Berita
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> memperbarui artikel berita: <span class="font-medium text-amber-600">' . $berita->judul . '</span>.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
 
         return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil diupdate!');
     }

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Upload\UploadApi;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileDesaController extends Controller
 {
@@ -112,6 +113,14 @@ class ProfileDesaController extends Controller
 
         // Eksekusi pembaruan data ke database
         DB::table('profile_desa')->where('id', $profile->id)->update($dataUpdate);
+
+        // TAMBAHAN LOG: Update Profil Desa
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> memperbarui komponen data <span class="font-medium text-blue-800">Profil & Statistik Wilayah Desa</span>.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
 
         return redirect()->back()->with('success', 'Seluruh komponen data profil desa berhasil diperbarui!');
     }

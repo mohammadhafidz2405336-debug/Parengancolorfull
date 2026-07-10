@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Upload\UploadApi;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PotensiController extends Controller
 {
@@ -76,6 +78,13 @@ class PotensiController extends Controller
             $data
         );
 
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> memperbarui Potensi Unggulan Sisi ' . ucfirst($slot) . ': <span class="font-medium text-emerald-700">' . $request->nama . '</span>.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
+
         return redirect()->route('admin.potensi.index')
                         ->with('success', "Template Potensi Unggulan Sisi " . ucfirst($slot) . " berhasil diperbarui!");
     }
@@ -113,9 +122,19 @@ class PotensiController extends Controller
         if ($id) {
             $umkm = PotensiUmkm::findOrFail($id);
             $umkm->update($data);
+            $aksi = 'memperbarui data';
         } else {
             PotensiUmkm::create($data);
+            $aksi = 'menambahkan profil';
         }
+
+        // TAMBAHAN LOG: Simpan/Update UMKM
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> baru saja ' . $aksi . ' UMKM <span class="font-medium text-indigo-700">' . $request->nama . '</span>.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
 
         return redirect()->route('admin.potensi.index')->with('success', 'Data UMKM berhasil disimpan!');
     }
@@ -128,6 +147,13 @@ class PotensiController extends Controller
             Storage::disk('public')->delete($potensi->foto);
         }
         $potensi->delete();
+        
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> menghapus data UMKM/Potensi: <span class="font-medium text-red-600">' . $namaPotensi . '</span>.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
 
         return redirect()->route('admin.potensi.index')->with('success', 'Data berhasil dihapus!');
     }

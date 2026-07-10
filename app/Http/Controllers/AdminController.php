@@ -7,7 +7,7 @@ use App\Models\PermohonanSurat;
 use App\Models\Berita;
 use App\Models\MasterWarga;
 use App\Models\HomeSetting;
-use Illuminate\Support\Facades\DB;      // <--- TAMBAHKAN BARIS INI
+use Illuminate\Support\Facades\DB;      
 use Illuminate\Support\Facades\Storage;
 use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Upload\UploadApi;
@@ -28,7 +28,7 @@ class AdminController extends Controller
         // TAMBAHAN: Mengambil 5 log aktivitas sistem terbaru untuk ditampilkan di dashboard
         $activities = DB::table('activity_logs')
                         ->latest()
-                        ->take(5)
+                        ->take(10)
                         ->get();
 
         return view('admin.dasboard', compact('totalPenduduk', 'totalBerita', 'totalAparatur', 'totalPermohonan', 'activities'));
