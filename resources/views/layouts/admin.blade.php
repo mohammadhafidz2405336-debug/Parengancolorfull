@@ -56,7 +56,6 @@
                 <i class="fa-solid fa-user-tie w-5"></i> Aparatur Desa
             </a>
 
-            <!-- TAMBAHAN NAVIGASI BARU -->
             <div class="pt-4 pb-2">
                 <p class="px-4 text-[10px] font-bold text-blue-400/50 uppercase tracking-wider">Layanan Warga</p>
             </div>
@@ -78,7 +77,6 @@
                 <i class="fa-solid fa-right-from-bracket w-5"></i> Logout
             </a>
             
-            <!-- Form Tersembunyi untuk Metode POST ke Route Logout -->
             <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="hidden">
                 @csrf
             </form>
@@ -87,6 +85,95 @@
 
     <main class="flex-1 min-h-screen flex flex-col pl-64">
         
+        <header class="bg-white border-b border-slate-200 h-16 flex items-center justify-between px-8 sticky top-0 z-30 shadow-sm">
+            <div>
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Halaman Administrator</h2>
+            </div>
+            
+            <div class="relative inline-block text-left">
+                <button id="notification-btn" class="relative p-2 text-slate-500 hover:text-[#1A365D] hover:bg-slate-100 rounded-xl transition-all focus:outline-none cursor-pointer flex items-center justify-center">
+                    <i class="fa-solid fa-bell text-xl"></i>
+                    
+                    @php 
+                        $totalNotif = ($unreadSuratCount ?? 0) + ($newBeritaCount ?? 0); 
+                    @endphp
+                    @if($totalNotif > 0)
+                        <span class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white ring-2 ring-white animate-pulse">
+                            {{ $totalNotif }}
+                        </span>
+                    @endif
+                </button>
+
+                <div id="notification-dropdown" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden z-40 transition-all origin-top-right">
+                    <div class="px-4 py-3 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                        <span class="text-xs font-bold text-slate-700">Notifikasi Terbaru</span>
+                        <span class="text-[10px] bg-blue-100 text-[#1A365D] px-2 py-0.5 rounded-full font-bold">{{ $totalNotif }} Baru</span>
+                    </div>
+                    
+                    <div class="max-h-80 overflow-y-auto divide-y divide-slate-50">
+                        
+                        @if(isset($latestSuratNotif) && $latestSuratNotif->count() > 0)
+                            @foreach($latestSuratNotif as $surat)
+                                @php
+                                    // Ambil data_input hasil dekripsi dari model
+                                    $dataInput = $surat->data_input;
+                                    
+                                    // Antisipasi jika data_input dikembalikan dalam bentuk string JSON mentah
+                                    if (is_string($dataInput)) {
+                                        $dataInput = json_decode($dataInput, true);
+                                    }
+                                    
+                                    // Antisipasi jika EncryptedJson mengembalikan Object (stdClass) atau Array
+                                    if (is_object($dataInput)) {
+                                        $namaPemohon = $dataInput->nama_pemohon ?? 'Warga';
+                                    } else {
+                                        $namaPemohon = $dataInput['nama_pemohon'] ?? 'Warga';
+                                    }
+                                @endphp
+                                <a href="{{ route('admin.pelayanan.index') }}" class="flex gap-3 p-4 hover:bg-slate-50 transition-all block">
+                                    <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
+                                        <i class="fa-solid fa-file-invoice text-sm"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-xs font-semibold text-slate-800">Permohonan Surat Baru</p>
+                                        <p class="text-[11px] text-slate-500 truncate">
+                                            <span class="font-medium text-slate-700">{{ $namaPemohon }}</span> mengajukan layanan surat.
+                                        </p>
+                                        <span class="text-[9px] text-slate-400 block mt-1 font-medium">
+                                            <i class="fa-regular fa-clock mr-1"></i>{{ $surat->created_at->diffForHumans() }}
+                                        </span>
+                                    </div>
+                                </a>
+                            @endforeach
+                        @endif
+
+                        @if(isset($latestBeritaNotif) && $latestBeritaNotif->count() > 0)
+                            @foreach($latestBeritaNotif as $berita)
+                                <a href="{{ route('admin.berita.index') }}" class="flex gap-3 p-4 hover:bg-slate-50 transition-all block">
+                                    <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100">
+                                        <i class="fa-solid fa-newspaper text-sm"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-xs font-semibold text-slate-800">Berita Baru Dirilis</p>
+                                        <p class="text-[11px] text-slate-500 truncate">{{ $berita->judul }}</p>
+                                        <span class="text-[9px] text-slate-400 block mt-1 font-medium">
+                                            <i class="fa-regular fa-clock mr-1"></i>{{ $berita->created_at->diffForHumans() }}
+                                        </span>
+                                    </div>
+                                </a>
+                            @endforeach
+                        @endif
+
+                        @if($totalNotif == 0)
+                            <div class="p-8 text-center text-slate-400 text-xs">
+                                <i class="fa-solid fa-bell-slash text-2xl mb-2 text-slate-300 block"></i>
+                                Belum ada notifikasi baru saat ini.
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </header>
         <div class="p-8 flex-1">
             @yield('content')
         </div>
@@ -96,5 +183,26 @@
         </footer>
     </main>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btn = document.getElementById('notification-btn');
+            const dropdown = document.getElementById('notification-dropdown');
+
+            if (btn && dropdown) {
+                // Ketika tombol diclick, buka/tutup dropdown
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('hidden');
+                });
+
+                // Ketika mengklik area di luar dropdown, otomatis menutup panel dropdown
+                document.addEventListener('click', function (e) {
+                    if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
