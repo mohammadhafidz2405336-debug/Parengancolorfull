@@ -10,7 +10,6 @@ class PermohonanSurat extends Model
 {
     use HasFactory;
 
-    // 💡 TAMBAHKAN BARIS INI UNTUK MENGATASI ERROR:
     protected $table = 'permohonan_surat';
 
     protected $fillable = [

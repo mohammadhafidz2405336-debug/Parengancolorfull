@@ -18,6 +18,12 @@
                 </button>
             </form>
 
+            <!-- Tombol Tambah Warga Manual -->
+            <button type="button" onclick="document.getElementById('tambahModal').classList.remove('hidden'); document.getElementById('tambahModal').classList.add('flex');" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors">
+                <i class="fa-solid fa-plus"></i> Tambah Warga
+            </button>
+
             <a href="{{ asset('templates/template_warga.xlsx') }}" class="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
                 <i class="fa-solid fa-download"></i> Template
             </a>
@@ -39,9 +45,27 @@
         </div>
     </div>
 
+    <!-- Alert Success -->
     @if(session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
             {{ session('success') }}
+        </div>
+    @endif
+
+    <!-- Alert Error -->
+    @if(session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+    
+    @if ($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 text-sm">
+            <ul class="list-disc pl-4 text-left">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
 
@@ -82,16 +106,68 @@
     </div>
 </div>
 
+<!-- Modal Detail Warga -->
 <div id="detailModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
     <div class="bg-white p-6 rounded-xl w-96 shadow-xl">
         <h3 class="text-lg font-bold mb-4 text-slate-800">Detail Warga</h3>
         <div id="modalContent" class="space-y-3 text-sm text-slate-600">
             <p class="text-center">Memuat data...</p>
         </div>
-        <button onclick="document.getElementById('detailModal').classList.add('hidden')" 
+        <button onclick="document.getElementById('detailModal').classList.add('hidden'); document.getElementById('detailModal').classList.remove('flex');" 
                 class="mt-6 w-full bg-slate-800 hover:bg-slate-900 text-white py-2 rounded-lg transition-colors">
             Tutup
         </button>
+    </div>
+</div>
+
+<!-- Modal Tambah Data Warga -->
+<div id="tambahModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-xl w-full max-w-md shadow-xl">
+        <h3 class="text-lg font-bold mb-4 text-slate-800">Tambah Data Warga</h3>
+        
+        <form action="{{ route('admin.warga.store') }}" method="POST">
+            @csrf
+            <div class="space-y-4 text-left">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">NIK (16 Digit)</label>
+                    <input type="number" name="nik" required minlength="16" maxlength="16" value="{{ old('nik') }}"
+                           class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" 
+                           placeholder="Masukkan 16 digit NIK">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap</label>
+                    <input type="text" name="nama" required value="{{ old('nama') }}"
+                           class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" 
+                           placeholder="Nama Lengkap">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">RT</label>
+                        <input type="number" name="rt" required value="{{ old('rt') }}"
+                               class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" 
+                               placeholder="Contoh: 01">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">RW</label>
+                        <input type="number" name="rw" required value="{{ old('rw') }}"
+                               class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" 
+                               placeholder="Contoh: 02">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex justify-end gap-2">
+                <button type="button" 
+                        onclick="document.getElementById('tambahModal').classList.add('hidden'); document.getElementById('tambahModal').classList.remove('flex');" 
+                        class="bg-slate-200 hover:bg-slate-300 text-slate-800 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Batal
+                </button>
+                <button type="submit" 
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Simpan Data
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -101,6 +177,9 @@ function showDetail(url) {
     const content = document.getElementById('modalContent');
     modal.classList.remove('hidden');
     modal.classList.add('flex');
+    
+    content.innerHTML = '<p class="text-center">Memuat data...</p>'; // Reset loading
+    
     fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -110,6 +189,9 @@ function showDetail(url) {
                 <p><strong>Alamat:</strong> RT ${data.rt} / RW ${data.rw}</p>
                 <p><strong>Terdaftar:</strong> ${data.created_at}</p>
             `;
+        })
+        .catch(error => {
+            content.innerHTML = '<p class="text-center text-red-500">Gagal memuat data.</p>';
         });
 }
 </script>

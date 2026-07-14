@@ -392,6 +392,44 @@ class AdminController extends Controller
         
         return redirect()->back()->with('success', 'Fitur import Excel sedang dalam tahap pengembangan!');
     }
+    
+    public function wargaStore(Request $request)
+    {
+        $request->validate([
+            'nik'  => 'required|numeric|digits:16',
+            'nama' => 'required|string|max:255',
+            'rt'   => 'required|string|max:10',
+            'rw'   => 'required|string|max:10',
+        ]);
+
+        // Buat hash untuk pengecekan blind index
+        $nikHash = hash('sha256', $request->nik);
+        
+        // Cek apakah NIK sudah terdaftar
+        $exists = MasterWarga::where('nik_hash', $nikHash)->exists();
+        if ($exists) {
+            return redirect()->back()->with('error', 'Gagal! NIK tersebut sudah terdaftar di sistem.')->withInput();
+        }
+
+        // Simpan data
+        $warga = new MasterWarga();
+        $warga->nik_hash = $nikHash;
+        $warga->nik = $request->nik; // Asumsi mutator di model otomatis melakukan enkripsi
+        $warga->nama = $request->nama;
+        $warga->rt = $request->rt;
+        $warga->rw = $request->rw;
+        $warga->save();
+
+        // Tambahan LOG
+        DB::table('activity_logs')->insert([
+            'user_id'     => Auth::id(),
+            'description' => '<strong>' . Auth::user()->name . '</strong> menambahkan data warga baru secara manual atas nama <span class="font-semibold">' . $warga->nama . '</span>.',
+            'created_at'  => now(),
+            'updated_at'  => now()
+        ]);
+
+        return redirect()->back()->with('success', 'Data warga berhasil ditambahkan!');
+    }
 
     public function wargaShow($id)
     {

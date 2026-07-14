@@ -75,6 +75,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         // Manajemen Data Warga
         Route::get('/warga', [AdminController::class, 'wargaIndex'])->name('admin.warga.index');
         Route::post('/warga/import', [AdminController::class, 'wargaImport'])->name('admin.warga.import');
+        Route::post('/warga/simpan', [AdminController::class, 'wargaStore'])->name('admin.warga.store');
         Route::get('/warga/{id}/detail', [AdminController::class, 'wargaShow'])->name('admin.warga.detail');
     });
 });
