@@ -292,10 +292,10 @@
                                 <a href="{{ route('admin.potensi.index', ['edit_umkm_id' => $item->id]) }}#panel-umkm-form" class="w-8 h-8 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-600 flex items-center justify-center text-xs transition" title="Ubah Data">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
-                                <form action="{{ route('admin.potensi.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data UMKM ini?');">
+                                <form action="{{ route('admin.potensi.destroy', $item->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center text-xs transition" title="Hapus Usaha">
+                                    <button type="submit" onclick="return confirm('Yakin?')">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </form>
@@ -356,6 +356,32 @@
             );
         } else {
             alert("❌ Browser Anda tidak mendukung fitur pelacak lokasi GPS.");
+        }
+    }
+
+    function confirmDelete(url) {
+        if (confirm("Apakah Anda yakin ingin menghapus data UMKM ini?")) {
+            // Membuat form sementara secara dinamis
+            let form = document.createElement('form');
+            form.method = 'POST';
+            form.action = url;
+            
+            // Tambahkan CSRF Token (Penting!)
+            let csrf = document.createElement('input');
+            csrf.type = 'hidden';
+            csrf.name = '_token';
+            csrf.value = '{{ csrf_token() }}';
+            
+            // Tambahkan Method DELETE
+            let method = document.createElement('input');
+            method.type = 'hidden';
+            method.name = '_method';
+            method.value = 'DELETE';
+            
+            form.appendChild(csrf);
+            form.appendChild(method);
+            document.body.appendChild(form);
+            form.submit();
         }
     }
 </script>
