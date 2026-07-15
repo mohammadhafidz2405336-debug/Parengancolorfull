@@ -143,6 +143,10 @@ class PotensiController extends Controller
     public function destroy($id)
     {
         $potensi = PotensiUmkm::findOrFail($id);
+        
+        // Simpan nama untuk log sebelum data dihapus
+        $namaPotensi = $potensi->nama; 
+
         if ($potensi->foto && Storage::disk('public')->exists($potensi->foto)) {
             Storage::disk('public')->delete($potensi->foto);
         }
@@ -150,6 +154,7 @@ class PotensiController extends Controller
         
         DB::table('activity_logs')->insert([
             'user_id'     => Auth::id(),
+            // Gunakan variabel $namaPotensi yang sudah didefinisikan di atas
             'description' => '<strong>' . Auth::user()->name . '</strong> menghapus data UMKM/Potensi: <span class="font-medium text-red-600">' . $namaPotensi . '</span>.',
             'created_at'  => now(),
             'updated_at'  => now()
